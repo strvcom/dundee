@@ -7,7 +7,7 @@ class App : Application() {
 
     init {
         DIModule.initialize(this)
-        setLogTag("Shelv")
+        setLogTag("dundee")
     }
 
 
