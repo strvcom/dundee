@@ -14,6 +14,6 @@ fun logE(message: String, vararg args: Any?) = Log.e(logTag, message.format(args
 fun logI(message: String, vararg args: Any?) = Log.i(logTag, message.format(args))
 fun logW(message: String, vararg args: Any?) = Log.w(logTag, message.format(args))
 
-fun Any.logMe() = logD(this.toString())
-fun Any.logMeD() = logD(this.toString())
-fun Any.logMeI() = logI(this.toString())
+fun Any?.logMe() = logD(this.toString())
+fun Any?.logMeD() = logD(this.toString())
+fun Any?.logMeI() = logI(this.toString())
