@@ -63,7 +63,7 @@ class ViewModelBinding<VM : ViewModel, B : ViewDataBinding> constructor(
 
     val fragment: Fragment? = if (lifecycleOwner is Fragment) lifecycleOwner else null
     val activity: FragmentActivity by lazy {
-        if (lifecycleOwner is FragmentActivity) lifecycleOwner else (lifecycleOwner as Fragment).activity
+        if (lifecycleOwner is FragmentActivity) lifecycleOwner else (lifecycleOwner as Fragment).activity!!
     }
 
     private var initialized = false
