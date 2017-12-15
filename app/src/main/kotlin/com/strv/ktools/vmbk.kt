@@ -116,7 +116,7 @@ fun <T> LiveData<T>.observe(lifecycleOwner: LifecycleOwner): ObservableField<T> 
     return observableField
 }
 
-fun <T> ObservableField<T>.observe(observer: (T) -> Unit) {
+fun <T> ObservableField<T>.observe(observer: (T?) -> Unit) {
     this.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(p0: Observable?, p1: Int) {
             observer(this@observe.get())
