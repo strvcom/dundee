@@ -1,4 +1,4 @@
-package com.strv.dundee.api.bitstamp
+package com.strv.dundee.api.bitfinex
 
 import com.strv.dundee.api.BitcoinApi
 import com.strv.dundee.api.TickerProvider
@@ -7,13 +7,13 @@ import com.strv.dundee.model.Currency
 import com.strv.ktools.getRetrofitInterface
 import retrofit2.Call
 
-class BitstampApi : BitcoinApi{
-    val URL = "https://www.bitstamp.net/api/v2/"
+class BitfinexApi : BitcoinApi {
+    val URL = "https://api.bitfinex.com/v2/"
 
 
-    val api = getRetrofitInterface(URL, BitstampApiInterface::class.java)
+    val api = getRetrofitInterface(URL, BitfinexApiInterface::class.java)
 
     override fun getTicker(coin: Coin, currency: Currency): Call<out TickerProvider> {
-        return api.getTicker("${coin.name.toLowerCase()}${currency.name.toLowerCase()}")
+        return api.getTicker("${coin.name.toUpperCase()}${currency.name.toUpperCase()}")
     }
 }

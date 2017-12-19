@@ -1,3 +1,4 @@
 <resources>
 	<string name="app_name">Project Dundee</string>
+	<string name="price">%.2f %s/%s</string>
 </resources>

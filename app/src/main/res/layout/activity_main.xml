@@ -42,7 +42,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-				android:text="@{viewModel.ticker.last}"
+				android:text="@{@string/price(viewModel.ticker.lastPrice, viewModel.currency.name, viewModel.coin.name)}"
 				tools:text="Price" />
 		</FrameLayout>
 

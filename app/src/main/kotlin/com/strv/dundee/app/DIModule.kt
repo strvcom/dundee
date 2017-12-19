@@ -1,7 +1,8 @@
 package com.strv.dundee.app
 
 import android.app.Application
-import com.strv.dundee.api.bitstamp.BitstampApi
+import com.strv.dundee.api.BitcoinApi
+import com.strv.dundee.api.bitfinex.BitfinexApi
 import com.strv.ktools.provideSingleton
 
 object DIModule {
@@ -9,7 +10,7 @@ object DIModule {
         provideSingleton { application }
         provideSingleton { Config }
 
-        provideSingleton { BitstampApi() }
+        provideSingleton<BitcoinApi> { BitfinexApi() }
     }
 }
 
