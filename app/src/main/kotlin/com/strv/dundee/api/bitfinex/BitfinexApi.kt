@@ -1,6 +1,5 @@
 package com.strv.dundee.api.bitfinex
 
-import com.strv.dundee.api.BitcoinApi
 import com.strv.dundee.api.TickerProvider
 import com.strv.dundee.model.Coin
 import com.strv.dundee.model.Currency
@@ -9,7 +8,6 @@ import retrofit2.Call
 
 class BitfinexApi : BitcoinApi {
     val URL = "https://api.bitfinex.com/v2/"
-
 
     val api = getRetrofitInterface(URL, BitfinexApiInterface::class.java)
 
