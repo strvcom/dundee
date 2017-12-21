@@ -1,10 +1,10 @@
 package com.strv.dundee.api
 
-import com.strv.dundee.model.Coin
-import com.strv.dundee.model.Currency
+import com.strv.dundee.api.TickerProvider
 import retrofit2.Call
 
 
-interface BitcoinApi {
-    fun getTicker(coin: Coin, currency: Currency): Call<out TickerProvider>
+interface BitcoinApi{
+
+    fun getTicker(coin: String, currency: String): Call<out TickerProvider>
 }

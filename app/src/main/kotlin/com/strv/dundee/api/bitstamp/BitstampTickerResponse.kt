@@ -15,5 +15,5 @@ data class BitstampTickerResponse(
         val open: String
 ) : TickerProvider {
 
-    override fun getTicker() = Ticker(last.toDouble(), high.toDouble(), low.toDouble(), timestamp.toLong())
+    override fun getTicker(source: String, currency: String, coin: String) = Ticker(source, currency, coin, last.toDouble(), high.toDouble(), low.toDouble(), timestamp.toLong())
 }

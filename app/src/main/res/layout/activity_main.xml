@@ -13,7 +13,6 @@
 			name="view"
 			type="com.strv.dundee.ui.main.MainView" />
 
-		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
 
 	</data>
 
@@ -42,7 +41,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-				android:text="@{@string/price(viewModel.ticker.lastPrice, viewModel.currency.name, viewModel.coin.name)}"
+				android:text="@{@string/price(viewModel.ticker.lastPrice, viewModel.currency, viewModel.coin)}"
 				tools:text="Price" />
 		</FrameLayout>
 
