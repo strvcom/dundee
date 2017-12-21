@@ -8,13 +8,14 @@ import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.Ticker
 import com.strv.dundee.model.repo.BitcoinRepository
+import com.strv.dundee.model.repo.common.Resource
 import com.strv.ktools.LifecycleReceiver
 import com.strv.ktools.inject
 import com.strv.ktools.observe
 
 class MainViewModel() : ViewModel(), LifecycleReceiver {
     val bitcoinRepository by inject<BitcoinRepository>()
-    val ticker = ObservableField<Ticker>()
+    val ticker = ObservableField<Resource<Ticker>>()
     val currency = ObservableField<String>(Currency.USD)
     val coin = ObservableField<String>(Coin.BTC)
 

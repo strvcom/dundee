@@ -1,13 +1,15 @@
 package com.strv.dundee.model.repo
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import com.strv.dundee.model.api.TickerProvider
 import com.strv.dundee.model.api.bitfinex.BitfinexApi
 import com.strv.dundee.model.api.bitstamp.BitstampApi
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Ticker
+import com.strv.dundee.model.repo.common.NetworkBoundResource
+import com.strv.dundee.model.repo.common.RetrofitCallLiveData
 import com.strv.ktools.inject
-import com.strv.ktools.then
+import retrofit2.Response
 
 
 class BitcoinRepository {
@@ -16,30 +18,23 @@ class BitcoinRepository {
     val bitstampApi by inject<BitstampApi>()
     val bitfinexApi by inject<BitfinexApi>()
 
-    fun getTicker(source: String, coin: String, currency: String): LiveData<Ticker> {
-        // in all cases, fetch new data
-        val data = MutableLiveData<Ticker>()
-
-        // put LiveData into cache - cache will observe live data for changes and store the latest value
-        cache.putTicker(data)
-
-        // pick the right api
-        val api = when (source) {
-            BitcoinSource.BITSTAMP -> bitstampApi
-            BitcoinSource.BITFINEX -> bitfinexApi
-            else -> bitstampApi
+    fun getTicker(source: String, coin: String, currency: String) = object : NetworkBoundResource<Ticker, TickerProvider>() {
+        override fun saveCallResult(item: TickerProvider) {
+            cache.putTicker(item.getTicker(source, currency, coin))
         }
-        api.getTicker(coin, currency).then { response, error ->
-            // TODO: handle error
-            error?.printStackTrace()
-            response?.let {
-                // cache observes data so it will save it's value automatically
-                data.value = response.body()?.getTicker(source, currency, coin)
+
+        override fun shouldFetch(data: Ticker?) = true
+
+        override fun loadFromDb() = cache.getTicker(source, currency, coin)
+
+        override fun createCall(): LiveData<Response<out TickerProvider>> {
+            // pick the right api
+            val api = when (source) {
+                BitcoinSource.BITSTAMP -> bitstampApi
+                BitcoinSource.BITFINEX -> bitfinexApi
+                else -> bitstampApi
             }
+            return RetrofitCallLiveData(api.getTicker(coin, currency))
         }
-
-        // try cache
-        val cached = cache.getTicker(source, currency, coin)
-        return cached ?: data
-    }
+    }.getAsLiveData()
 }
