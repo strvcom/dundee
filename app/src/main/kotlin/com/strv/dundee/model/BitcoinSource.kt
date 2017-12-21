@@ -1,6 +1,7 @@
 package com.strv.dundee.model
 
 
-enum class BitcoinSource {
-    BITSTAMP, BITFINEX
+object BitcoinSource {
+    const val BITSTAMP = "bitstamp"
+    const val BITFINEX = "bitfinex"
 }

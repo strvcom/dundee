@@ -52,7 +52,7 @@ class ViewModelBinding<VM : ViewModel, B : ViewDataBinding> constructor(
 
     val binding: B by lazy {
         initializeVmb()
-        DataBindingUtil.inflate<B>(activity.layoutInflater, layoutResId, null, false)
+        DataBindingUtil.inflate<B>(activity.layoutInflater, layoutResId, null, false)!!
     }
 
     val viewModel: VM by lazy {

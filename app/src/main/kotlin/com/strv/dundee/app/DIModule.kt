@@ -2,8 +2,8 @@ package com.strv.dundee.app
 
 import android.app.Application
 import android.arch.persistence.room.Room
-import com.strv.dundee.api.BitcoinCache
-import com.strv.dundee.api.BitcoinRepository
+import com.strv.dundee.repo.BitcoinCache
+import com.strv.dundee.repo.BitcoinRepository
 import com.strv.dundee.api.bitfinex.BitfinexApi
 import com.strv.dundee.api.bitstamp.BitstampApi
 import com.strv.dundee.db.BitcoinDatabase

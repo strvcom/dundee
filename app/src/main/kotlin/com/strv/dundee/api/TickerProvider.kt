@@ -7,5 +7,5 @@ import com.strv.dundee.model.Ticker
 
 
 interface TickerProvider {
-    fun getTicker(source: BitcoinSource, currency: Currency, coin: Coin): Ticker
+    fun getTicker(source: String, currency: String, coin: String): Ticker
 }

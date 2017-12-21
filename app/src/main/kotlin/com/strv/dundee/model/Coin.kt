@@ -1,3 +1,9 @@
 package com.strv.dundee.model
 
-enum class Coin { BTC, XRP, LTC, ETH, BCH }
+object Coin {
+    const val BTC = "btc"
+    const val XRP = "xrp"
+    const val LTC = "ltc"
+    const val ETH = "eth"
+    const val BCH = "bch"
+}

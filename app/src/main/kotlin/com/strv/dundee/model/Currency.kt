@@ -1,3 +1,6 @@
 package com.strv.dundee.model
 
-enum class Currency { USD, EUR }
+object Currency {
+    const val USD = "usd"
+    const val EUR = "eur"
+}
