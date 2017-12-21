@@ -2,6 +2,7 @@ package com.strv.dundee.ui.main
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import com.google.firebase.auth.FirebaseAuth
 import com.strv.dundee.api.BitcoinApi
 import com.strv.dundee.model.Coin
 import com.strv.dundee.model.Currency
@@ -29,5 +30,9 @@ class MainViewModel() : ViewModel() {
             response?.let { ticker.set(response.body()?.getTicker()) }
             error?.printStackTrace()
         }
+    }
+
+    fun logout() {
+        FirebaseAuth.getInstance().signOut()
     }
 }
