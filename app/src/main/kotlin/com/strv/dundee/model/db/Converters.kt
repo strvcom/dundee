@@ -1,4 +1,4 @@
-package com.strv.dundee.db
+package com.strv.dundee.model.db
 
 import android.arch.persistence.room.TypeConverter
 import java.util.*

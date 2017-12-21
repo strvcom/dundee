@@ -1,4 +1,4 @@
-package com.strv.dundee.model
+package com.strv.dundee.model.entity
 
 object Coin {
     const val BTC = "btc"

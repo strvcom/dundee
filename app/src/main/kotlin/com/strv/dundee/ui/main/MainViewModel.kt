@@ -3,11 +3,11 @@ package com.strv.dundee.ui.main
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import com.strv.dundee.repo.BitcoinRepository
-import com.strv.dundee.model.BitcoinSource
-import com.strv.dundee.model.Coin
-import com.strv.dundee.model.Currency
-import com.strv.dundee.model.Ticker
+import com.strv.dundee.model.entity.BitcoinSource
+import com.strv.dundee.model.entity.Coin
+import com.strv.dundee.model.entity.Currency
+import com.strv.dundee.model.entity.Ticker
+import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.ktools.LifecycleReceiver
 import com.strv.ktools.inject
 import com.strv.ktools.observe

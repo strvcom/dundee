@@ -1,7 +1,7 @@
-package com.strv.dundee.api.bitfinex
+package com.strv.dundee.model.api.bitfinex
 
-import com.strv.dundee.api.BitcoinApi
-import com.strv.dundee.api.TickerProvider
+import com.strv.dundee.model.api.BitcoinApi
+import com.strv.dundee.model.api.TickerProvider
 import com.strv.ktools.getRetrofitInterface
 import retrofit2.Call
 

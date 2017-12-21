@@ -1,11 +1,17 @@
-package com.strv.dundee.model
+package com.strv.dundee.model.entity
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
+/*
+Ticker object
+
+Notes:
+- data class needs to have default value so that it has empty constructor ready for Room
+- properties also need to be vars because Room needs setters
+ */
 @Entity(tableName = "ticker")
 data class Ticker(
-
         var source: String = BitcoinSource.BITSTAMP,
         var currency: String = Currency.USD,
         var coin: String = Coin.BTC,

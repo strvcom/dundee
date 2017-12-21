@@ -1,8 +1,8 @@
-package com.strv.dundee.repo
+package com.strv.dundee.model.repo
 
 import android.arch.lifecycle.LiveData
-import com.strv.dundee.db.TickerDao
-import com.strv.dundee.model.Ticker
+import com.strv.dundee.model.db.TickerDao
+import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.doAsync
 import com.strv.ktools.inject
 import com.strv.ktools.log

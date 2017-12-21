@@ -1,4 +1,4 @@
-package com.strv.dundee.api.bitfinex
+package com.strv.dundee.model.api.bitfinex
 
 import retrofit2.Call
 import retrofit2.http.GET

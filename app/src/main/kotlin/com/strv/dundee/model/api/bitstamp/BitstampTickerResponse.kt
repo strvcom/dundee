@@ -1,7 +1,7 @@
-package com.strv.dundee.api.bitstamp
+package com.strv.dundee.model.api.bitstamp
 
-import com.strv.dundee.api.TickerProvider
-import com.strv.dundee.model.Ticker
+import com.strv.dundee.model.api.TickerProvider
+import com.strv.dundee.model.entity.Ticker
 
 data class BitstampTickerResponse(
         val last: String,
@@ -14,6 +14,5 @@ data class BitstampTickerResponse(
         val ask: String,
         val open: String
 ) : TickerProvider {
-
     override fun getTicker(source: String, currency: String, coin: String) = Ticker(source, currency, coin, last.toDouble(), high.toDouble(), low.toDouble(), timestamp.toLong())
 }

@@ -1,4 +1,4 @@
-package com.strv.dundee.api.bitstamp
+package com.strv.dundee.model.api.bitstamp
 
 import retrofit2.Call
 import retrofit2.http.GET
