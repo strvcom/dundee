@@ -1,5 +1,6 @@
 package com.strv.dundee.app
 
 object Config {
-    val LOG_TAG = "dundee"
+	const val LOG_TAG = "dundee"
+	const val MIN_PASSWORD_LENGTH = 6
 }

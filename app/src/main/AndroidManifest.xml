@@ -18,6 +18,11 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
+		<activity android:name=".ui.auth.SignInActivity"/>
+		<activity
+			android:name=".ui.auth.SignUpActivity"
+			android:label="@string/new_account"/>
 	</application>
 
 </manifest>
