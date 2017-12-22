@@ -5,13 +5,16 @@ import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.util.Patterns
 import com.google.firebase.auth.FirebaseAuth
+import com.strv.dundee.app.Config
 import com.strv.ktools.SingleLiveData
+import com.strv.ktools.inject
 import com.strv.ktools.logD
 
 class SignUpViewModel() : ViewModel() {
 
 	data class SignUpResult(val success: Boolean, val errorMessage: String? = null)
 
+	val config by inject<Config>()
 	val result = SingleLiveData<SignUpResult>()
 	val email = ObservableField<String>()
 	val password = ObservableField<String>()
@@ -19,7 +22,7 @@ class SignUpViewModel() : ViewModel() {
 	val progress = ObservableBoolean(false)
 
 	fun checkInput() {
-		formValid.set(!(email.get() == null || email.get()!!.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email.get()).matches() || password.get() == null || password.get()!!.isEmpty() || password.get()!!.length < 6))
+		formValid.set(!(email.get() == null || email.get()!!.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email.get()).matches() || password.get() == null || password.get()!!.isEmpty() || password.get()!!.length < config.MIN_PASSWORD_LENGTH))
 	}
 
 	fun createAccount() {

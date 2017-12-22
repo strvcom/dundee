@@ -53,7 +53,7 @@
 						android:imeOptions="actionNext|flagNoExtractUi"
 						android:inputType="textEmailAddress"
 						android:text="@={viewModel.email}"
-						app:onTextChangedCallback="@{() -> view.checkInput()}" />
+						app:onTextChangedCallback="@{() -> viewModel.checkInput()}" />
 
 				</android.support.design.widget.TextInputLayout>
 
@@ -71,8 +71,8 @@
 						android:imeOptions="actionDone|flagNoExtractUi"
 						android:inputType="textPassword"
 						android:text="@={viewModel.password}"
-						app:onTextChangedCallback="@{() -> view.checkInput()}"
-						app:onActionDoneCallback="@{() -> view.createAccount()}" />
+						app:onTextChangedCallback="@{() -> viewModel.checkInput()}"
+						app:onActionDoneCallback="@{() -> viewModel.createAccount()}" />
 
 				</android.support.design.widget.TextInputLayout>
 
@@ -89,7 +89,7 @@
 						android:paddingTop="@dimen/spacing_20"
 						android:paddingBottom="@dimen/spacing_20"
 						android:enabled="@{viewModel.formValid &amp;&amp; !viewModel.progress}"
-						android:onClick="@{() -> view.createAccount()}" />
+						android:onClick="@{() -> viewModel.createAccount()}" />
 
 					<ProgressBar
 						android:layout_width="wrap_content"

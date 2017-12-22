@@ -15,8 +15,6 @@ import com.strv.ktools.vmb
 
 interface SignInView {
 	fun openSignUp()
-	fun signIn()
-	fun checkInput()
 }
 
 class SignInActivity : AppCompatActivity(), SignInView {
@@ -52,15 +50,6 @@ class SignInActivity : AppCompatActivity(), SignInView {
 	override fun openSignUp() {
 		startActivityForResult(SignUpActivity.newIntent(this), ACTION_SIGN_UP)
 	}
-
-	override fun signIn() {
-		vmb.viewModel.signIn()
-	}
-
-	override fun checkInput() {
-		vmb.viewModel.checkInput()
-	}
-
 
 	private fun startMainActivity() {
 		startActivity(MainActivity.newIntent(this))

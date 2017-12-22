@@ -12,8 +12,6 @@ import com.strv.dundee.ui.base.BaseActivity
 import com.strv.ktools.vmb
 
 interface SignUpView {
-	fun createAccount()
-	fun checkInput()
 }
 
 class SignUpActivity : BaseActivity(), SignUpView {
@@ -38,13 +36,5 @@ class SignUpActivity : BaseActivity(), SignUpView {
 				}
 			}
 		})
-	}
-
-	override fun createAccount() {
-		vmb.viewModel.createAccount()
-	}
-
-	override fun checkInput() {
-		vmb.viewModel.checkInput()
 	}
 }
