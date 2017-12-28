@@ -4,7 +4,8 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import com.google.firebase.auth.FirebaseAuth
-import com.strv.dundee.common.Firestore
+import com.strv.dundee.firestore.Firestore
+import com.strv.dundee.firestore.User
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
@@ -14,8 +15,7 @@ import com.strv.dundee.model.repo.common.Resource
 import com.strv.ktools.LifecycleReceiver
 import com.strv.ktools.inject
 import com.strv.ktools.observe
-
-
+import java.util.*
 
 
 class MainViewModel() : ViewModel(), LifecycleReceiver {
@@ -25,7 +25,8 @@ class MainViewModel() : ViewModel(), LifecycleReceiver {
 	val coin = ObservableField<String>(Coin.BTC)
 
 	init {
-		Firestore.set(collection = "users", data = Firestore.getUser())
+		Firestore.set("users", User("Leos Dostal", 1990, true, Date()))
+//		Firestore.updateField("users", "0aklFr7oq3Sx", "age,", 19)
 	}
 
 	override fun onLifecycleReady(lifecycleOwner: LifecycleOwner) {
