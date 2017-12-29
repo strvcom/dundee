@@ -3,9 +3,9 @@ package com.strv.dundee.ui.main
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
 import com.strv.dundee.firestore.Firestore
-import com.strv.dundee.firestore.User
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
@@ -29,7 +29,10 @@ class MainViewModel() : ViewModel(), LifecycleReceiver {
 //		Firestore.getDocument("users", "zw7TXkMcb1fKuJunlB5h", User::class.java)
 //		Firestore.getDocument("users", "zw7TXkMcb1fKuJunlB5h")
 //		Firestore.getDocuments("users", Pair("name", "Cecil"))
-		Firestore.getDocuments("users", User::class.java)
+//		Firestore.getDocuments("users", User::class.java)
+		val observer = Firestore.observeDocuments("users")
+		val handler = Handler()
+		handler.postDelayed({ observer.remove() }, 10000)
 	}
 
 	override fun onLifecycleReady(lifecycleOwner: LifecycleOwner) {

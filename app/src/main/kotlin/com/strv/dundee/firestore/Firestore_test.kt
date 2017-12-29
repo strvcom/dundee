@@ -3,6 +3,7 @@ package com.strv.dundee.firestore
 import android.annotation.SuppressLint
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
 import com.strv.ktools.logD
 import com.strv.ktools.logMeD
@@ -11,6 +12,28 @@ import com.strv.ktools.logMeD
 object Firestore {
 	@SuppressLint("StaticFieldLeak")
 	val db = FirebaseFirestore.getInstance()
+
+	fun observeDocuments(collection: String, where: Pair<String, Any>? = null): ListenerRegistration {
+		val collectionRef = db.collection(collection)
+		val query = if(where != null) collectionRef.whereEqualTo(where.first, where.second) else collectionRef
+		return query.addSnapshotListener { value, e ->
+			if (e != null) {
+				logD("Listen failed.", e)
+				return@addSnapshotListener
+			}
+
+			val documents = value.documents // whole list every time
+			val changes = value.documentChanges // whole list just for the first time, then only changes, deletions, etc
+			for(doc in documents) {
+				doc.data.logMeD()
+				doc.metadata.hasPendingWrites().logMeD()
+			}
+			for(doc in changes) {
+				doc.document.data.logMeD()
+				doc.type.logMeD()
+			}
+		}
+	}
 
 	fun getDocuments(collection: String, where: Pair<String, Any>? = null) {
 		val collectionRef = db.collection(collection)
