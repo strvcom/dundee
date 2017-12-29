@@ -12,19 +12,59 @@ object Firestore {
 	@SuppressLint("StaticFieldLeak")
 	val db = FirebaseFirestore.getInstance()
 
-	fun read() {
-
-		db.collection("users")
-				.get()
-				.addOnCompleteListener { task ->
-					if (task.isSuccessful) {
-						for (document in task.result) {
-							logD(document.id + " => " + document.data)
-						}
-					} else {
-						logD("Error getting documents.", task.exception)
-					}
+	fun getDocuments(collection: String, where: Pair<String, Any>? = null) {
+		val collectionRef = db.collection(collection)
+		val query = if(where != null) collectionRef.whereEqualTo(where.first, where.second) else collectionRef
+		query.get().addOnCompleteListener { task ->
+			if (task.isSuccessful) {
+				for (document in task.result) {
+					logD("${document.id} => ${document.data}")
 				}
+			} else {
+				logD("Error getting documents ${task.exception}")
+			}
+		}
+	}
+
+	fun <T : Any?> getDocuments(collection: String, clazz: Class<T>, where: Pair<String, Any>? = null) {
+		val collectionRef = db.collection(collection)
+		val query = if(where != null) collectionRef.whereEqualTo(where.first, where.second) else collectionRef
+		query.get().addOnCompleteListener { task ->
+			if (task.isSuccessful) {
+				val list = task.result.toObjects(clazz)
+				for (item in list) {
+					item.logMeD()
+				}
+			} else {
+				logD("Error getting documents ${task.exception}")
+			}
+		}
+	}
+
+	fun getDocument(collection: String, documentId: String) {
+		val documentRef = db.collection(collection).document(documentId)
+		documentRef.get().addOnCompleteListener { task ->
+			if(task.isSuccessful) {
+				val documentSnapshot = task.result
+				if(documentSnapshot != null) documentSnapshot.data.logMeD()
+				else logD("No document with this id")
+			} else {
+				logD("Error getting document ${task.exception}")
+			}
+		}
+	}
+
+	fun <T : Any?> getDocument(collection: String, documentId: String, clazz: Class<T>) {
+		val documentRef = db.collection(collection).document(documentId)
+		documentRef.get().addOnCompleteListener { task ->
+			if(task.isSuccessful) {
+				val documentSnapshot = task.result
+				if(documentSnapshot != null) documentSnapshot.toObject(clazz).logMeD()
+				else logD("No document with this id")
+			} else {
+				logD("Error getting document ${task.exception}")
+			}
+		}
 	}
 
 	fun set(collection: String, data: HashMap<String, Any?>, documentId: String? = null, merge: Boolean = false) {

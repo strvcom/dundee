@@ -15,7 +15,6 @@ import com.strv.dundee.model.repo.common.Resource
 import com.strv.ktools.LifecycleReceiver
 import com.strv.ktools.inject
 import com.strv.ktools.observe
-import java.util.*
 
 
 class MainViewModel() : ViewModel(), LifecycleReceiver {
@@ -25,8 +24,12 @@ class MainViewModel() : ViewModel(), LifecycleReceiver {
 	val coin = ObservableField<String>(Coin.BTC)
 
 	init {
-		Firestore.set("users", User("Leos Dostal", 1990, true, Date()))
+//		Firestore.set("users", User("Leos Dostal", 1990, true, Date()))
 //		Firestore.updateField("users", "0aklFr7oq3Sx", "age,", 19)
+//		Firestore.getDocument("users", "zw7TXkMcb1fKuJunlB5h", User::class.java)
+//		Firestore.getDocument("users", "zw7TXkMcb1fKuJunlB5h")
+//		Firestore.getDocuments("users", Pair("name", "Cecil"))
+		Firestore.getDocuments("users", User::class.java)
 	}
 
 	override fun onLifecycleReady(lifecycleOwner: LifecycleOwner) {
