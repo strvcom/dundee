@@ -29,15 +29,37 @@ fun setShowCodeLocationLine(enabled: Boolean) {
 	showCodeLocationLine = enabled
 }
 
-fun log(message: String, vararg args: Any?) = Log.d(logTag, getCodeLocation().toString() + message.format(args))
-fun logD(message: String, vararg args: Any?) = Log.d(logTag, getCodeLocation().toString() + message.format(args))
-fun logE(message: String, vararg args: Any?) = Log.e(logTag, getCodeLocation().toString() + message.format(args))
-fun logI(message: String, vararg args: Any?) = Log.i(logTag, getCodeLocation().toString() + message.format(args))
-fun logW(message: String, vararg args: Any?) = Log.w(logTag, getCodeLocation().toString() + message.format(args))
+fun log(message: String, vararg args: Any?) {
+	if (logEnabled) Log.d(logTag, getCodeLocation().toString() + message.format(args))
+}
 
-fun Any?.logMe() = Log.d(logTag, getCodeLocation().toString() + this.toString())
-fun Any?.logMeD() = Log.d(logTag, getCodeLocation().toString() + this.toString())
-fun Any?.logMeI() = Log.i(logTag, getCodeLocation().toString() + this.toString())
+fun logD(message: String, vararg args: Any?) {
+	if (logEnabled) Log.d(logTag, getCodeLocation().toString() + message.format(args))
+}
+
+fun logE(message: String, vararg args: Any?) {
+	if (logEnabled) Log.e(logTag, getCodeLocation().toString() + message.format(args))
+}
+
+fun logI(message: String, vararg args: Any?) {
+	if (logEnabled) Log.i(logTag, getCodeLocation().toString() + message.format(args))
+}
+
+fun logW(message: String, vararg args: Any?) {
+	if (logEnabled) Log.w(logTag, getCodeLocation().toString() + message.format(args))
+}
+
+fun Any?.logMe() {
+	if (logEnabled) Log.d(logTag, getCodeLocation().toString() + this.toString())
+}
+
+fun Any?.logMeD() {
+	if (logEnabled) Log.d(logTag, getCodeLocation().toString() + this.toString())
+}
+
+fun Any?.logMeI() {
+	if (logEnabled) Log.i(logTag, getCodeLocation().toString() + this.toString())
+}
 
 private fun getCodeLocation(depth: Int = 3): CodeLocation {
 	val stackTrace = Throwable().stackTrace
