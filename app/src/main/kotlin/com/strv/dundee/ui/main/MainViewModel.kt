@@ -1,9 +1,12 @@
 package com.strv.dundee.ui.main
 
+import android.app.Application
 import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.os.Handler
+import android.widget.ArrayAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.strv.dundee.firestore.Firestore
 import com.strv.dundee.model.entity.BitcoinSource
@@ -14,14 +17,25 @@ import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.common.Resource
 import com.strv.ktools.LifecycleReceiver
 import com.strv.ktools.inject
+import com.strv.ktools.observableString
 import com.strv.ktools.observe
+import com.strv.ktools.sharedPrefs
 
 
 class MainViewModel() : ViewModel(), LifecycleReceiver {
+	val application by inject<Application>()
+	var lifecycleOwner: LifecycleOwner? = null
+
 	val bitcoinRepository by inject<BitcoinRepository>()
+	var tickerData: LiveData<Resource<Ticker>>
 	val ticker = ObservableField<Resource<Ticker>>()
-	val currency = ObservableField<String>(Currency.USD)
-	val coin = ObservableField<String>(Coin.BTC)
+	val source by application.sharedPrefs().observableString(BitcoinSource.BITSTAMP)
+	val currency by application.sharedPrefs().observableString(Currency.USD)
+	val coin by application.sharedPrefs().observableString(Coin.BTC)
+
+	val coinAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, arrayOf(Coin.BTC, Coin.ETH, Coin.BCH, Coin.XRP, Coin.LTC))
+	val currencyAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, arrayOf(Currency.USD, Currency.EUR))
+	val sourceAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, arrayOf(BitcoinSource.BITSTAMP, BitcoinSource.BITFINEX))
 
 	init {
 //		Firestore.set("users", User("Leos Dostal", 1990, true, Date()))
@@ -33,10 +47,27 @@ class MainViewModel() : ViewModel(), LifecycleReceiver {
 		val observer = Firestore.observeDocuments("users")
 		val handler = Handler()
 		handler.postDelayed({ observer.remove() }, 10000)
+
+		tickerData = bitcoinRepository.getTicker(source.get()!!, coin.get()!!, currency.get()!!)
+
+		// refresh ticker on changes
+		source.observe { refreshTicker() }
+		currency.observe { refreshTicker() }
+		coin.observe { refreshTicker() }
+
 	}
 
 	override fun onLifecycleReady(lifecycleOwner: LifecycleOwner) {
-		bitcoinRepository.getTicker(BitcoinSource.BITSTAMP, coin.get()!!, currency.get()!!).observe(lifecycleOwner, ticker)
+		this.lifecycleOwner = lifecycleOwner
+		refreshTicker()
+	}
+
+	private fun refreshTicker() {
+		lifecycleOwner?.let {
+			tickerData.removeObservers(it)
+			tickerData = bitcoinRepository.getTicker(source.get()!!, coin.get()!!, currency.get()!!)
+			tickerData.observe(it, ticker)
+		}
 	}
 
 
