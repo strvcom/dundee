@@ -63,6 +63,15 @@
 
 		</LinearLayout>
 
+		<android.support.design.widget.FloatingActionButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|right"
+			android:layout_margin="@dimen/spacing_16"
+			android:onClick="@{() -> view.addAmount()}"
+			app:fabSize="normal"
+			android:src="@drawable/ic_add"/>
+
 	</android.support.design.widget.CoordinatorLayout>
 
 </layout>

@@ -13,9 +13,12 @@ import com.strv.dundee.ui.auth.SignInActivity
 import com.strv.ktools.vmb
 
 interface MainView {
+	fun addAmount()
 }
 
 class MainActivity : AppCompatActivity(), MainView {
+
+	private val ACTION_ADD_AMOUNT = 1
 
 	companion object {
 		fun newIntent(context: Context) = Intent(context, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
@@ -47,5 +50,10 @@ class MainActivity : AppCompatActivity(), MainView {
 			}
 		}
 		return super.onOptionsItemSelected(item)
+	}
+
+
+	override fun addAmount() {
+		startActivityForResult(AddAmountActivity.newIntent(this), ACTION_ADD_AMOUNT)
 	}
 }

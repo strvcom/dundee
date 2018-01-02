@@ -5,7 +5,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 
 
 @BindingAdapter("hide")
@@ -56,4 +59,12 @@ fun setOnTextChangedCallback(view: EditText, callback: TextChangedCallback) {
 
 		}
 	})
+}
+
+@BindingAdapter("items", "listener")
+fun setSpinnerItems(spinner: Spinner, items: List<String>, listener: AdapterView.OnItemSelectedListener) {
+	val adapter = ArrayAdapter(spinner.context, android.R.layout.simple_spinner_item, items)
+	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+	spinner.adapter = adapter
+	spinner.onItemSelectedListener = listener
 }

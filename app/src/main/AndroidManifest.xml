@@ -23,6 +23,9 @@
 		<activity
 			android:name=".ui.auth.SignUpActivity"
 			android:label="@string/new_account"/>
+		<activity
+			android:name=".ui.main.AddAmountActivity"
+			android:label="@string/add_amount"/>
 	</application>
 
 </manifest>
