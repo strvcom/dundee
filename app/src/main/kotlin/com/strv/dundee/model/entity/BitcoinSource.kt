@@ -2,6 +2,6 @@ package com.strv.dundee.model.entity
 
 
 object BitcoinSource {
-    const val BITSTAMP = "bitstamp"
-    const val BITFINEX = "bitfinex"
+    const val BITSTAMP = "BITSTAMP"
+    const val BITFINEX = "BITFINEX"
 }

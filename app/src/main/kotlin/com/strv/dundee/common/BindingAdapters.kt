@@ -1,6 +1,8 @@
 package com.strv.dundee.common
 
 import android.databinding.BindingAdapter
+import android.databinding.InverseBindingAdapter
+import android.databinding.InverseBindingListener
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -67,4 +69,28 @@ fun setSpinnerItems(spinner: Spinner, items: List<String>, listener: AdapterView
 	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 	spinner.adapter = adapter
 	spinner.onItemSelectedListener = listener
+}
+
+//Spinner
+@BindingAdapter(value = *arrayOf("selection", "selectionAttrChanged", "adapter"), requireAll = false)
+fun <T> setAdapter(view: Spinner, newSelection: T?, bindingListener: InverseBindingListener, adapter: ArrayAdapter<T>?) {
+	view.adapter = adapter
+	view.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+		override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+			bindingListener.onChange()
+		}
+
+		override fun onNothingSelected(parent: AdapterView<*>) {
+			//Nothing
+		}
+	}
+	if (newSelection != null) {
+		val pos = (view.adapter as ArrayAdapter<T>).getPosition(newSelection)
+		view.setSelection(pos)
+	}
+}
+
+@InverseBindingAdapter(attribute = "selection", event = "selectionAttrChanged")
+fun <T> getSelectedValue(view: Spinner): T {
+	return view.selectedItem as T
 }

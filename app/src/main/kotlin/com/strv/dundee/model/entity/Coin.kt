@@ -1,19 +1,19 @@
 package com.strv.dundee.model.entity
 
 object Coin {
-    const val BTC = "btc"
-    const val XRP = "xrp"
-    const val LTC = "ltc"
-    const val ETH = "eth"
-    const val BCH = "bch"
+	const val BTC = "BTC"
+	const val XRP = "XRP"
+	const val LTC = "LTC"
+	const val ETH = "ETH"
+	const val BCH = "BCH"
 
     fun getList(): List<String> {
         val result = ArrayList<String>()
-        result.add(BTC.toUpperCase())
-        result.add(XRP.toUpperCase())
-        result.add(LTC.toUpperCase())
-        result.add(ETH.toUpperCase())
-        result.add(BCH.toUpperCase())
+        result.add(BTC)
+        result.add(XRP)
+        result.add(LTC)
+        result.add(ETH)
+        result.add(BCH)
         return result
     }
 }
