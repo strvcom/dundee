@@ -46,6 +46,7 @@ private inline fun <T> SharedPreferencesProvider.delegatePrimitive(
 
 private inline fun <T> SharedPreferencesProvider.observableDelegate(
 		defaultValue: T? = null,
+		key: String? = null,
 		crossinline getter: SharedPreferences.(String, T?) -> T?,
 		crossinline setter: Editor.(String, T?) -> Editor
 ): ReadOnlyProperty<Any?, ObservableField<T?>> = object : ObservableField<T?>(), ReadOnlyProperty<Any?, ObservableField<T?>> {
@@ -57,19 +58,20 @@ private inline fun <T> SharedPreferencesProvider.observableDelegate(
 	}
 
 	override fun get(): T? {
-		val persistable by delegate(defaultValue, originalProperty!!.name, getter, setter)
+		val persistable by delegate(defaultValue, key ?: originalProperty!!.name, getter, setter)
 		return super.get() ?: persistable ?: defaultValue
 	}
 
 	override fun set(value: T?) {
 		super.set(value)
-		var persistable by delegate(defaultValue, originalProperty!!.name, getter, setter)
+		var persistable by delegate(defaultValue, key ?: originalProperty!!.name, getter, setter)
 		persistable = value
 	}
 }
 
 private inline fun <T> SharedPreferencesProvider.observableDelegatePrimitive(
 		defaultValue: T,
+		key: String? = null,
 		crossinline getter: SharedPreferences.(String, T) -> T,
 		crossinline setter: Editor.(String, T) -> Editor
 ): ReadOnlyProperty<Any?, ObservableField<T>> = object : ObservableField<T>(), ReadOnlyProperty<Any?, ObservableField<T>> {
@@ -99,12 +101,12 @@ fun SharedPreferencesProvider.boolean(def: Boolean = false, key: String? = null)
 fun SharedPreferencesProvider.stringSet(def: Set<String> = emptySet(), key: String? = null): ReadWriteProperty<Any?, Set<String>?> = delegate(def, key, SharedPreferences::getStringSet, Editor::putStringSet)
 fun SharedPreferencesProvider.string(def: String? = null, key: String? = null): ReadWriteProperty<Any?, String?> = delegate(def, key, SharedPreferences::getString, Editor::putString)
 
-fun SharedPreferencesProvider.observableInt(defaultValue: Int): ReadOnlyProperty<Any?, ObservableField<Int>> = observableDelegatePrimitive(defaultValue, SharedPreferences::getInt, SharedPreferences.Editor::putInt)
-fun SharedPreferencesProvider.observableLong(defaultValue: Long): ReadOnlyProperty<Any?, ObservableField<Long>> = observableDelegatePrimitive(defaultValue, SharedPreferences::getLong, SharedPreferences.Editor::putLong)
-fun SharedPreferencesProvider.observableFloat(defaultValue: Float): ReadOnlyProperty<Any?, ObservableField<Float>> = observableDelegatePrimitive(defaultValue, SharedPreferences::getFloat, SharedPreferences.Editor::putFloat)
-fun SharedPreferencesProvider.observableBoolean(defaultValue: Boolean): ReadOnlyProperty<Any?, ObservableField<Boolean>> = observableDelegatePrimitive(defaultValue, SharedPreferences::getBoolean, SharedPreferences.Editor::putBoolean)
-fun SharedPreferencesProvider.observableString(defaultValue: String? = null): ReadOnlyProperty<Any?, ObservableField<String?>> = observableDelegate(defaultValue, SharedPreferences::getString, SharedPreferences.Editor::putString)
-fun SharedPreferencesProvider.observableStringSet(defaultValue: Set<String>? = null): ReadOnlyProperty<Any?, ObservableField<Set<String>?>> = observableDelegate(defaultValue, SharedPreferences::getStringSet, SharedPreferences.Editor::putStringSet)
+fun SharedPreferencesProvider.observableInt(def: Int, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Int>> = observableDelegatePrimitive(def, key, SharedPreferences::getInt, SharedPreferences.Editor::putInt)
+fun SharedPreferencesProvider.observableLong(def: Long, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Long>> = observableDelegatePrimitive(def, key, SharedPreferences::getLong, SharedPreferences.Editor::putLong)
+fun SharedPreferencesProvider.observableFloat(def: Float, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Float>> = observableDelegatePrimitive(def, key, SharedPreferences::getFloat, SharedPreferences.Editor::putFloat)
+fun SharedPreferencesProvider.observableBoolean(def: Boolean, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Boolean>> = observableDelegatePrimitive(def, key, SharedPreferences::getBoolean, SharedPreferences.Editor::putBoolean)
+fun SharedPreferencesProvider.observableString(def: String? = null, key: String? = null): ReadOnlyProperty<Any?, ObservableField<String?>> = observableDelegate(def, key, SharedPreferences::getString, SharedPreferences.Editor::putString)
+fun SharedPreferencesProvider.observableStringSet(def: Set<String>? = null, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Set<String>?>> = observableDelegate(def, key, SharedPreferences::getStringSet, SharedPreferences.Editor::putStringSet)
 
 class SharedPreferencesProvider(val provider: () -> SharedPreferences) {
 	fun provide() = provider()
