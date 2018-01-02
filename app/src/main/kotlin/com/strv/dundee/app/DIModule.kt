@@ -22,7 +22,7 @@ object DIModule {
 
 
         val database = Room.databaseBuilder(application, BitcoinDatabase::class.java, "bitcoin-database").build()
-        provideSingleton { database.userDao() }
+        provideSingleton { database.tickerDao() }
 
     }
 }
