@@ -83,13 +83,13 @@ private inline fun <T> SharedPreferencesProvider.observableDelegatePrimitive(
 	}
 
 	override fun get(): T {
-		val persistable by delegatePrimitive(defaultValue, originalProperty!!.name, getter, setter)
+		val persistable by delegatePrimitive(defaultValue, key ?: originalProperty!!.name, getter, setter)
 		return super.get() ?: persistable ?: defaultValue
 	}
 
 	override fun set(value: T) {
 		super.set(value)
-		var persistable by delegatePrimitive(defaultValue, originalProperty!!.name, getter, setter)
+		var persistable by delegatePrimitive(defaultValue, key ?: originalProperty!!.name, getter, setter)
 		persistable = value
 	}
 }
