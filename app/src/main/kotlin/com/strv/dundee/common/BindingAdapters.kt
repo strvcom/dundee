@@ -63,14 +63,6 @@ fun setOnTextChangedCallback(view: EditText, callback: TextChangedCallback) {
 	})
 }
 
-@BindingAdapter("items", "listener")
-fun setSpinnerItems(spinner: Spinner, items: List<String>, listener: AdapterView.OnItemSelectedListener) {
-	val adapter = ArrayAdapter(spinner.context, android.R.layout.simple_spinner_item, items)
-	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-	spinner.adapter = adapter
-	spinner.onItemSelectedListener = listener
-}
-
 //Spinner
 @BindingAdapter(value = *arrayOf("selection", "selectionAttrChanged", "adapter"), requireAll = false)
 fun <T> setAdapter(view: Spinner, newSelection: T?, bindingListener: InverseBindingListener, adapter: ArrayAdapter<T>?) {

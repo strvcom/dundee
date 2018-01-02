@@ -7,13 +7,5 @@ object Coin {
 	const val ETH = "ETH"
 	const val BCH = "BCH"
 
-    fun getList(): List<String> {
-        val result = ArrayList<String>()
-        result.add(BTC)
-        result.add(XRP)
-        result.add(LTC)
-        result.add(ETH)
-        result.add(BCH)
-        return result
-    }
+    fun getAll() = arrayOf(Coin.BTC, Coin.ETH, Coin.BCH, Coin.XRP, Coin.LTC)
 }

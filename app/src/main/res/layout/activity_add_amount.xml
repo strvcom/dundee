@@ -66,8 +66,8 @@
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="@dimen/spacing_16"
 					android:layout_gravity="center_vertical"
-					app:items="@{Coin.INSTANCE.getList()}"
-					app:listener="@{viewModel.listener}"/>
+					app:adapter="@{viewModel.coinAdapter}"
+					app:selection="@={viewModel.coin}"/>
 
 			</LinearLayout>
 

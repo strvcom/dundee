@@ -5,10 +5,8 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.os.Handler
 import android.widget.ArrayAdapter
 import com.google.firebase.auth.FirebaseAuth
-import com.strv.dundee.firestore.Firestore
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
@@ -33,9 +31,9 @@ class MainViewModel() : ViewModel(), LifecycleReceiver {
 	val currency by application.sharedPrefs().observableString(Currency.USD)
 	val coin by application.sharedPrefs().observableString(Coin.BTC)
 
-	val coinAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, arrayOf(Coin.BTC, Coin.ETH, Coin.BCH, Coin.XRP, Coin.LTC))
-	val currencyAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, arrayOf(Currency.USD, Currency.EUR))
-	val sourceAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, arrayOf(BitcoinSource.BITSTAMP, BitcoinSource.BITFINEX))
+	val coinAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Coin.getAll())
+	val currencyAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Currency.getAll())
+	val sourceAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, BitcoinSource.getAll())
 
 	init {
 //		Firestore.set("users", User("Leos Dostal", 1990, true, Date()))
@@ -44,9 +42,9 @@ class MainViewModel() : ViewModel(), LifecycleReceiver {
 //		Firestore.getDocument("users", "zw7TXkMcb1fKuJunlB5h")
 //		Firestore.getDocuments("users", Pair("name", "Cecil"))
 //		Firestore.getDocuments("users", User::class.java)
-		val observer = Firestore.observeDocuments("users")
-		val handler = Handler()
-		handler.postDelayed({ observer.remove() }, 10000)
+//		val observer = Firestore.observeDocuments("users")
+//		val handler = Handler()
+//		handler.postDelayed({ observer.remove() }, 10000)
 
 		tickerData = bitcoinRepository.getTicker(source.get()!!, coin.get()!!, currency.get()!!)
 
