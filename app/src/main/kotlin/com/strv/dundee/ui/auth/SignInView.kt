@@ -20,6 +20,7 @@ interface SignInView {
 class SignInActivity : AppCompatActivity(), SignInView {
 
 	private val ACTION_SIGN_UP = 1
+	private val ACTION_SIGN_IN_GOOGLE = 2
 
 	companion object {
 		fun newIntent(context: Context) = Intent(context, SignInActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
@@ -36,6 +37,8 @@ class SignInActivity : AppCompatActivity(), SignInView {
 				else Toast.makeText(this, it.errorMessage, Toast.LENGTH_LONG).show()
 			}
 		})
+
+		vmb.viewModel.googleSignInRequest.observe(this, Observer { openGoogleSignInActivity(it!!) })
 	}
 
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -44,6 +47,9 @@ class SignInActivity : AppCompatActivity(), SignInView {
 		when (requestCode) {
 			ACTION_SIGN_UP ->
 				if (resultCode == Activity.RESULT_OK) startMainActivity()
+			ACTION_SIGN_IN_GOOGLE -> {
+				data?.let { vmb.viewModel.onGoogleSignInResult(data) }
+			}
 		}
 	}
 
@@ -54,5 +60,9 @@ class SignInActivity : AppCompatActivity(), SignInView {
 	private fun startMainActivity() {
 		startActivity(MainActivity.newIntent(this))
 		finish()
+	}
+
+	private fun openGoogleSignInActivity(signInIntent: Intent) {
+		startActivityForResult(signInIntent, ACTION_SIGN_IN_GOOGLE)
 	}
 }

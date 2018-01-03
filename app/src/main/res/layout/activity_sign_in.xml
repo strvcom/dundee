@@ -68,7 +68,7 @@
 					android:inputType="textPassword"
 					android:text="@={viewModel.password}"
 					app:onTextChangedCallback="@{() -> viewModel.checkInput()}"
-					app:onActionDoneCallback="@{() -> viewModel.signIn()}"/>
+					app:onActionDoneCallback="@{() -> viewModel.signIn()}" />
 
 			</android.support.design.widget.TextInputLayout>
 
@@ -94,6 +94,12 @@
 					app:show="@{viewModel.progress}" />
 
 			</FrameLayout>
+
+			<com.google.android.gms.common.SignInButton
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:onClickListener="@{() -> viewModel.signInWithGoogle()}" />
 
 			<TextView
 				android:layout_width="wrap_content"
