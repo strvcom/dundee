@@ -56,8 +56,8 @@ dependencies {
 	implementation "android.arch.persistence.room:runtime:1.0.0"
 	kapt "android.arch.persistence.room:compiler:1.0.0"
 
-//	implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:2.2.0'
-//	implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:2.2.0'
+	implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:2.3.0-beta1'
+	implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:2.3.0-beta1'
 
 	implementation "com.squareup.retrofit2:retrofit:2.3.0"
 	implementation "com.squareup.retrofit2:converter-gson:2.3.0"

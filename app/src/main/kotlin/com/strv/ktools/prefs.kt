@@ -5,11 +5,11 @@ import android.app.Application
 import android.app.Fragment
 import android.app.Service
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
-import android.databinding.ObservableField
 import android.preference.PreferenceManager
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
@@ -44,51 +44,51 @@ private inline fun <T> SharedPreferencesProvider.delegatePrimitive(
 		}
 
 
-private inline fun <T> SharedPreferencesProvider.observableDelegate(
+private inline fun <T> SharedPreferencesProvider.liveDataDelegate(
 		defaultValue: T? = null,
 		key: String? = null,
 		crossinline getter: SharedPreferences.(String, T?) -> T?,
 		crossinline setter: Editor.(String, T?) -> Editor
-): ReadOnlyProperty<Any?, ObservableField<T?>> = object : ObservableField<T?>(), ReadOnlyProperty<Any?, ObservableField<T?>> {
+): ReadOnlyProperty<Any?, MutableLiveData<T?>> = object : MutableLiveData<T?>(), ReadOnlyProperty<Any?, MutableLiveData<T?>> {
 	var originalProperty: KProperty<*>? = null
 
-	override fun getValue(thisRef: Any?, property: KProperty<*>): ObservableField<T?> {
+	override fun getValue(thisRef: Any?, property: KProperty<*>): MutableLiveData<T?> {
 		originalProperty = property
 		return this
 	}
 
-	override fun get(): T? {
+	override fun getValue(): T? {
 		val persistable by delegate(defaultValue, key ?: originalProperty!!.name, getter, setter)
-		return super.get() ?: persistable ?: defaultValue
+		return super.getValue() ?: persistable ?: defaultValue
 	}
 
-	override fun set(value: T?) {
-		super.set(value)
+	override fun setValue(value: T?) {
+		super.setValue(value)
 		var persistable by delegate(defaultValue, key ?: originalProperty!!.name, getter, setter)
 		persistable = value
 	}
 }
 
-private inline fun <T> SharedPreferencesProvider.observableDelegatePrimitive(
+private inline fun <T> SharedPreferencesProvider.liveDataDelegatePrimitive(
 		defaultValue: T,
 		key: String? = null,
 		crossinline getter: SharedPreferences.(String, T) -> T,
 		crossinline setter: Editor.(String, T) -> Editor
-): ReadOnlyProperty<Any?, ObservableField<T>> = object : ObservableField<T>(), ReadOnlyProperty<Any?, ObservableField<T>> {
+): ReadOnlyProperty<Any?, MutableLiveData<T>> = object : MutableLiveData<T>(), ReadOnlyProperty<Any?, MutableLiveData<T>> {
 	var originalProperty: KProperty<*>? = null
 
-	override fun getValue(thisRef: Any?, property: KProperty<*>): ObservableField<T> {
+	override fun getValue(thisRef: Any?, property: KProperty<*>): MutableLiveData<T> {
 		originalProperty = property
 		return this
 	}
 
-	override fun get(): T {
+	override fun getValue(): T {
 		val persistable by delegatePrimitive(defaultValue, key ?: originalProperty!!.name, getter, setter)
-		return super.get() ?: persistable ?: defaultValue
+		return super.getValue() ?: persistable ?: defaultValue
 	}
 
-	override fun set(value: T) {
-		super.set(value)
+	override fun setValue(value: T) {
+		super.setValue(value)
 		var persistable by delegatePrimitive(defaultValue, key ?: originalProperty!!.name, getter, setter)
 		persistable = value
 	}
@@ -101,12 +101,12 @@ fun SharedPreferencesProvider.boolean(def: Boolean = false, key: String? = null)
 fun SharedPreferencesProvider.stringSet(def: Set<String> = emptySet(), key: String? = null): ReadWriteProperty<Any?, Set<String>?> = delegate(def, key, SharedPreferences::getStringSet, Editor::putStringSet)
 fun SharedPreferencesProvider.string(def: String? = null, key: String? = null): ReadWriteProperty<Any?, String?> = delegate(def, key, SharedPreferences::getString, Editor::putString)
 
-fun SharedPreferencesProvider.observableInt(def: Int, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Int>> = observableDelegatePrimitive(def, key, SharedPreferences::getInt, SharedPreferences.Editor::putInt)
-fun SharedPreferencesProvider.observableLong(def: Long, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Long>> = observableDelegatePrimitive(def, key, SharedPreferences::getLong, SharedPreferences.Editor::putLong)
-fun SharedPreferencesProvider.observableFloat(def: Float, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Float>> = observableDelegatePrimitive(def, key, SharedPreferences::getFloat, SharedPreferences.Editor::putFloat)
-fun SharedPreferencesProvider.observableBoolean(def: Boolean, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Boolean>> = observableDelegatePrimitive(def, key, SharedPreferences::getBoolean, SharedPreferences.Editor::putBoolean)
-fun SharedPreferencesProvider.observableString(def: String? = null, key: String? = null): ReadOnlyProperty<Any?, ObservableField<String?>> = observableDelegate(def, key, SharedPreferences::getString, SharedPreferences.Editor::putString)
-fun SharedPreferencesProvider.observableStringSet(def: Set<String>? = null, key: String? = null): ReadOnlyProperty<Any?, ObservableField<Set<String>?>> = observableDelegate(def, key, SharedPreferences::getStringSet, SharedPreferences.Editor::putStringSet)
+fun SharedPreferencesProvider.intLiveData(def: Int, key: String? = null): ReadOnlyProperty<Any?, MutableLiveData<Int>> = liveDataDelegatePrimitive(def, key, SharedPreferences::getInt, SharedPreferences.Editor::putInt)
+fun SharedPreferencesProvider.longLiveData(def: Long, key: String? = null): ReadOnlyProperty<Any?, MutableLiveData<Long>> = liveDataDelegatePrimitive(def, key, SharedPreferences::getLong, SharedPreferences.Editor::putLong)
+fun SharedPreferencesProvider.floatLiveData(def: Float, key: String? = null): ReadOnlyProperty<Any?, MutableLiveData<Float>> = liveDataDelegatePrimitive(def, key, SharedPreferences::getFloat, SharedPreferences.Editor::putFloat)
+fun SharedPreferencesProvider.booleanLiveData(def: Boolean, key: String? = null): ReadOnlyProperty<Any?, MutableLiveData<Boolean>> = liveDataDelegatePrimitive(def, key, SharedPreferences::getBoolean, SharedPreferences.Editor::putBoolean)
+fun SharedPreferencesProvider.stringLiveData(def: String? = null, key: String? = null): ReadOnlyProperty<Any?, MutableLiveData<String?>> = liveDataDelegate(def, key, SharedPreferences::getString, SharedPreferences.Editor::putString)
+fun SharedPreferencesProvider.stringSetLiveData(def: Set<String>? = null, key: String? = null): ReadOnlyProperty<Any?, MutableLiveData<Set<String>?>> = liveDataDelegate(def, key, SharedPreferences::getStringSet, SharedPreferences.Editor::putStringSet)
 
 class SharedPreferencesProvider(val provider: () -> SharedPreferences) {
 	fun provide() = provider()

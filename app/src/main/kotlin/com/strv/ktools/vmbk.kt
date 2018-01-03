@@ -1,7 +1,16 @@
 package com.strv.ktools
 
 import android.app.Activity
-import android.arch.lifecycle.*
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.OnLifecycleEvent
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.databinding.ObservableField
@@ -72,6 +81,7 @@ class ViewModelBinding<VM : ViewModel, B : ViewDataBinding> constructor(
         lifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
             fun onCreate() {
+                binding.setLifecycleOwner(lifecycleOwner)
                 // setup binding variables
                 binding.setVariable(BR.viewModel, viewModel)
                 binding.setVariable(BR.view, fragment ?: activity)
