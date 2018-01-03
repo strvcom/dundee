@@ -38,6 +38,13 @@
 				android:layout_height="0dp"
 				android:layout_weight="1" />
 
+			<!-- Focus Catcher -->
+			<LinearLayout
+				android:layout_width="0px"
+				android:layout_height="0px"
+				android:focusable="true"
+				android:focusableInTouchMode="true" />
+
 			<android.support.design.widget.TextInputLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
@@ -72,34 +79,30 @@
 
 			</android.support.design.widget.TextInputLayout>
 
-			<FrameLayout
+			<Button
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="@dimen/spacing_32">
-
-				<Button
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:text='@{!viewModel.progress ? @string/sign_in : ""}'
-					android:paddingTop="@dimen/spacing_20"
-					android:paddingBottom="@dimen/spacing_20"
-					android:enabled="@{viewModel.formValid &amp;&amp; !viewModel.progress}"
-					android:onClick="@{() -> viewModel.signIn()}" />
-
-				<ProgressBar
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					app:show="@{viewModel.progress}" />
-
-			</FrameLayout>
+				android:layout_marginTop="@dimen/spacing_16"
+				android:layout_gravity="center"
+				android:text='@{!viewModel.progress ? @string/sign_in : ""}'
+				android:paddingTop="@dimen/spacing_20"
+				android:paddingBottom="@dimen/spacing_20"
+				android:enabled="@{viewModel.formValid &amp;&amp; !viewModel.progress}"
+				android:onClick="@{() -> viewModel.signIn()}" />
 
 			<com.google.android.gms.common.SignInButton
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:onClickListener="@{() -> viewModel.signInWithGoogle()}" />
+				android:onClickListener="@{() -> viewModel.signInWithGoogle()}"
+				app:buttonSize="wide" />
+
+			<ProgressBar
+				android:layout_width="@dimen/spacing_24"
+				android:layout_height="@dimen/spacing_24"
+				android:layout_gravity="center"
+				android:layout_margin="@dimen/spacing_16"
+				app:show="@{viewModel.progress}" />
 
 			<TextView
 				android:layout_width="wrap_content"
