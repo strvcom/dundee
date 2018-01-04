@@ -15,7 +15,7 @@ object Firestore {
 
 	fun observeDocuments(collection: String, where: Pair<String, Any>? = null): ListenerRegistration {
 		val collectionRef = db.collection(collection)
-		val query = if(where != null) collectionRef.whereEqualTo(where.first, where.second) else collectionRef
+		val query = if (where != null) collectionRef.whereEqualTo(where.first, where.second) else collectionRef
 		return query.addSnapshotListener { value, e ->
 			if (e != null) {
 				logD("Listen failed.", e)
@@ -24,11 +24,11 @@ object Firestore {
 
 			val documents = value.documents // whole list every time
 			val changes = value.documentChanges // whole list just for the first time, then only changes, deletions, etc
-			for(doc in documents) {
+			for (doc in documents) {
 				doc.data.logMeD()
 				doc.metadata.hasPendingWrites().logMeD()
 			}
-			for(doc in changes) {
+			for (doc in changes) {
 				doc.document.data.logMeD()
 				doc.type.logMeD()
 			}
@@ -37,7 +37,7 @@ object Firestore {
 
 	fun getDocuments(collection: String, where: Pair<String, Any>? = null) {
 		val collectionRef = db.collection(collection)
-		val query = if(where != null) collectionRef.whereEqualTo(where.first, where.second) else collectionRef
+		val query = if (where != null) collectionRef.whereEqualTo(where.first, where.second) else collectionRef
 		query.get().addOnCompleteListener { task ->
 			if (task.isSuccessful) {
 				for (document in task.result) {
@@ -51,7 +51,7 @@ object Firestore {
 
 	fun <T : Any?> getDocuments(collection: String, clazz: Class<T>, where: Pair<String, Any>? = null) {
 		val collectionRef = db.collection(collection)
-		val query = if(where != null) collectionRef.whereEqualTo(where.first, where.second) else collectionRef
+		val query = if (where != null) collectionRef.whereEqualTo(where.first, where.second) else collectionRef
 		query.get().addOnCompleteListener { task ->
 			if (task.isSuccessful) {
 				val list = task.result.toObjects(clazz)
@@ -67,9 +67,9 @@ object Firestore {
 	fun getDocument(collection: String, documentId: String) {
 		val documentRef = db.collection(collection).document(documentId)
 		documentRef.get().addOnCompleteListener { task ->
-			if(task.isSuccessful) {
+			if (task.isSuccessful) {
 				val documentSnapshot = task.result
-				if(documentSnapshot != null) documentSnapshot.data.logMeD()
+				if (documentSnapshot != null) documentSnapshot.data.logMeD()
 				else logD("No document with this id")
 			} else {
 				logD("Error getting document ${task.exception}")
@@ -80,9 +80,9 @@ object Firestore {
 	fun <T : Any?> getDocument(collection: String, documentId: String, clazz: Class<T>) {
 		val documentRef = db.collection(collection).document(documentId)
 		documentRef.get().addOnCompleteListener { task ->
-			if(task.isSuccessful) {
+			if (task.isSuccessful) {
 				val documentSnapshot = task.result
-				if(documentSnapshot != null) documentSnapshot.toObject(clazz).logMeD()
+				if (documentSnapshot != null) documentSnapshot.toObject(clazz).logMeD()
 				else logD("No document with this id")
 			} else {
 				logD("Error getting document ${task.exception}")
@@ -93,7 +93,7 @@ object Firestore {
 	fun set(collection: String, data: HashMap<String, Any?>, documentId: String? = null, merge: Boolean = false) {
 		val documentRef = if (documentId != null) db.collection(collection).document(documentId) else db.collection(collection).document()
 		val docId = documentRef.id
-		val task = if(merge) documentRef.set(data, SetOptions.merge()) else documentRef.set(data)
+		val task = if (merge) documentRef.set(data, SetOptions.merge()) else documentRef.set(data)
 		task.addOnSuccessListener { logD("Success, collection $collection documentID = $docId") }
 		task.addOnFailureListener { e -> e.logMeD() }
 	}
@@ -101,7 +101,7 @@ object Firestore {
 	fun set(collection: String, data: Any, documentId: String? = null, merge: Boolean = false) {
 		val documentRef = if (documentId != null) db.collection(collection).document(documentId) else db.collection(collection).document()
 		val docId = documentRef.id
-		val task = if(merge) documentRef.set(data, SetOptions.merge()) else documentRef.set(data)
+		val task = if (merge) documentRef.set(data, SetOptions.merge()) else documentRef.set(data)
 		task.addOnSuccessListener { logD("Set success, collection $collection documentID = $docId") }
 		task.addOnFailureListener { e -> e.logMeD() }
 	}

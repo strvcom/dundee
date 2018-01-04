@@ -7,6 +7,6 @@ import retrofit2.http.Path
 
 interface BitstampApiInterface {
 
-    @GET("ticker/{currencyPair}")
-    fun getTicker(@Path("currencyPair") currencyPair: String): Call<BitstampTickerResponse>
+	@GET("ticker/{currencyPair}")
+	fun getTicker(@Path("currencyPair") currencyPair: String): Call<BitstampTickerResponse>
 }

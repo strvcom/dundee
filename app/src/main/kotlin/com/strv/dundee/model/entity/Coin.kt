@@ -7,5 +7,5 @@ object Coin {
 	const val ETH = "ETH"
 	const val BCH = "BCH"
 
-    fun getAll() = arrayOf(Coin.BTC, Coin.ETH, Coin.BCH, Coin.XRP, Coin.LTC)
+	fun getAll() = arrayOf(Coin.BTC, Coin.ETH, Coin.BCH, Coin.XRP, Coin.LTC)
 }

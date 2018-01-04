@@ -8,16 +8,16 @@ import com.strv.ktools.log
 
 
 class BitcoinCache {
-    private val tickerDao by inject<TickerDao>()
+	private val tickerDao by inject<TickerDao>()
 
-    fun getTicker(source: String, currency: String, coin: String): LiveData<Ticker> {
-        val fromDb = tickerDao.getTicker(source, currency, coin)
-        log("Reading ticker from db: ${fromDb.value}")
-        return fromDb
-    }
+	fun getTicker(source: String, currency: String, coin: String): LiveData<Ticker> {
+		val fromDb = tickerDao.getTicker(source, currency, coin)
+		log("Reading ticker from db: ${fromDb.value}")
+		return fromDb
+	}
 
-    fun putTicker(ticker: Ticker) {
-        log("Saving ticker to db: $ticker")
-        tickerDao.putTicker(ticker)
-    }
+	fun putTicker(ticker: Ticker) {
+		log("Saving ticker to db: $ticker")
+		tickerDao.putTicker(ticker)
+	}
 }

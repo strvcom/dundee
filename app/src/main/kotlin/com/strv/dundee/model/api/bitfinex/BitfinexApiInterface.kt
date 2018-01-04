@@ -6,7 +6,7 @@ import retrofit2.http.Path
 
 interface BitfinexApiInterface {
 
-    @GET("ticker/t{currencyPair}")
-    fun getTicker(@Path("currencyPair") currencyPair: String): Call<BitfinexTickerResponse>
+	@GET("ticker/t{currencyPair}")
+	fun getTicker(@Path("currencyPair") currencyPair: String): Call<BitfinexTickerResponse>
 }
 

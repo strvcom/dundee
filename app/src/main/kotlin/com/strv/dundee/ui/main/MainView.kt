@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainView {
 		super.onCreate(savedInstanceState)
 		setSupportActionBar(vmb.binding.toolbar)
 
-		if(!isUserSignedIn()) {
+		if (!isUserSignedIn()) {
 			startActivity(SignInActivity.newIntent(this))
 			finish()
 		}

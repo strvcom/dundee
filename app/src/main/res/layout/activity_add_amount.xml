@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools">
+	>
 
 	<data>
 
-		<import type="com.strv.dundee.model.entity.Coin"/>
+		<import type="com.strv.dundee.model.entity.Coin" />
 
 		<variable
 			name="viewModel"
@@ -37,8 +37,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical"
-			app:layout_behavior="@string/appbar_scrolling_view_behavior"
-			android:padding="@dimen/spacing_32">
+			android:padding="@dimen/spacing_32"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 			<LinearLayout
 				android:layout_width="match_parent"
@@ -67,7 +67,7 @@
 					android:layout_marginLeft="@dimen/spacing_16"
 					android:layout_gravity="center_vertical"
 					app:adapter="@{viewModel.coinAdapter}"
-					app:selection="@={viewModel.coin}"/>
+					app:selection="@={viewModel.coin}" />
 
 			</LinearLayout>
 

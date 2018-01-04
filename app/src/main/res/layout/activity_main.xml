@@ -87,8 +87,8 @@
 			android:layout_gravity="bottom|right"
 			android:layout_margin="@dimen/spacing_16"
 			android:onClick="@{() -> view.addAmount()}"
-			app:fabSize="normal"
-			android:src="@drawable/ic_add"/>
+			android:src="@drawable/ic_add"
+			app:fabSize="normal" />
 
 	</android.support.design.widget.CoordinatorLayout>
 

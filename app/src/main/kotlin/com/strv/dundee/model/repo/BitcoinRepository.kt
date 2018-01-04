@@ -13,28 +13,28 @@ import retrofit2.Response
 
 
 class BitcoinRepository {
-    val cache by inject<BitcoinCache>()
+	val cache by inject<BitcoinCache>()
 
-    val bitstampApi by inject<BitstampApi>()
-    val bitfinexApi by inject<BitfinexApi>()
+	val bitstampApi by inject<BitstampApi>()
+	val bitfinexApi by inject<BitfinexApi>()
 
-    fun getTicker(source: String, coin: String, currency: String) = object : NetworkBoundResource<Ticker, TickerProvider>() {
-        override fun saveCallResult(item: TickerProvider) {
-            cache.putTicker(item.getTicker(source, currency, coin))
-        }
+	fun getTicker(source: String, coin: String, currency: String) = object : NetworkBoundResource<Ticker, TickerProvider>() {
+		override fun saveCallResult(item: TickerProvider) {
+			cache.putTicker(item.getTicker(source, currency, coin))
+		}
 
-        override fun shouldFetch(data: Ticker?) = true
+		override fun shouldFetch(data: Ticker?) = true
 
-        override fun loadFromDb() = cache.getTicker(source, currency, coin)
+		override fun loadFromDb() = cache.getTicker(source, currency, coin)
 
-        override fun createCall(): LiveData<Response<out TickerProvider>> {
-            // pick the right api
-            val api = when (source) {
-                BitcoinSource.BITSTAMP -> bitstampApi
-                BitcoinSource.BITFINEX -> bitfinexApi
-                else -> bitstampApi
-            }
-            return RetrofitCallLiveData(api.getTicker(coin, currency))
-        }
-    }.getAsLiveData()
+		override fun createCall(): LiveData<Response<out TickerProvider>> {
+			// pick the right api
+			val api = when (source) {
+				BitcoinSource.BITSTAMP -> bitstampApi
+				BitcoinSource.BITFINEX -> bitfinexApi
+				else -> bitstampApi
+			}
+			return RetrofitCallLiveData(api.getTicker(coin, currency))
+		}
+	}.getAsLiveData()
 }

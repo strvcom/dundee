@@ -11,11 +11,11 @@ Notes:
  */
 @Entity(tableName = "ticker", primaryKeys = arrayOf("source", "currency", "coin"))
 data class Ticker(
-        var source: String = BitcoinSource.BITSTAMP,
-        var currency: String = Currency.USD,
-        var coin: String = Coin.BTC,
-        var lastPrice: Double = 0.toDouble(),
-        var highPrice: Double = 0.toDouble(),
-        var lowPrice: Double = 0.toDouble(),
-        var timestamp: Long = 0
+		var source: String = BitcoinSource.BITSTAMP,
+		var currency: String = Currency.USD,
+		var coin: String = Coin.BTC,
+		var lastPrice: Double = 0.toDouble(),
+		var highPrice: Double = 0.toDouble(),
+		var lowPrice: Double = 0.toDouble(),
+		var timestamp: Long = 0
 )
