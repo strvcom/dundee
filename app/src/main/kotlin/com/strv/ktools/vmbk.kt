@@ -26,23 +26,23 @@ import kotlin.reflect.KProperty
 
 // ViewModelBinding extension functions
 inline fun <reified VM : ViewModel, B : ViewDataBinding> FragmentActivity.vmb(@LayoutRes layoutResId: Int, viewModelProvider: ViewModelProvider? = null) = object : ReadOnlyProperty<FragmentActivity, ViewModelBinding<VM, B>> {
-	var instance: ViewModelBinding<VM, B>? = null
-	override fun getValue(thisRef: FragmentActivity, property: KProperty<*>) = instance ?: ViewModelBinding<VM, B>(thisRef, VM::class.java, layoutResId, viewModelProvider, null).apply { instance = this }
+	var instance = ViewModelBinding<VM, B>(this@vmb, VM::class.java, layoutResId, viewModelProvider, null)
+	override fun getValue(thisRef: FragmentActivity, property: KProperty<*>) = instance
 }
 
 inline fun <reified VM : ViewModel, B : ViewDataBinding> FragmentActivity.vmb(@LayoutRes layoutResId: Int, noinline viewModelFactory: () -> VM) = object : ReadOnlyProperty<FragmentActivity, ViewModelBinding<VM, B>> {
-	var instance: ViewModelBinding<VM, B>? = null
-	override fun getValue(thisRef: FragmentActivity, property: KProperty<*>) = instance ?: ViewModelBinding<VM, B>(thisRef, VM::class.java, layoutResId, null, viewModelFactory).apply { instance = this }
+	var instance = ViewModelBinding<VM, B>(this@vmb, VM::class.java, layoutResId, null, viewModelFactory)
+	override fun getValue(thisRef: FragmentActivity, property: KProperty<*>) = instance
 }
 
 inline fun <reified VM : ViewModel, B : ViewDataBinding> Fragment.vmb(@LayoutRes layoutResId: Int, viewModelProvider: ViewModelProvider? = null) = object : ReadOnlyProperty<Fragment, ViewModelBinding<VM, B>> {
-	var instance: ViewModelBinding<VM, B>? = null
-	override fun getValue(thisRef: Fragment, property: KProperty<*>) = instance ?: ViewModelBinding<VM, B>(thisRef, VM::class.java, layoutResId, viewModelProvider, null).apply { instance = this }
+	var instance = ViewModelBinding<VM, B>(this@vmb, VM::class.java, layoutResId, viewModelProvider, null)
+	override fun getValue(thisRef: Fragment, property: KProperty<*>) = instance
 }
 
 inline fun <reified VM : ViewModel, B : ViewDataBinding> Fragment.vmb(@LayoutRes layoutResId: Int, noinline viewModelFactory: () -> VM) = object : ReadOnlyProperty<Fragment, ViewModelBinding<VM, B>> {
-	var instance: ViewModelBinding<VM, B>? = null
-	override fun getValue(thisRef: Fragment, property: KProperty<*>) = instance ?: ViewModelBinding<VM, B>(thisRef, VM::class.java, layoutResId, null, viewModelFactory).apply { instance = this }
+	var instance = ViewModelBinding<VM, B>(this@vmb, VM::class.java, layoutResId, null, viewModelFactory)
+	override fun getValue(thisRef: Fragment, property: KProperty<*>) = instance
 }
 
 
