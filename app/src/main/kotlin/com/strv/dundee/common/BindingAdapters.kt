@@ -11,6 +11,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
+import com.strv.dundee.R
+import com.strv.dundee.model.repo.common.Status
 
 
 @BindingAdapter("hide")
@@ -85,4 +88,13 @@ fun <T> setAdapter(view: Spinner, newSelection: T?, bindingListener: InverseBind
 @InverseBindingAdapter(attribute = "selection", event = "selectionAttrChanged")
 fun <T> getSelectedValue(view: Spinner): T {
 	return view.selectedItem as T
+}
+
+@BindingAdapter("status")
+fun setStatus(view: TextView, status: Status) {
+	when (status) {
+		Status.SUCCESS -> view.setTextColor(view.resources.getColor(R.color.status_success))
+		Status.ERROR -> view.setTextColor(view.resources.getColor(R.color.status_error))
+		Status.LOADING -> view.setTextColor(view.resources.getColor(R.color.status_loading))
+	}
 }

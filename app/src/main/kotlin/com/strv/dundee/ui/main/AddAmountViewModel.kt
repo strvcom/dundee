@@ -35,7 +35,7 @@ class AddAmountViewModel() : ViewModel(), LifecycleReceiver {
 		progress.value = true
 
 		val data = Wallet(coin = coin, amount = amount.value?.toDouble())
-		val documentRef = Firestore.db.collection("wallets")
+		val documentRef = Firestore.db.collection(Wallet.COLLECTION)
 		documentRef
 				.add(data)
 				.addOnSuccessListener {

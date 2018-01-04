@@ -12,8 +12,12 @@ Notes:
 - properties also need to be vars because Firestore needs setters
  */
 data class Wallet(
-		var userId: String? = FirebaseAuth.getInstance().currentUser?.uid,
+		var uid: String? = FirebaseAuth.getInstance().currentUser?.uid,
 		var coin: String? = null,
 		var amount: Double? = null,
 		@ServerTimestamp var created: Date? = null
-)
+) {
+	companion object {
+		const val COLLECTION = "wallets"
+	}
+}

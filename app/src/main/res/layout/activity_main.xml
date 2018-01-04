@@ -5,6 +5,8 @@
 
 	<data>
 
+		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
+
 		<variable
 			name="viewModel"
 			type="com.strv.dundee.ui.main.MainViewModel" />
@@ -37,47 +39,57 @@
 			android:orientation="vertical"
 			app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-			<Space
-				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layout_weight="1" />
-
-			<Spinner
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:adapter="@{viewModel.coinAdapter}"
-				app:selection="@={viewModel.coin}" />
-
-			<Spinner
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:adapter="@{viewModel.currencyAdapter}"
-				app:selection="@={viewModel.currency}" />
-
-			<Spinner
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				app:adapter="@{viewModel.sourceAdapter}"
-				app:selection="@={viewModel.source}" />
-
-			<TextView
+			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal"
-				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-				android:text="@{@string/price(viewModel.ticker.data.lastPrice, viewModel.currency.toUpperCase(), viewModel.coin.toUpperCase())}"
-				tools:text="Price" />
-			<TextView
+				android:orientation="horizontal">
+
+				<Spinner
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="@dimen/spacing_8"
+					app:adapter="@{viewModel.coinAdapter}"
+					app:selection="@={viewModel.coin}" />
+
+				<Spinner
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="@dimen/spacing_8"
+					app:adapter="@{viewModel.currencyAdapter}"
+					app:selection="@={viewModel.currency}" />
+
+				<Spinner
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					app:adapter="@{viewModel.sourceAdapter}"
+					app:selection="@={viewModel.source}" />
+
+			</LinearLayout>
+
+			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-				android:text="@{viewModel.ticker.status.name}"
-				tools:text="STATE" />
-			<Space
+				android:layout_gravity="center_horizontal"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+					android:text="@{@string/price(viewModel.ticker.data.lastPrice, viewModel.currency.toUpperCase(), viewModel.coin.toUpperCase())}"
+					app:status="@{viewModel.ticker.status}"
+					tools:text="Price" />
+
+			</LinearLayout>
+
+			<android.support.v7.widget.RecyclerView
 				android:layout_width="match_parent"
 				android:layout_height="0dp"
-				android:layout_weight="1" />
+				android:layout_weight="1"
+				app:layoutManager="@{LayoutManagers.linear()}"
+				app:items="@{viewModel.wallets.data}"
+				app:itemBinding="@{viewModel.itemBinding}"/>
 
 		</LinearLayout>
 

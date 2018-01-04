@@ -38,14 +38,14 @@ internal constructor() {
 	}
 
 	init {
-		result.setValue(Resource(Resource.Status.LOADING, null))
+		result.setValue(Resource(Status.LOADING, null))
 		val dbSource = loadFromDb()
 		result.addSource(dbSource, { data ->
 			result.removeSource(dbSource)
 			if (shouldFetch(data)) {
 				fetchFromNetwork(dbSource)
 			} else {
-				result.addSource(dbSource, { newData -> result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
+				result.addSource(dbSource, { newData -> result.setValue(Resource(Status.SUCCESS, newData)) })
 			}
 		})
 	}
@@ -54,7 +54,7 @@ internal constructor() {
 		val apiResponse = createCall()
 		// we re-attach dbSource as a new source,
 		// it will dispatch its latest value quickly
-		result.addSource(dbSource, { newData -> result.setValue(Resource(Resource.Status.LOADING, newData)) })
+		result.addSource(dbSource, { newData -> result.setValue(Resource(Status.LOADING, newData)) })
 		result.addSource(apiResponse, { response ->
 			result.removeSource(apiResponse)
 			result.removeSource(dbSource)
@@ -64,7 +64,7 @@ internal constructor() {
 			} else {
 				onFetchFailed()
 				result.addSource(dbSource, { newData ->
-					result.setValue(Resource(Resource.Status.ERROR, newData, response?.message()))
+					result.setValue(Resource(Status.ERROR, newData, response?.message()))
 				})
 			}
 		})
@@ -75,7 +75,7 @@ internal constructor() {
 		doAsync {
 			saveCallResult(response.body()!!)
 			uiThread {
-				result.addSource(loadFromDb(), { newData -> result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
+				result.addSource(loadFromDb(), { newData -> result.setValue(Resource(Status.SUCCESS, newData)) })
 			}
 		}
 	}
