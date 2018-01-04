@@ -88,8 +88,8 @@
 				android:layout_height="0dp"
 				android:layout_weight="1"
 				app:layoutManager="@{LayoutManagers.linear()}"
-				app:items="@{viewModel.wallets.data}"
-				app:itemBinding="@{viewModel.itemBinding}"/>
+				app:liveDataItemBinding="@{viewModel.itemBinding}"
+				app:liveDataItems="@{viewModel.wallets}"/>
 
 		</LinearLayout>
 
