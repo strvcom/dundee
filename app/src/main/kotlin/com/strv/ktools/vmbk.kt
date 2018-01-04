@@ -136,12 +136,12 @@ fun <T> ObservableField<T>.observe(observer: (T?) -> Unit) {
 
 
 // single-event LiveData
-class SingleLiveData<T> : MutableLiveData<T>() {
+class EventLiveData<T> : MutableLiveData<T>() {
     private var pending = false
 
     override fun observe(owner: LifecycleOwner, observer: Observer<T>) {
         if (hasActiveObservers()) {
-            Log.w("SingleLiveData", "Multiple observers registered but only one will be notified of changes.")
+            Log.w("EventLiveData", "Multiple observers registered but only one will be notified of changes.")
         }
 
         // Observe the internal MutableLiveData
@@ -158,6 +158,14 @@ class SingleLiveData<T> : MutableLiveData<T>() {
         super.setValue(t)
     }
 
+    fun publish(value: T){
+        setValue(value)
+    }
+
+}
+
+fun EventLiveData<Unit>.publish(){
+    publish(Unit)
 }
 
 

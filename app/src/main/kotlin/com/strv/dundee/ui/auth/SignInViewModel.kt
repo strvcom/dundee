@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.strv.dundee.R
 import com.strv.dundee.app.Config
-import com.strv.ktools.SingleLiveData
+import com.strv.ktools.EventLiveData
 import com.strv.ktools.inject
 import com.strv.ktools.logD
 
@@ -22,13 +22,13 @@ class SignInViewModel() : ViewModel() {
 
 	val application by inject<Application>()
 	val config by inject<Config>()
-	val result = SingleLiveData<SignInResult>()
+	val result = EventLiveData<SignInResult>()
 	val email = MutableLiveData<String>()
 	val password = MutableLiveData<String>()
 	val formValid = MutableLiveData<Boolean>().apply { value = false }
 	val progress = MutableLiveData<Boolean>().apply { value = false }
 
-	val googleSignInRequest = SingleLiveData<Intent>()
+	val googleSignInRequest = EventLiveData<Intent>()
 
 
 	fun checkInput() {
@@ -36,14 +36,14 @@ class SignInViewModel() : ViewModel() {
 	}
 
 	fun signIn() {
-		progress.value =  true
+		progress.value = true
 		FirebaseAuth.getInstance().signInWithEmailAndPassword(email.value!!, password.value!!)
 				.addOnSuccessListener {
 					logD("Sign In successful")
-					result.value = SignInResult(true)
+					result.publish(SignInResult(true))
 				}
 				.addOnFailureListener { exception ->
-					result.value = SignInResult(false, exception.message)
+					result.publish(SignInResult(false, exception.message))
 				}
 				.addOnCompleteListener {
 					progress.value = false
@@ -67,17 +67,17 @@ class SignInViewModel() : ViewModel() {
 			FirebaseAuth.getInstance().signInWithCredential(credential)
 					.addOnSuccessListener {
 						val user = FirebaseAuth.getInstance().getCurrentUser()
-						result.value = SignInResult(true)
+						result.publish(SignInResult(true))
 					}
 					.addOnFailureListener { exception ->
-						result.value = SignInResult(false, exception.message)
+						result.publish(SignInResult(false, exception.message))
 					}
 					.addOnCompleteListener {
 						progress.value = false
 					}
 
 		}.addOnFailureListener { exception ->
-			result.value = SignInResult(false, exception.message)
+			result.publish(SignInResult(false, exception.message))
 		}
 
 

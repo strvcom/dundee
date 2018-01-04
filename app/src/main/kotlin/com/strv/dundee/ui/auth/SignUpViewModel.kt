@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.util.Patterns
 import com.google.firebase.auth.FirebaseAuth
 import com.strv.dundee.app.Config
-import com.strv.ktools.SingleLiveData
+import com.strv.ktools.EventLiveData
 import com.strv.ktools.inject
 import com.strv.ktools.logD
 
@@ -14,7 +14,7 @@ class SignUpViewModel(val defaultEmail: String? = null, val defaultPassword: Str
 	data class SignUpResult(val success: Boolean, val errorMessage: String? = null)
 
 	val config by inject<Config>()
-	val result = SingleLiveData<SignUpResult>()
+	val result = EventLiveData<SignUpResult>()
 	val email = MutableLiveData<String>().apply { value = defaultEmail }
 	val password = MutableLiveData<String>().apply { value = defaultPassword }
 	val formValid = MutableLiveData<Boolean>().apply { value = false }
@@ -31,10 +31,10 @@ class SignUpViewModel(val defaultEmail: String? = null, val defaultPassword: Str
 					progress.value = false
 					if (it.isSuccessful) {
 						logD("Sign Up successful")
-						result.value = SignUpResult(true)
+						result.publish(SignUpResult(true))
 					} else {
 						logD("Sign Up error: ${it.exception?.message}")
-						result.value = SignUpResult(false, it.exception?.message)
+						result.publish(SignUpResult(false, it.exception?.message))
 					}
 				}
 	}

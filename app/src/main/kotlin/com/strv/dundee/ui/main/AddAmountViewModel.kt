@@ -8,17 +8,18 @@ import android.widget.ArrayAdapter
 import com.strv.dundee.firestore.Firestore
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Wallet
+import com.strv.ktools.EventLiveData
 import com.strv.ktools.LifecycleReceiver
-import com.strv.ktools.SingleLiveData
 import com.strv.ktools.inject
 import com.strv.ktools.logD
 import com.strv.ktools.logMeD
+import com.strv.ktools.publish
 
 
 class AddAmountViewModel() : ViewModel(), LifecycleReceiver {
 
 	val application by inject<Application>()
-	val finish = SingleLiveData<Boolean>()
+	val finish = EventLiveData<Unit>()
 	val amount = MutableLiveData<String>()
 	val amountValid = MutableLiveData<Boolean>().apply { value = false }
 	val progress = MutableLiveData<Boolean>().apply { value = false }
@@ -39,7 +40,7 @@ class AddAmountViewModel() : ViewModel(), LifecycleReceiver {
 				.add(data)
 				.addOnSuccessListener {
 					logD("Added ${amount.value} $coin")
-					finish.value = true
+					finish.publish()
 				}
 				.addOnFailureListener { e ->
 					e.logMeD()
