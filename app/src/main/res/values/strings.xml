@@ -10,4 +10,5 @@
 	<string name="sign_in">Sign In</string>
 	<string name="hint_amount">Amount</string>
 	<string name="add">add</string>
+	<string name="error_unknown">Unknown error</string>
 </resources>

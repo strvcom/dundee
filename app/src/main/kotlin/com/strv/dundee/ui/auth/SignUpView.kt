@@ -5,7 +5,7 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.support.design.widget.Snackbar
 import com.strv.dundee.R
 import com.strv.dundee.databinding.ActivitySignUpBinding
 import com.strv.dundee.ui.base.BaseActivity
@@ -37,9 +37,7 @@ class SignUpActivity : BaseActivity(), SignUpView {
 				if (it.success) {
 					setResult(Activity.RESULT_OK)
 					finish()
-				} else {
-					Toast.makeText(this, it.errorMessage, Toast.LENGTH_LONG).show()
-				}
+				} else Snackbar.make(vmb.rootView, it.errorMessage ?: getString(com.strv.dundee.R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
 			}
 		})
 	}

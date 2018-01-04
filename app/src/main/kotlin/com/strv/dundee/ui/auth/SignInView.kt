@@ -5,8 +5,8 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import com.strv.dundee.R
 import com.strv.dundee.databinding.ActivitySignInBinding
 import com.strv.dundee.ui.main.MainActivity
@@ -34,7 +34,7 @@ class SignInActivity : AppCompatActivity(), SignInView {
 		vmb.viewModel.result.observe(this, Observer { result ->
 			result?.let {
 				if (it.success) startMainActivity()
-				else Toast.makeText(this, it.errorMessage, Toast.LENGTH_LONG).show()
+				else Snackbar.make(vmb.rootView, it.errorMessage ?: getString(R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
 			}
 		})
 
