@@ -1,10 +1,9 @@
 package com.strv.dundee.ui.auth
 
 import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Intent
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
 import android.util.Patterns
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -24,21 +23,21 @@ class SignInViewModel() : ViewModel() {
 	val application by inject<Application>()
 	val config by inject<Config>()
 	val result = SingleLiveData<SignInResult>()
-	val email = ObservableField<String>()
-	val password = ObservableField<String>()
-	val formValid = ObservableBoolean(false)
-	val progress = ObservableBoolean(false)
+	val email = MutableLiveData<String>()
+	val password = MutableLiveData<String>()
+	val formValid = MutableLiveData<Boolean>().apply { value = false }
+	val progress = MutableLiveData<Boolean>().apply { value = false }
 
 	val googleSignInRequest = SingleLiveData<Intent>()
 
 
 	fun checkInput() {
-		formValid.set(!(email.get() == null || email.get()!!.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email.get()).matches() || password.get() == null || password.get()!!.isEmpty() || password.get()!!.length < config.MIN_PASSWORD_LENGTH))
+		formValid.value = !(email.value == null || email.value!!.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email.value).matches() || password.value == null || password.value!!.isEmpty() || password.value!!.length < config.MIN_PASSWORD_LENGTH)
 	}
 
 	fun signIn() {
-		progress.set(true)
-		FirebaseAuth.getInstance().signInWithEmailAndPassword(email.get()!!, password.get()!!)
+		progress.value =  true
+		FirebaseAuth.getInstance().signInWithEmailAndPassword(email.value!!, password.value!!)
 				.addOnSuccessListener {
 					logD("Sign In successful")
 					result.value = SignInResult(true)
@@ -47,7 +46,7 @@ class SignInViewModel() : ViewModel() {
 					result.value = SignInResult(false, exception.message)
 				}
 				.addOnCompleteListener {
-					progress.set(false)
+					progress.value = false
 				}
 	}
 
@@ -62,7 +61,7 @@ class SignInViewModel() : ViewModel() {
 
 	fun onGoogleSignInResult(data: Intent) {
 		GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { account ->
-			progress.set(true)
+			progress.value = true
 
 			val credential = GoogleAuthProvider.getCredential(account.getIdToken(), null)
 			FirebaseAuth.getInstance().signInWithCredential(credential)
@@ -74,7 +73,7 @@ class SignInViewModel() : ViewModel() {
 						result.value = SignInResult(false, exception.message)
 					}
 					.addOnCompleteListener {
-						progress.set(false)
+						progress.value = false
 					}
 
 		}.addOnFailureListener { exception ->

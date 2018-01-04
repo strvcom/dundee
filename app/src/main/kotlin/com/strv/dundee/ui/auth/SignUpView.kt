@@ -17,10 +17,16 @@ interface SignUpView {
 class SignUpActivity : BaseActivity(), SignUpView {
 
 	companion object {
-		fun newIntent(context: Context) = Intent(context, SignUpActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
+		const val EXTRA_DEFAULT_EMAIL = "default_email"
+		const val EXTRA_DEFAULT_PASSWORD = "default_password"
+		fun newIntent(context: Context, defaultEmail: String? = null, defaultPassword: String? = null) = Intent(context, SignUpActivity::class.java).apply {
+			putExtra(EXTRA_DEFAULT_EMAIL, defaultEmail)
+			putExtra(EXTRA_DEFAULT_PASSWORD, defaultPassword)
+			addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+		}
 	}
 
-	private val vmb by vmb<SignUpViewModel, ActivitySignUpBinding>(R.layout.activity_sign_up) { SignUpViewModel() }
+	private val vmb by vmb<SignUpViewModel, ActivitySignUpBinding>(R.layout.activity_sign_up) { SignUpViewModel(intent.getStringExtra(EXTRA_DEFAULT_EMAIL), intent.getStringExtra(EXTRA_DEFAULT_PASSWORD)) }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

@@ -1,9 +1,7 @@
 package com.strv.dundee.ui.main
 
 import android.app.Application
-import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.widget.ArrayAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -13,25 +11,23 @@ import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.Ticker
 import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.common.Resource
-import com.strv.ktools.LifecycleReceiver
 import com.strv.ktools.inject
 import com.strv.ktools.sharedPrefs
 import com.strv.ktools.stringLiveData
 
 
-class MainViewModel() : ViewModel(), LifecycleReceiver {
+class MainViewModel() : ViewModel() {
 	val application by inject<Application>()
-	var lifecycleOwner: LifecycleOwner? = null
 
-	val bitcoinRepository by inject<BitcoinRepository>()
+	private val bitcoinRepository by inject<BitcoinRepository>()
+
 	var ticker: LiveData<Resource<Ticker>>
 	val source by application.sharedPrefs().stringLiveData(BitcoinSource.BITSTAMP)
 	val currency by application.sharedPrefs().stringLiveData(Currency.USD)
 	val coin by application.sharedPrefs().stringLiveData(Coin.BTC)
-
-	val coinAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Coin.getAll())
-	val currencyAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Currency.getAll())
 	val sourceAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, BitcoinSource.getAll())
+	val currencyAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Currency.getAll())
+	val coinAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Coin.getAll())
 
 	init {
 //		Firestore.set("users", User("Leos Dostal", 1990, true, Date()))
@@ -44,26 +40,20 @@ class MainViewModel() : ViewModel(), LifecycleReceiver {
 //		val handler = Handler()
 //		handler.postDelayed({ observer.remove() }, 10000)
 
+		// compose Ticker LiveData (observed by data binding automatically)
 		ticker = bitcoinRepository.getTicker(source.value!!, coin.value!!, currency.value!!)
-
-
-	}
-
-	override fun onLifecycleReady(lifecycleOwner: LifecycleOwner) {
-		this.lifecycleOwner = lifecycleOwner
 		refreshTicker()
 
-//		// refresh ticker on changes
-		source.observe(lifecycleOwner, Observer { refreshTicker() })
-		currency.observe(lifecycleOwner, Observer { refreshTicker() })
-		coin.observe(lifecycleOwner, Observer { refreshTicker() })
+		// refresh ticker on input changes
+		source.observeForever { refreshTicker() }
+		currency.observeForever { refreshTicker() }
+		coin.observeForever { refreshTicker() }
+
 	}
 
+
 	private fun refreshTicker() {
-		lifecycleOwner?.let {
-			ticker.removeObservers(it)
-			ticker = bitcoinRepository.getTicker(source.value!!, coin.value!!, currency.value!!)
-		}
+		ticker = bitcoinRepository.getTicker(source.value!!, coin.value!!, currency.value!!)
 	}
 
 

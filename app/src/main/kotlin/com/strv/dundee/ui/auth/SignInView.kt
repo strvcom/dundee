@@ -54,7 +54,7 @@ class SignInActivity : AppCompatActivity(), SignInView {
 	}
 
 	override fun openSignUp() {
-		startActivityForResult(SignUpActivity.newIntent(this), ACTION_SIGN_UP)
+		startActivityForResult(SignUpActivity.newIntent(this, vmb.viewModel.email.value, vmb.viewModel.password.value), ACTION_SIGN_UP)
 	}
 
 	private fun startMainActivity() {
