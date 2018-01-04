@@ -45,7 +45,7 @@ fun <T> Call<T>.liveData(): LiveData<T> =
 
 internal fun <T> getRetrofitInterface(url: String, apiInterface: Class<T>, clientBuilderBase: OkHttpClient.Builder? = null): T {
 	val interceptor = HttpLoggingInterceptor().apply {
-		level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.NONE else HttpLoggingInterceptor.Level.NONE
+		level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
 	}
 
 	val client = (clientBuilderBase ?: OkHttpClient.Builder()).addInterceptor(interceptor).build()
