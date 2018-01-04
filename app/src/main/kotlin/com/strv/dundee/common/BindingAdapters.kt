@@ -68,14 +68,12 @@ fun setOnTextChangedCallback(view: EditText, callback: TextChangedCallback) {
 fun <T> setAdapter(view: Spinner, newSelection: T?, bindingListener: InverseBindingListener, adapter: ArrayAdapter<T>?) {
 	view.adapter = adapter
 	view.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-		override fun onItemSelected(parent: AdapterView<*>, v: View, position: Int, id: Long) {
+		override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, p3: Long) {
 			if (newSelection != view.getItemAtPosition(position))
 				bindingListener.onChange()
 		}
 
-		override fun onNothingSelected(parent: AdapterView<*>) {
-			//Nothing
-		}
+		override fun onNothingSelected(v: AdapterView<*>?) {}
 	}
 
 	if (newSelection != null) {
