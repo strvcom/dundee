@@ -1,41 +1,41 @@
 package com.strv.dundee.ui.auth
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
-import android.util.Patterns
 import com.google.firebase.auth.FirebaseAuth
 import com.strv.dundee.app.Config
-import com.strv.ktools.SingleLiveData
+import com.strv.dundee.model.validateEmail
+import com.strv.dundee.model.validatePassword
+import com.strv.ktools.EventLiveData
 import com.strv.ktools.inject
 import com.strv.ktools.logD
 
-class SignUpViewModel() : ViewModel() {
+class SignUpViewModel(val defaultEmail: String? = null, val defaultPassword: String? = null) : ViewModel() {
 
 	data class SignUpResult(val success: Boolean, val errorMessage: String? = null)
 
 	val config by inject<Config>()
-	val result = SingleLiveData<SignUpResult>()
-	val email = ObservableField<String>()
-	val password = ObservableField<String>()
-	val formValid = ObservableBoolean(false)
-	val progress = ObservableBoolean(false)
+	val result = EventLiveData<SignUpResult>()
+	val email = MutableLiveData<String>().apply { value = defaultEmail }
+	val password = MutableLiveData<String>().apply { value = defaultPassword }
+	val formValid = MutableLiveData<Boolean>().apply { value = false }
+	val progress = MutableLiveData<Boolean>().apply { value = false }
 
 	fun checkInput() {
-		formValid.set(!(email.get() == null || email.get()!!.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email.get()).matches() || password.get() == null || password.get()!!.isEmpty() || password.get()!!.length < config.MIN_PASSWORD_LENGTH))
+		formValid.value = validateEmail(email.value) && validatePassword(password.value, config.MIN_PASSWORD_LENGTH)
 	}
 
 	fun createAccount() {
-		progress.set(true)
-		FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.get()!!, password.get()!!)
+		progress.value = true
+		FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.value!!, password.value!!)
 				.addOnCompleteListener {
-					progress.set(false)
+					progress.value = false
 					if (it.isSuccessful) {
 						logD("Sign Up successful")
-						result.value = SignUpResult(true)
+						result.publish(SignUpResult(true))
 					} else {
 						logD("Sign Up error: ${it.exception?.message}")
-						result.value = SignUpResult(false, it.exception?.message)
+						result.publish(SignUpResult(false, it.exception?.message))
 					}
 				}
 	}

@@ -5,6 +5,10 @@
 	<string name="hint_password">Password</string>
 	<string name="create_account">Create new account</string>
 	<string name="new_account">New account</string>
+	<string name="add_amount">Add amount</string>
 	<string name="logout">Logout</string>
 	<string name="sign_in">Sign In</string>
+	<string name="hint_amount">Amount</string>
+	<string name="add">add</string>
+	<string name="error_unknown">Unknown error</string>
 </resources>

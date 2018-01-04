@@ -10,21 +10,21 @@ import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.ktools.provideSingleton
 
 object DIModule {
-    fun initialize(application: Application) {
-        provideSingleton { application }
-        provideSingleton { Config }
+	fun initialize(application: Application) {
+		provideSingleton { application }
+		provideSingleton { Config }
 
-        provideSingleton { BitstampApi() }
-        provideSingleton { BitfinexApi() }
+		provideSingleton { BitstampApi() }
+		provideSingleton { BitfinexApi() }
 
-        provideSingleton { BitcoinCache() }
-        provideSingleton { BitcoinRepository() }
+		provideSingleton { BitcoinCache() }
+		provideSingleton { BitcoinRepository() }
 
 
         val database = Room.databaseBuilder(application, BitcoinDatabase::class.java, "bitcoin-database").build()
         provideSingleton { database.tickerDao() }
 
-    }
+	}
 }
 
 

@@ -1,11 +1,16 @@
 package com.strv.dundee.common
 
 import android.databinding.BindingAdapter
+import android.databinding.InverseBindingAdapter
+import android.databinding.InverseBindingListener
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 
 
 @BindingAdapter("hide")
@@ -56,4 +61,28 @@ fun setOnTextChangedCallback(view: EditText, callback: TextChangedCallback) {
 
 		}
 	})
+}
+
+//Spinner
+@BindingAdapter(value = *arrayOf("selection", "selectionAttrChanged", "adapter"), requireAll = false)
+fun <T> setAdapter(view: Spinner, newSelection: T?, bindingListener: InverseBindingListener, adapter: ArrayAdapter<T>?) {
+	view.adapter = adapter
+	view.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+		override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, p3: Long) {
+			if (newSelection != view.getItemAtPosition(position))
+				bindingListener.onChange()
+		}
+
+		override fun onNothingSelected(v: AdapterView<*>?) {}
+	}
+
+	if (newSelection != null) {
+		val pos = (view.adapter as ArrayAdapter<T>).getPosition(newSelection)
+		view.setSelection(pos)
+	}
+}
+
+@InverseBindingAdapter(attribute = "selection", event = "selectionAttrChanged")
+fun <T> getSelectedValue(view: Spinner): T {
+	return view.selectedItem as T
 }

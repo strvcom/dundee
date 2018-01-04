@@ -42,6 +42,24 @@
 				android:layout_height="0dp"
 				android:layout_weight="1" />
 
+			<Spinner
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:adapter="@{viewModel.coinAdapter}"
+				app:selection="@={viewModel.coin}" />
+
+			<Spinner
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:adapter="@{viewModel.currencyAdapter}"
+				app:selection="@={viewModel.currency}" />
+
+			<Spinner
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:adapter="@{viewModel.sourceAdapter}"
+				app:selection="@={viewModel.source}" />
+
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -62,6 +80,15 @@
 				android:layout_weight="1" />
 
 		</LinearLayout>
+
+		<android.support.design.widget.FloatingActionButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|right"
+			android:layout_margin="@dimen/spacing_16"
+			android:onClick="@{() -> view.addAmount()}"
+			android:src="@drawable/ic_add"
+			app:fabSize="normal" />
 
 	</android.support.design.widget.CoordinatorLayout>
 

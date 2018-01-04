@@ -5,7 +5,7 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.support.design.widget.Snackbar
 import com.strv.dundee.R
 import com.strv.dundee.databinding.ActivitySignUpBinding
 import com.strv.dundee.ui.base.BaseActivity
@@ -17,10 +17,16 @@ interface SignUpView {
 class SignUpActivity : BaseActivity(), SignUpView {
 
 	companion object {
-		fun newIntent(context: Context) = Intent(context, SignUpActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
+		const val EXTRA_DEFAULT_EMAIL = "default_email"
+		const val EXTRA_DEFAULT_PASSWORD = "default_password"
+		fun newIntent(context: Context, defaultEmail: String? = null, defaultPassword: String? = null) = Intent(context, SignUpActivity::class.java).apply {
+			putExtra(EXTRA_DEFAULT_EMAIL, defaultEmail)
+			putExtra(EXTRA_DEFAULT_PASSWORD, defaultPassword)
+			addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+		}
 	}
 
-	private val vmb by vmb<SignUpViewModel, ActivitySignUpBinding>(R.layout.activity_sign_up) { SignUpViewModel() }
+	private val vmb by vmb<SignUpViewModel, ActivitySignUpBinding>(R.layout.activity_sign_up) { SignUpViewModel(intent.getStringExtra(EXTRA_DEFAULT_EMAIL), intent.getStringExtra(EXTRA_DEFAULT_PASSWORD)) }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -31,9 +37,7 @@ class SignUpActivity : BaseActivity(), SignUpView {
 				if (it.success) {
 					setResult(Activity.RESULT_OK)
 					finish()
-				} else {
-					Toast.makeText(this, it.errorMessage, Toast.LENGTH_LONG).show()
-				}
+				} else Snackbar.make(vmb.rootView, it.errorMessage ?: getString(com.strv.dundee.R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
 			}
 		})
 	}

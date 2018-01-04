@@ -7,6 +7,6 @@ import com.strv.dundee.model.entity.Ticker
 
 @Database(entities = arrayOf(Ticker::class), version = 1)
 @TypeConverters(Converters::class)
-abstract class BitcoinDatabase : RoomDatabase(){
-    abstract fun tickerDao(): TickerDao
+abstract class BitcoinDatabase : RoomDatabase() {
+	abstract fun tickerDao(): TickerDao
 }
