@@ -21,7 +21,7 @@ class MainViewModel() : ViewModel() {
 
 	private val bitcoinRepository by inject<BitcoinRepository>()
 
-	var ticker: LiveData<Resource<Ticker>>
+	lateinit var ticker: LiveData<Resource<Ticker>>
 	val source by application.sharedPrefs().stringLiveData(BitcoinSource.BITSTAMP)
 	val currency by application.sharedPrefs().stringLiveData(Currency.USD)
 	val coin by application.sharedPrefs().stringLiveData(Coin.BTC)
@@ -41,7 +41,6 @@ class MainViewModel() : ViewModel() {
 //		handler.postDelayed({ observer.remove() }, 10000)
 
 		// compose Ticker LiveData (observed by data binding automatically)
-		ticker = bitcoinRepository.getTicker(source.value!!, coin.value!!, currency.value!!)
 		refreshTicker()
 
 		// refresh ticker on input changes
@@ -52,7 +51,7 @@ class MainViewModel() : ViewModel() {
 	}
 
 
-	private fun refreshTicker() {
+	private inline fun refreshTicker() {
 		ticker = bitcoinRepository.getTicker(source.value!!, coin.value!!, currency.value!!)
 	}
 
