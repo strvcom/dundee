@@ -13,8 +13,10 @@ import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.Ticker
+import com.strv.dundee.model.entity.User
 import com.strv.dundee.model.entity.Wallet
-import com.strv.dundee.model.firestore.FirestoreLiveData
+import com.strv.dundee.model.firestore.FirestoreDocumentQueryLiveData
+import com.strv.dundee.model.firestore.FirestoreDocumentsLiveData
 import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.common.Resource
 import com.strv.ktools.inject
@@ -31,6 +33,7 @@ class MainViewModel() : ViewModel() {
 
 	val itemBinding: ItemBinding<Wallet> = ItemBinding.of(BR.item, R.layout.item_wallet)
 	var wallets: DiffObservableListLiveData<Wallet>
+	var user: LiveData<Resource<User>>
 	lateinit var ticker: LiveData<Resource<Ticker>>
 	val source by application.sharedPrefs().stringLiveData(BitcoinSource.BITSTAMP)
 	val currency by application.sharedPrefs().stringLiveData(Currency.USD)
@@ -48,10 +51,11 @@ class MainViewModel() : ViewModel() {
 		currency.observeForever { refreshTicker() }
 		coin.observeForever { refreshTicker() }
 
-		wallets = DiffObservableListLiveData(FirestoreLiveData(FirebaseFirestore.getInstance().collection(Wallet.COLLECTION).whereEqualTo("uid", FirebaseAuth.getInstance().currentUser?.uid), Wallet::class.java), object : DiffObservableList.Callback<Wallet> {
+		wallets = DiffObservableListLiveData(FirestoreDocumentsLiveData(FirebaseFirestore.getInstance().collection(Wallet.COLLECTION).whereEqualTo("uid", FirebaseAuth.getInstance().currentUser?.uid), Wallet::class.java), object : DiffObservableList.Callback<Wallet> {
 			override fun areContentsTheSame(oldItem: Wallet?, newItem: Wallet?) = oldItem == newItem
 			override fun areItemsTheSame(oldItem: Wallet?, newItem: Wallet?) = oldItem == newItem
 		})
+		user = FirestoreDocumentQueryLiveData(FirebaseFirestore.getInstance().collection(User.COLLECTION).whereEqualTo("uid", FirebaseAuth.getInstance().currentUser?.uid), User::class.java)
 	}
 
 

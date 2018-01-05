@@ -14,7 +14,7 @@ class DiffObservableListLiveData<T>(liveData: LiveData<Resource<List<T>>>, callb
 	val diffList = DiffObservableList<T>(callback)
 
 	init {
-		addSource(liveData, { diffList.update(it!!.data) })
+		addSource(liveData, { it?.data?.let { diffList.update(it) } })
 	}
 }
 

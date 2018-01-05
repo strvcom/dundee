@@ -10,18 +10,21 @@ import com.strv.dundee.model.repo.common.Status
 import com.strv.ktools.logD
 
 
-class FirestoreLiveData<T>(val query: Query, val clazz: Class<T>) : LiveData<Resource<List<T>>>() {
+class FirestoreDocumentQueryLiveData<T>(private val query: Query, private val clazz: Class<T>) : LiveData<Resource<T>>() {
 
+	// if cached data are up to date with server DB, listener won't get called again with isFromCache=false
 	private val listener = EventListener<QuerySnapshot> { value, e ->
-		setValue(Resource(if (value.metadata.isFromCache) Status.LOADING else Status.SUCCESS,
-				value?.toObjects(clazz), e?.message))
+		logD("Loaded $query, cache: ${value?.metadata?.isFromCache.toString()} error: ${e?.message}")
+		val list = value?.toObjects(clazz)
+		setValue(Resource(if (e != null) Status.ERROR else if (value.metadata.isFromCache) Status.LOADING else Status.SUCCESS,
+				if(list != null && !list.isEmpty()) list[0] else null, e?.message))
 	}
 	private lateinit var listenerRegistration: ListenerRegistration
 
 	override fun onActive() {
 		super.onActive()
 		logD("Start listening $query")
-		listenerRegistration = query.addSnapshotListener(listener)
+		listenerRegistration = query.limit(1).addSnapshotListener(listener)
 	}
 
 	override fun onInactive() {
