@@ -5,6 +5,8 @@
 
 	<data>
 
+		<import type="com.strv.dundee.common.DateFormatter"/>
+
 		<variable
 			name="item"
 			type="com.strv.dundee.model.entity.Wallet" />
@@ -40,7 +42,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@{item.created.toString()}"/>
+			android:text="@{DateFormatter.INSTANCE.dateToString(item.created)}"/>
 
 	</LinearLayout>
 
