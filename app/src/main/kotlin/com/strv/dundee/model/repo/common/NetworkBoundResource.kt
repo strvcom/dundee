@@ -11,8 +11,8 @@ import retrofit2.Response
 // ResultType: Type for the Resource data
 // RequestType: Type for the API response
 abstract class NetworkBoundResource<ResultType, RequestType> @MainThread
-internal constructor() {
-	private val result = MediatorLiveData<Resource<ResultType>>()
+internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
+	private val result: MediatorLiveData<Resource<ResultType>>
 
 	// Called to save the result of the API response into the database
 	@WorkerThread
@@ -38,7 +38,17 @@ internal constructor() {
 	}
 
 	init {
-		result.setValue(Resource(Status.LOADING, null))
+		if (liveDataToReuse == null) {
+			result = MediatorLiveData()
+			result.value = Resource(Status.LOADING, null)
+		} else if (liveDataToReuse is MediatorLiveData<Resource<ResultType>>) {
+			result = liveDataToReuse
+			result.value = Resource(result.value?.status ?: Status.LOADING, result.value?.data, result.value?.message)
+		} else {
+			throw IllegalArgumentException("LiveData provided for reuse must be result of previous NetworkBoundResource instance.")
+		}
+
+
 		val dbSource = loadFromDb()
 		result.addSource(dbSource, { data ->
 			result.removeSource(dbSource)

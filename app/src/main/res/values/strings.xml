@@ -1,6 +1,7 @@
 <resources>
 	<string name="app_name">Project Dundee</string>
 	<string name="price">%.2f %s/%s</string>
+	<string name="total_value">Total value:</string>
 	<string name="hint_email">E-mail</string>
 	<string name="hint_password">Password</string>
 	<string name="create_account">Create new account</string>

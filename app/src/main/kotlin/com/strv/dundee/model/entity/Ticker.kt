@@ -18,4 +18,6 @@ data class Ticker(
 		var highPrice: Double = 0.toDouble(),
 		var lowPrice: Double = 0.toDouble(),
 		var timestamp: Long = 0
-)
+) {
+	fun getValue(amount: Double) = amount * lastPrice
+}

@@ -7,18 +7,22 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.strv.dundee.R
+import com.strv.dundee.common.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.dundee.common.isUserSignedIn
 import com.strv.dundee.databinding.ActivityMainBinding
+import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.ui.auth.SignInActivity
 import com.strv.ktools.vmb
 
 interface MainView {
+	val lifecycleAwareAdapter: LifecycleAwareBindingRecyclerViewAdapter<Wallet> // TODO: Temp fix for tatarka - remove when tatarka adds support for lifecycle
 	fun addAmount()
 }
 
 class MainActivity : AppCompatActivity(), MainView {
 
 	private val ACTION_ADD_AMOUNT = 1
+	override val lifecycleAwareAdapter = LifecycleAwareBindingRecyclerViewAdapter<Wallet>(this)
 
 	companion object {
 		fun newIntent(context: Context) = Intent(context, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }

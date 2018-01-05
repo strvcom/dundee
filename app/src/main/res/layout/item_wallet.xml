@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	>
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 
-		<import type="com.strv.dundee.common.DateFormatter"/>
+		<import type="com.strv.dundee.common.DateFormatter" />
+		<import type="com.strv.dundee.model.entity.Currency" />
 
 		<variable
 			name="item"
 			type="com.strv.dundee.model.entity.Wallet" />
+
+		<variable
+			name="viewModel"
+			type="com.strv.dundee.ui.main.MainViewModel" />
 
 	</data>
 
@@ -22,27 +26,33 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@{Double.toString(item.amount)}"/>
+			android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+			android:text="@{Double.toString(item.amount)}"
+			tools:text="2.2323" />
 
-		<Space
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"/>
 
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@{item.coin}"/>
+			android:layout_marginLeft="@dimen/spacing_4"
+			android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+			android:textStyle="bold"
+			android:text="@{item.coin}"
+			android:textColor="@color/colorAccent"
+			tools:text="BTC" />
 
 		<Space
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="1"/>
+			android:layout_weight="1" />
 
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@{DateFormatter.INSTANCE.dateToString(item.created)}"/>
+			android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+			android:text="@{Currency.INSTANCE.formatValue(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
+			tools:text="$1,000.30" />
+
 
 	</LinearLayout>
 

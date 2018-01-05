@@ -1,4 +1,4 @@
-package com.strv.dundee
+package com.strv.dundee.common
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
@@ -14,15 +14,26 @@ class DiffObservableListLiveData<T>(liveData: LiveData<Resource<List<T>>>, callb
 	val diffList = DiffObservableList<T>(callback)
 
 	init {
-		addSource(liveData, { it?.data?.let { diffList.update(it) } })
+		addSource(liveData, {
+			value = it
+			it?.data?.let { diffList.update(it) }
+		})
 	}
 }
 
-@BindingAdapter(value = *arrayOf("liveDataItemBinding", "liveDataItems"))
-fun <T> setAdapterLiveData(recyclerView: RecyclerView, liveDataItemBinding: ItemBinding<T>, liveDataItems: DiffObservableListLiveData<T>) {
-	val adapter: BindingRecyclerViewAdapter<T>
+@BindingAdapter(value = *arrayOf("liveDataItemBinding", "liveDataItems", "liveDataAdapter"), requireAll = false)
+fun <T> setAdapterLiveData(recyclerView: RecyclerView, liveDataItemBinding: ItemBinding<T>, liveDataItems: DiffObservableListLiveData<T>, presetAdapter: BindingRecyclerViewAdapter<T>?) {
 	val oldAdapter = recyclerView.adapter as BindingRecyclerViewAdapter<T>?
-	adapter = if (oldAdapter == null) BindingRecyclerViewAdapter() else oldAdapter
+	val adapter: BindingRecyclerViewAdapter<T>
+	if (presetAdapter == null) {
+		if (oldAdapter == null) {
+			adapter = BindingRecyclerViewAdapter()
+		} else {
+			adapter = oldAdapter
+		}
+	} else {
+		adapter = presetAdapter
+	}
 	if (oldAdapter !== adapter) {
 		adapter.setItemBinding(liveDataItemBinding)
 		adapter.setItems(liveDataItems.diffList)

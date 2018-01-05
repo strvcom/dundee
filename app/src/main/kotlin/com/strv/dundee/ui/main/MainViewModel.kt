@@ -2,13 +2,14 @@ package com.strv.dundee.ui.main
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.ViewModel
 import android.widget.ArrayAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.strv.dundee.BR
-import com.strv.dundee.DiffObservableListLiveData
 import com.strv.dundee.R
+import com.strv.dundee.common.DiffObservableListLiveData
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
@@ -31,16 +32,16 @@ class MainViewModel() : ViewModel() {
 
 	private val bitcoinRepository by inject<BitcoinRepository>()
 
-	val itemBinding: ItemBinding<Wallet> = ItemBinding.of(BR.item, R.layout.item_wallet)
 	var wallets: DiffObservableListLiveData<Wallet>
 	var user: LiveData<Resource<User>>
-	lateinit var ticker: LiveData<Resource<Ticker>>
+	val tickers = HashMap<String, LiveData<Resource<Ticker>>>()
+	val itemBinding: ItemBinding<Wallet> = ItemBinding.of<Wallet>(BR.item, R.layout.item_wallet).bindExtra(BR.viewModel, this)
 	val source by application.sharedPrefs().stringLiveData(BitcoinSource.BITSTAMP)
 	val currency by application.sharedPrefs().stringLiveData(Currency.USD)
-	val coin by application.sharedPrefs().stringLiveData(Coin.BTC)
 	val sourceAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, BitcoinSource.getAll())
 	val currencyAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Currency.getAll())
 	val coinAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Coin.getAll())
+	val totalValue = MediatorLiveData<Double>()
 
 	init {
 		// compose Ticker LiveData (observed by data binding automatically)
@@ -49,18 +50,25 @@ class MainViewModel() : ViewModel() {
 		// refresh ticker on input changes
 		source.observeForever { refreshTicker() }
 		currency.observeForever { refreshTicker() }
-		coin.observeForever { refreshTicker() }
 
 		wallets = DiffObservableListLiveData(FirestoreDocumentsLiveData(FirebaseFirestore.getInstance().collection(Wallet.COLLECTION).whereEqualTo("uid", FirebaseAuth.getInstance().currentUser?.uid), Wallet::class.java), object : DiffObservableList.Callback<Wallet> {
 			override fun areContentsTheSame(oldItem: Wallet?, newItem: Wallet?) = oldItem == newItem
 			override fun areItemsTheSame(oldItem: Wallet?, newItem: Wallet?) = oldItem == newItem
 		})
+
+		// add total value calculation and attach to ticker and wallets LiveData
+		fun recalculateTotal() = wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount ?: 0.toDouble()) ?: 0.toDouble() }
+		totalValue.addSource(wallets, { totalValue.value = recalculateTotal() })
+		tickers.forEach {
+			totalValue.addSource(it.value, { totalValue.value = recalculateTotal() })
+		}
+
+
 		user = FirestoreDocumentQueryLiveData(FirebaseFirestore.getInstance().collection(User.COLLECTION).whereEqualTo("uid", FirebaseAuth.getInstance().currentUser?.uid), User::class.java)
 	}
 
-
 	private fun refreshTicker() {
-		ticker = bitcoinRepository.getTicker(source.value!!, coin.value!!, currency.value!!)
+		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, currency.value!!, liveDataToReuse = tickers[it]) }
 	}
 
 
