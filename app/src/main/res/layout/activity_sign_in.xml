@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 
@@ -55,8 +56,7 @@
 					android:hint="@string/hint_email"
 					android:imeOptions="actionNext|flagNoExtractUi"
 					android:inputType="textEmailAddress"
-					android:text="@={viewModel.email}"
-					app:onTextChangedCallback="@{() -> viewModel.checkInput()}" />
+					android:text="@={viewModel.email}" />
 
 			</android.support.design.widget.TextInputLayout>
 
@@ -74,7 +74,6 @@
 					android:imeOptions="actionDone|flagNoExtractUi"
 					android:inputType="textPassword"
 					android:text="@={viewModel.password}"
-					app:onTextChangedCallback="@{() -> viewModel.checkInput()}"
 					app:onActionDoneCallback="@{() -> viewModel.signIn()}" />
 
 			</android.support.design.widget.TextInputLayout>
@@ -88,7 +87,8 @@
 				android:paddingTop="@dimen/spacing_20"
 				android:paddingBottom="@dimen/spacing_20"
 				android:enabled="@{viewModel.formValid &amp;&amp; !viewModel.progress}"
-				android:onClick="@{() -> viewModel.signIn()}" />
+				android:onClick="@{() -> viewModel.signIn()}"
+				tools:text="@string/sign_in" />
 
 			<com.google.android.gms.common.SignInButton
 				android:layout_width="match_parent"

@@ -20,6 +20,7 @@ import com.strv.dundee.model.firestore.FirestoreDocumentQueryLiveData
 import com.strv.dundee.model.firestore.FirestoreDocumentsLiveData
 import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.common.Resource
+import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
 import com.strv.ktools.sharedPrefs
 import com.strv.ktools.stringLiveData
@@ -57,10 +58,10 @@ class MainViewModel() : ViewModel() {
 		})
 
 		// add total value calculation and attach to ticker and wallets LiveData
-		fun recalculateTotal() = wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount ?: 0.toDouble()) ?: 0.toDouble() }
-		totalValue.addSource(wallets, { totalValue.value = recalculateTotal() })
+
+		totalValue.addValueSource(wallets, { recalculateTotal() })
 		tickers.forEach {
-			totalValue.addSource(it.value, { totalValue.value = recalculateTotal() })
+			totalValue.addValueSource(it.value, { recalculateTotal() })
 		}
 
 
@@ -71,6 +72,7 @@ class MainViewModel() : ViewModel() {
 		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, currency.value!!, liveDataToReuse = tickers[it]) }
 	}
 
+	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount ?: 0.toDouble()) ?: 0.toDouble() } ?: 0.toDouble()
 
 	fun logout() {
 		FirebaseAuth.getInstance().signOut()

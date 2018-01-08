@@ -2,6 +2,7 @@ package com.strv.dundee.ui.main
 
 import android.R
 import android.app.Application
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.widget.ArrayAdapter
@@ -10,6 +11,7 @@ import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Wallet
 import com.strv.ktools.EventLiveData
 import com.strv.ktools.LifecycleReceiver
+import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
 import com.strv.ktools.logD
 import com.strv.ktools.logMeD
@@ -21,14 +23,10 @@ class AddAmountViewModel() : ViewModel(), LifecycleReceiver {
 	val application by inject<Application>()
 	val finish = EventLiveData<Unit>()
 	val amount = MutableLiveData<String>()
-	val amountValid = MutableLiveData<Boolean>().apply { value = false }
+	val amountValid = MediatorLiveData<Boolean>().addValueSource(amount, { it != null && it.isNotEmpty() && it.isNotBlank() })
 	val progress = MutableLiveData<Boolean>().apply { value = false }
 	var coin = Coin.BTC
 	val coinAdapter = ArrayAdapter(application, R.layout.simple_spinner_dropdown_item, Coin.getAll())
-
-	fun checkInput() {
-		amountValid.value = !(amount.value == null || amount.value!!.isEmpty())
-	}
 
 	fun addAmount() {
 		logD("Adding ${amount.value} $coin")

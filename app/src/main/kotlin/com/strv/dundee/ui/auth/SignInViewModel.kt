@@ -1,6 +1,7 @@
 package com.strv.dundee.ui.auth
 
 import android.app.Application
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Intent
@@ -13,6 +14,7 @@ import com.strv.dundee.app.Config
 import com.strv.dundee.model.validateEmail
 import com.strv.dundee.model.validatePassword
 import com.strv.ktools.EventLiveData
+import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
 import com.strv.ktools.logD
 
@@ -26,15 +28,15 @@ class SignInViewModel() : ViewModel() {
 	val result = EventLiveData<SignInResult>()
 	val email = MutableLiveData<String>()
 	val password = MutableLiveData<String>()
-	val formValid = MutableLiveData<Boolean>().apply { value = false }
+	val formValid = MediatorLiveData<Boolean>()
+			.addValueSource(email, { validateForm() })
+			.addValueSource(password, { validateForm() })
 	val progress = MutableLiveData<Boolean>().apply { value = false }
 
 	val googleSignInRequest = EventLiveData<Intent>()
 
 
-	fun checkInput() {
-		formValid.value = validateEmail(email.value) && validatePassword(password.value, config.MIN_PASSWORD_LENGTH)
-	}
+	fun validateForm() = validateEmail(email.value) && validatePassword(password.value, config.MIN_PASSWORD_LENGTH)
 
 	fun signIn() {
 		progress.value = true
