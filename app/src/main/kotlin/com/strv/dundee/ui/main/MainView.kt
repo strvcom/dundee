@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.strv.dundee.R
-import com.strv.dundee.common.LifecycleAwareBindingRecyclerViewAdapter
+import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.dundee.common.isUserSignedIn
 import com.strv.dundee.databinding.ActivityMainBinding
 import com.strv.dundee.model.entity.Wallet

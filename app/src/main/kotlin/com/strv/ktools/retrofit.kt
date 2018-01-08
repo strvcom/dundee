@@ -59,3 +59,21 @@ internal fun <T> getRetrofitInterface(url: String, apiInterface: Class<T>, clien
 			.build()
 			.create(apiInterface)
 }
+
+class RetrofitCallLiveData<T>(val call: Call<out T>, val cancelOnInactive: Boolean = false) : LiveData<Response<out T>>() {
+	override fun onActive() {
+		super.onActive()
+		if (call.isExecuted)
+			return
+		call.then { response, error ->
+			value = response
+		}
+	}
+
+	override fun onInactive() {
+		super.onInactive()
+		if (cancelOnInactive)
+			call.cancel()
+	}
+
+}

@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModel
 import android.widget.ArrayAdapter
 import com.strv.dundee.BR
 import com.strv.dundee.R
-import com.strv.dundee.common.DiffObservableListLiveData
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
@@ -16,7 +15,8 @@ import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.UserRepository
 import com.strv.dundee.model.repo.WalletRepository
-import com.strv.dundee.model.repo.common.Resource
+import com.strv.ktools.DiffObservableListLiveData
+import com.strv.ktools.Resource
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
 import com.strv.ktools.sharedPrefs

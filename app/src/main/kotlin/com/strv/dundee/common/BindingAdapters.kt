@@ -13,7 +13,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import com.strv.dundee.R
-import com.strv.dundee.model.repo.common.Status
+import com.strv.ktools.Resource
 
 
 @BindingAdapter("hide")
@@ -91,10 +91,10 @@ fun <T> getSelectedValue(view: Spinner): T {
 }
 
 @BindingAdapter("status")
-fun setStatus(view: TextView, status: Status) {
+fun setStatus(view: TextView, status: Resource.Status) {
 	when (status) {
-		Status.SUCCESS -> view.setTextColor(view.resources.getColor(R.color.status_success))
-		Status.ERROR -> view.setTextColor(view.resources.getColor(R.color.status_error))
-		Status.LOADING -> view.setTextColor(view.resources.getColor(R.color.status_loading))
+		Resource.Status.SUCCESS -> view.setTextColor(view.resources.getColor(R.color.status_success))
+		Resource.Status.ERROR -> view.setTextColor(view.resources.getColor(R.color.status_error))
+		Resource.Status.LOADING -> view.setTextColor(view.resources.getColor(R.color.status_loading))
 	}
 }

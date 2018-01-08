@@ -6,9 +6,9 @@ import com.strv.dundee.model.api.bitfinex.BitfinexApi
 import com.strv.dundee.model.api.bitstamp.BitstampApi
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Ticker
-import com.strv.dundee.model.repo.common.NetworkBoundResource
-import com.strv.dundee.model.repo.common.Resource
-import com.strv.dundee.model.repo.common.RetrofitCallLiveData
+import com.strv.ktools.NetworkBoundResource
+import com.strv.ktools.Resource
+import com.strv.ktools.RetrofitCallLiveData
 import com.strv.ktools.inject
 import retrofit2.Response
 
