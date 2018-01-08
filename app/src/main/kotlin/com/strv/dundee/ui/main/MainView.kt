@@ -20,15 +20,14 @@ interface MainView {
 }
 
 class MainActivity : AppCompatActivity(), MainView {
-
-	private val ACTION_ADD_AMOUNT = 1
-	override val lifecycleAwareAdapter = LifecycleAwareBindingRecyclerViewAdapter<Wallet>(this)
-
 	companion object {
+		private const val ACTION_ADD_AMOUNT = 1
+
 		fun newIntent(context: Context) = Intent(context, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
 	}
 
 	private val vmb by vmb<MainViewModel, ActivityMainBinding>(R.layout.activity_main) { MainViewModel() }
+	override val lifecycleAwareAdapter = LifecycleAwareBindingRecyclerViewAdapter<Wallet>(this)
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

@@ -19,6 +19,7 @@ class SignUpActivity : BaseActivity(), SignUpView {
 	companion object {
 		const val EXTRA_DEFAULT_EMAIL = "default_email"
 		const val EXTRA_DEFAULT_PASSWORD = "default_password"
+
 		fun newIntent(context: Context, defaultEmail: String? = null, defaultPassword: String? = null) = Intent(context, SignUpActivity::class.java).apply {
 			putExtra(EXTRA_DEFAULT_EMAIL, defaultEmail)
 			putExtra(EXTRA_DEFAULT_PASSWORD, defaultPassword)
@@ -37,7 +38,8 @@ class SignUpActivity : BaseActivity(), SignUpView {
 				if (it.success) {
 					setResult(Activity.RESULT_OK)
 					finish()
-				} else Snackbar.make(vmb.rootView, it.errorMessage ?: getString(com.strv.dundee.R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
+				} else
+					Snackbar.make(vmb.rootView, it.errorMessage ?: getString(com.strv.dundee.R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
 			}
 		})
 	}

@@ -7,10 +7,9 @@ import android.arch.lifecycle.ViewModel
 import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.strv.dundee.R
 import com.strv.dundee.app.Config
+import com.strv.dundee.model.repo.UserRepository
 import com.strv.dundee.model.validateEmail
 import com.strv.dundee.model.validatePassword
 import com.strv.ktools.EventLiveData
@@ -23,9 +22,13 @@ class SignInViewModel() : ViewModel() {
 
 	data class SignInResult(val success: Boolean, val errorMessage: String? = null)
 
-	val application by inject<Application>()
-	val config by inject<Config>()
+	private val application by inject<Application>()
+	private val config by inject<Config>()
+	private val userRepository by inject<UserRepository>()
+
 	val result = EventLiveData<SignInResult>()
+	val googleSignInRequest = EventLiveData<Intent>()
+
 	val email = MutableLiveData<String>()
 	val password = MutableLiveData<String>()
 	val formValid = MediatorLiveData<Boolean>()
@@ -33,14 +36,12 @@ class SignInViewModel() : ViewModel() {
 			.addValueSource(password, { validateForm() })
 	val progress = MutableLiveData<Boolean>().apply { value = false }
 
-	val googleSignInRequest = EventLiveData<Intent>()
 
-
-	fun validateForm() = validateEmail(email.value) && validatePassword(password.value, config.MIN_PASSWORD_LENGTH)
+	private fun validateForm() = validateEmail(email.value) && validatePassword(password.value, config.MIN_PASSWORD_LENGTH)
 
 	fun signIn() {
 		progress.value = true
-		FirebaseAuth.getInstance().signInWithEmailAndPassword(email.value!!, password.value!!)
+		userRepository.signInWithEmailAndPassword(email.value!!, password.value!!)
 				.addOnSuccessListener {
 					logD("Sign In successful")
 					result.publish(SignInResult(true))
@@ -58,18 +59,16 @@ class SignInViewModel() : ViewModel() {
 				.requestIdToken(application.getString(R.string.default_web_client_id))
 				.requestEmail()
 				.build()
-		val signInIntent = GoogleSignIn.getClient(application, gso).getSignInIntent()
+		val signInIntent = GoogleSignIn.getClient(application, gso).signInIntent
 		googleSignInRequest.value = signInIntent
 	}
 
 	fun onGoogleSignInResult(data: Intent) {
 		GoogleSignIn.getSignedInAccountFromIntent(data).addOnSuccessListener { account ->
 			progress.value = true
-
-			val credential = GoogleAuthProvider.getCredential(account.getIdToken(), null)
-			FirebaseAuth.getInstance().signInWithCredential(credential)
+			userRepository.signInWithGoogle(account.idToken!!)
 					.addOnSuccessListener {
-						val user = FirebaseAuth.getInstance().getCurrentUser()
+						val user = userRepository.getCurrentUserData()
 						result.publish(SignInResult(true))
 					}
 					.addOnFailureListener { exception ->
@@ -82,7 +81,6 @@ class SignInViewModel() : ViewModel() {
 		}.addOnFailureListener { exception ->
 			result.publish(SignInResult(false, exception.message))
 		}
-
 
 	}
 }

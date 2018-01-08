@@ -1,6 +1,5 @@
 package com.strv.dundee.model.entity
 
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.*
 
@@ -12,7 +11,7 @@ Notes:
 - properties also need to be vars because Firestore needs setters
  */
 data class Wallet(
-		var uid: String? = FirebaseAuth.getInstance().currentUser?.uid,
+		var uid: String? = null,
 		var coin: String? = null,
 		var amount: Double? = null,
 		@ServerTimestamp var created: Date? = null

@@ -18,11 +18,10 @@ interface SignInView {
 }
 
 class SignInActivity : AppCompatActivity(), SignInView {
-
-	private val ACTION_SIGN_UP = 1
-	private val ACTION_SIGN_IN_GOOGLE = 2
-
 	companion object {
+		private const val ACTION_SIGN_UP = 1
+		private const val ACTION_SIGN_IN_GOOGLE = 2
+
 		fun newIntent(context: Context) = Intent(context, SignInActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
 	}
 
@@ -33,8 +32,10 @@ class SignInActivity : AppCompatActivity(), SignInView {
 
 		vmb.viewModel.result.observe(this, Observer { result ->
 			result?.let {
-				if (it.success) startMainActivity()
-				else Snackbar.make(vmb.rootView, it.errorMessage ?: getString(R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
+				if (it.success)
+					openMainActivity()
+				else
+					Snackbar.make(vmb.rootView, it.errorMessage ?: getString(R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
 			}
 		})
 
@@ -45,11 +46,8 @@ class SignInActivity : AppCompatActivity(), SignInView {
 		super.onActivityResult(requestCode, resultCode, data)
 
 		when (requestCode) {
-			ACTION_SIGN_UP ->
-				if (resultCode == Activity.RESULT_OK) startMainActivity()
-			ACTION_SIGN_IN_GOOGLE -> {
-				data?.let { vmb.viewModel.onGoogleSignInResult(data) }
-			}
+			ACTION_SIGN_UP -> if (resultCode == Activity.RESULT_OK) openMainActivity()
+			ACTION_SIGN_IN_GOOGLE -> data?.let { vmb.viewModel.onGoogleSignInResult(data) }
 		}
 	}
 
@@ -57,7 +55,7 @@ class SignInActivity : AppCompatActivity(), SignInView {
 		startActivityForResult(SignUpActivity.newIntent(this, vmb.viewModel.email.value, vmb.viewModel.password.value), ACTION_SIGN_UP)
 	}
 
-	private fun startMainActivity() {
+	private fun openMainActivity() {
 		startActivity(MainActivity.newIntent(this))
 		finish()
 	}
