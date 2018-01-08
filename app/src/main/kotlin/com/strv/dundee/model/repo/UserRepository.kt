@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.strv.dundee.model.entity.User
-import com.strv.dundee.model.firestore.FirestoreDocumentQueryLiveData
+import com.strv.ktools.FirestoreDocumentQueryLiveData
 import com.strv.ktools.inject
 
 class UserRepository {
