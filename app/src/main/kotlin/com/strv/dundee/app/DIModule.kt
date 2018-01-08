@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.strv.dundee.model.api.bitfinex.BitfinexApi
 import com.strv.dundee.model.api.bitstamp.BitstampApi
 import com.strv.dundee.model.db.BitcoinDatabase
-import com.strv.dundee.model.repo.BitcoinCache
+import com.strv.dundee.model.cache.BitcoinCache
 import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.UserRepository
 import com.strv.dundee.model.repo.WalletRepository

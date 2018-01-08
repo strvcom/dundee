@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import com.strv.dundee.model.api.TickerProvider
 import com.strv.dundee.model.api.bitfinex.BitfinexApi
 import com.strv.dundee.model.api.bitstamp.BitstampApi
+import com.strv.dundee.model.cache.BitcoinCache
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.NetworkBoundResource

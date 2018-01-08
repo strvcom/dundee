@@ -1,4 +1,4 @@
-package com.strv.dundee.model.repo
+package com.strv.dundee.model.cache
 
 import android.arch.lifecycle.LiveData
 import com.strv.dundee.model.db.TickerDao
