@@ -60,7 +60,6 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 				fetchFromNetwork(dbSource)
 			} else {
 				result.addSource(dbSource, { newData ->
-//					result.removeSource(dbSource)
 					result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
 			}
 		})
@@ -80,7 +79,6 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 			} else {
 				onFetchFailed()
 				result.addSource(dbSource, { newData ->
-//					result.removeSource(dbSource)
 					result.setValue(Resource(Resource.Status.ERROR, newData, response?.message()))
 				})
 			}
@@ -94,7 +92,6 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 			uiThread {
 				val dbSource = loadFromDb()
 				result.addSource(dbSource, { newData ->
-//					result.removeSource(dbSource)
 					result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
 			}
 		}
