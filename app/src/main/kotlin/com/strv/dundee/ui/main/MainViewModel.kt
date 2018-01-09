@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import com.strv.dundee.BR
 import com.strv.dundee.R
 import com.strv.dundee.model.entity.BitcoinSource
+import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.Ticker
 import com.strv.dundee.model.entity.Wallet
@@ -18,7 +19,6 @@ import com.strv.ktools.DiffObservableListLiveData
 import com.strv.ktools.Resource
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
-import com.strv.ktools.logMeD
 import com.strv.ktools.sharedPrefs
 import com.strv.ktools.stringLiveData
 import me.tatarka.bindingcollectionadapter2.ItemBinding
@@ -62,14 +62,10 @@ class MainViewModel() : ViewModel() {
 	}
 
 	private fun refreshTicker() {
-		 tickers["BTC"] = bitcoinRepository.getTicker(source.value!!, "BTC", currency.value!!, liveDataToReuse = tickers["BTC"])
+		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, currency.value!!, liveDataToReuse = tickers[it]) }
 	}
 
-	private fun recalculateTotal(): Double {
-		tickers["BTC"]?.value?.data.logMeD()
-		tickers["BTC"]?.value?.status.logMeD()
-		return wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount ?: 0.toDouble()) ?: 0.toDouble() } ?: 0.toDouble()
-	}
+	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount ?: 0.toDouble()) ?: 0.toDouble() } ?: 0.toDouble()
 
 	fun logout() {
 		userRepository.signOut()
