@@ -68,7 +68,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					app:ticker="@{viewModel.tickers[Coin.XRP]}"
-					app:coin="@{Coin.LTC}"
+					app:coin="@{Coin.XRP}"
 					app:currency="@{viewModel.currency}" />
 
 				<com.strv.dundee.ui.main.TickerView
