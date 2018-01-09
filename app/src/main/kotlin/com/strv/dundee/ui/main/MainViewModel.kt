@@ -19,6 +19,7 @@ import com.strv.ktools.DiffObservableListLiveData
 import com.strv.ktools.Resource
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
+import com.strv.ktools.logMeD
 import com.strv.ktools.sharedPrefs
 import com.strv.ktools.stringLiveData
 import me.tatarka.bindingcollectionadapter2.ItemBinding
@@ -32,7 +33,14 @@ class MainViewModel() : ViewModel() {
 	private val userRepository by inject<UserRepository>()
 	private val walletRepository by inject<WalletRepository>()
 
-	val itemBinding = ItemBinding.of<Wallet>(BR.item, R.layout.item_wallet).bindExtra(BR.viewModel, this)!!
+	interface OnItemClickListener{
+		fun onItemClick(wallet: Wallet)
+	}
+	val itemBinding = ItemBinding.of<Wallet>(BR.item, R.layout.item_wallet).bindExtra(BR.viewModel, this).bindExtra(BR.listener, object : OnItemClickListener {
+		override fun onItemClick(wallet: Wallet) {
+			wallet.logMeD()
+		}
+	})!!
 
 	var wallets: DiffObservableListLiveData<Wallet>
 	var user = userRepository.getCurrentUserData()

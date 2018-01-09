@@ -12,6 +12,10 @@
 			type="com.strv.dundee.model.entity.Wallet" />
 
 		<variable
+			name="listener"
+			type="com.strv.dundee.ui.main.MainViewModel.OnItemClickListener"/>
+
+		<variable
 			name="viewModel"
 			type="com.strv.dundee.ui.main.MainViewModel" />
 
@@ -21,6 +25,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
+		android:background="?attr/selectableItemBackground"
+		android:onClick="@{() -> listener.onItemClick(item)}"
 		android:padding="@dimen/spacing_16">
 
 		<TextView
