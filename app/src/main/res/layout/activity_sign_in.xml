@@ -83,7 +83,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="@dimen/spacing_16"
 				android:layout_gravity="center"
-				android:text='@{!viewModel.progress ? @string/sign_in : ""}'
+				android:text='@string/sign_in'
 				android:paddingTop="@dimen/spacing_20"
 				android:paddingBottom="@dimen/spacing_20"
 				android:enabled="@{viewModel.formValid &amp;&amp; !viewModel.progress}"
