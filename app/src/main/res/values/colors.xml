@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="colorPrimary">#fefefe</color>
-	<color name="colorPrimaryDark">#f9f9f9</color>
-	<color name="colorAccent">#ffca28</color>
+	<color name="primary">#fefefe</color>
+	<color name="primaryDark">#f9f9f9</color>
+	<color name="accent">#ffca28</color>
+
+	<color name="text_default">#333333</color>
+	<color name="text_inverse">#eeeeee</color>
+
+	<color name="white">#ffffff</color>
+	<color name="black">#000000</color>
 
 	<color name="status_success">#000000</color>
 	<color name="status_loading">#ff8000</color>

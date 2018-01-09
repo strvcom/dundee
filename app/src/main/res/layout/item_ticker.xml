@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
+	<data>
+		<import type="com.strv.dundee.model.entity.Currency" />
+		<variable
+			name="coin"
+			type="String" />
+		<variable
+			name="ticker"
+			type="com.strv.ktools.Resource&lt;com.strv.dundee.model.entity.Ticker>" />
+		<variable
+			name="currency"
+			type="String" />
+	</data>
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:padding="@dimen/spacing_8"
+		android:orientation="vertical">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+			android:textStyle="bold"
+			android:textSize="24sp"
+			android:text="@{coin}"
+			android:textColor="@color/white"
+			tools:text="BTC" />
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:textSize="10sp"
+			android:textColor="@color/text_default"
+			android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+			android:text="@{Currency.INSTANCE.formatValue(currency, ticker.data.lastPrice)}"
+			tools:text="$12,322.32" />
+	</LinearLayout>
+</layout>

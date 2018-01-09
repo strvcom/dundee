@@ -4,9 +4,9 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
-
 		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
 		<import type="com.strv.dundee.model.entity.Currency" />
+		<import type="com.strv.dundee.model.entity.Coin" />
 
 		<variable
 			name="viewModel"
@@ -39,13 +39,60 @@
 			android:layout_height="match_parent"
 			android:orientation="vertical"
 			app:layout_behavior="@string/appbar_scrolling_view_behavior">
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:background="@color/accent"
+				android:theme="@style/ThemeOverlay.AppCompat.Dark"
+				android:orientation="horizontal">
+
+				<com.strv.dundee.ui.main.TickerView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					app:ticker="@{viewModel.tickers[Coin.BTC]}"
+					app:coin="@{Coin.BTC}"
+					app:currency="@{viewModel.currency}" />
+
+				<com.strv.dundee.ui.main.TickerView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					app:ticker="@{viewModel.tickers[Coin.ETH]}"
+					app:coin="@{Coin.ETH}"
+					app:currency="@{viewModel.currency}" />
+
+				<com.strv.dundee.ui.main.TickerView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					app:ticker="@{viewModel.tickers[Coin.XRP]}"
+					app:coin="@{Coin.LTC}"
+					app:currency="@{viewModel.currency}" />
+
+				<com.strv.dundee.ui.main.TickerView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					app:ticker="@{viewModel.tickers[Coin.LTC]}"
+					app:coin="@{Coin.LTC}"
+					app:currency="@{viewModel.currency}" />
+
+				<com.strv.dundee.ui.main.TickerView
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					app:ticker="@{viewModel.tickers[Coin.BCH]}"
+					app:coin="@{Coin.BCH}"
+					app:currency="@{viewModel.currency}" />
+			</LinearLayout>
 
 			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal"
 				android:orientation="horizontal">
-
 
 				<Spinner
 					android:layout_width="wrap_content"
@@ -59,24 +106,8 @@
 					android:layout_height="wrap_content"
 					app:adapter="@{viewModel.sourceAdapter}"
 					app:selection="@={viewModel.source}" />
-
 			</LinearLayout>
 
-			<!--<LinearLayout-->
-			<!--android:layout_width="wrap_content"-->
-			<!--android:layout_height="wrap_content"-->
-			<!--android:layout_gravity="center_horizontal"-->
-			<!--android:orientation="horizontal">-->
-
-			<!--<TextView-->
-			<!--android:layout_width="wrap_content"-->
-			<!--android:layout_height="wrap_content"-->
-			<!--android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
-			<!--android:text="@{@string/price(viewModel.ticker.data.lastPrice, viewModel.currency.toUpperCase(), viewModel.coin.toUpperCase())}"-->
-			<!--app:status="@{viewModel.ticker.status}"-->
-			<!--tools:text="Price" />-->
-
-			<!--</LinearLayout>-->
 
 			<android.support.v7.widget.RecyclerView
 				android:layout_width="match_parent"

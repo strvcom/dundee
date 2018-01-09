@@ -38,7 +38,7 @@
 			android:textAppearance="@style/TextAppearance.AppCompat.Display1"
 			android:textStyle="bold"
 			android:text="@{item.coin}"
-			android:textColor="@color/colorAccent"
+			android:textColor="@color/accent"
 			tools:text="BTC" />
 
 		<Space
