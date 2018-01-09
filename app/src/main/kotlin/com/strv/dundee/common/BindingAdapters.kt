@@ -3,6 +3,8 @@ package com.strv.dundee.common
 import android.databinding.BindingAdapter
 import android.databinding.InverseBindingAdapter
 import android.databinding.InverseBindingListener
+import android.support.design.widget.BottomSheetBehavior
+import android.support.v7.widget.CardView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -97,4 +99,26 @@ fun setStatus(view: TextView, status: Resource.Status) {
 		Resource.Status.ERROR -> view.setTextColor(view.resources.getColor(R.color.status_error))
 		Resource.Status.LOADING -> view.setTextColor(view.resources.getColor(R.color.status_loading))
 	}
+}
+
+// Bottom Sheet state 2-way binding
+@BindingAdapter("bottomSheetOpen", "bottomSheetStateChanged", requireAll = false)
+fun setBottomSheetOpen(view: View, open: Boolean, bindingListener: InverseBindingListener) {
+	val behavior = BottomSheetBehavior.from(view)
+	behavior.setBottomSheetCallback(null)
+	behavior.state = if (open) BottomSheetBehavior.STATE_COLLAPSED else BottomSheetBehavior.STATE_HIDDEN
+	behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+		override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+
+		override fun onStateChanged(bottomSheet: View, newState: Int) {
+			if (newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN)
+				bindingListener.onChange()
+		}
+	})
+}
+
+@InverseBindingAdapter(attribute = "bottomSheetOpen", event = "bottomSheetStateChanged")
+fun getBottomSheetOpen(view: CardView): Boolean {
+	val behavior = BottomSheetBehavior.from(view)
+	return behavior.state == BottomSheetBehavior.STATE_COLLAPSED
 }
