@@ -2,6 +2,7 @@ package com.strv.ktools
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.Observer
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
 import retrofit2.Response
@@ -14,7 +15,7 @@ class Resource<T>(val status: Status, val data: T? = null, val message: String? 
 // RequestType: Type for the API response
 abstract class NetworkBoundResource<ResultType, RequestType> @MainThread
 internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
-	private val result: MediatorLiveData<Resource<ResultType>>
+	private val result: CleanableMediatorLiveData<Resource<ResultType>>
 
 	// Called to save the result of the API response into the database
 	@WorkerThread
@@ -41,10 +42,11 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 
 	init {
 		if (liveDataToReuse == null) {
-			result = MediatorLiveData()
+			result = CleanableMediatorLiveData()
 			result.value = Resource(Resource.Status.LOADING, null)
-		} else if (liveDataToReuse is MediatorLiveData<Resource<ResultType>>) {
+		} else if (liveDataToReuse is CleanableMediatorLiveData<Resource<ResultType>>) {
 			result = liveDataToReuse
+			result.clearSources()
 			result.value = Resource(result.value?.status ?: Resource.Status.LOADING, result.value?.data, result.value?.message)
 		} else {
 			throw IllegalArgumentException("LiveData provided for reuse must be result of previous NetworkBoundResource instance.")
@@ -57,7 +59,9 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 			if (shouldFetch(data)) {
 				fetchFromNetwork(dbSource)
 			} else {
-				result.addSource(dbSource, { newData -> result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
+				result.addSource(dbSource, { newData ->
+//					result.removeSource(dbSource)
+					result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
 			}
 		})
 	}
@@ -76,6 +80,7 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 			} else {
 				onFetchFailed()
 				result.addSource(dbSource, { newData ->
+//					result.removeSource(dbSource)
 					result.setValue(Resource(Resource.Status.ERROR, newData, response?.message()))
 				})
 			}
@@ -87,11 +92,34 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 		doAsync {
 			saveCallResult(response.body()!!)
 			uiThread {
-				result.addSource(loadFromDb(), { newData -> result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
+				val dbSource = loadFromDb()
+				result.addSource(dbSource, { newData ->
+//					result.removeSource(dbSource)
+					result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
 			}
 		}
 	}
 
 
 	fun getAsLiveData(): LiveData<Resource<ResultType>> = result
+}
+
+class CleanableMediatorLiveData<T> : MediatorLiveData<T>(){
+
+	private val sources = ArrayList<LiveData<*>>()
+
+	override fun <S : Any?> addSource(source: LiveData<S>, onChanged: Observer<S>) {
+		super.addSource(source, onChanged)
+		sources.add(source)
+	}
+
+	override fun <S : Any?> removeSource(toRemote: LiveData<S>) {
+		super.removeSource(toRemote)
+		sources.remove(toRemote)
+	}
+
+	fun clearSources() {
+		sources.forEach({super.removeSource(it)})
+		sources.clear()
+	}
 }
