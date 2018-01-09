@@ -3,6 +3,7 @@ package com.strv.dundee.ui.main
 import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.widget.ArrayAdapter
 import com.strv.dundee.BR
@@ -47,9 +48,10 @@ class MainViewModel() : ViewModel() {
 	val tickers = HashMap<String, LiveData<Resource<Ticker>>>()
 	val source by application.sharedPrefs().stringLiveData(BitcoinSource.BITSTAMP)
 	val currency by application.sharedPrefs().stringLiveData(Currency.USD)
-	val sourceAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, BitcoinSource.getAll())
-	val currencyAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Currency.getAll())
+	val sourceAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, BitcoinSource.getAll())
+	val currencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getAll())
 	val totalValue = MediatorLiveData<Double>()
+	val optionsOpen = MutableLiveData<Boolean>().apply { value = false }
 
 	init {
 		// compose Ticker LiveData (observed by data binding automatically)
@@ -78,5 +80,4 @@ class MainViewModel() : ViewModel() {
 	fun logout() {
 		userRepository.signOut()
 	}
-
 }

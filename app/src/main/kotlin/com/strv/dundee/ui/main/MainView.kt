@@ -7,11 +7,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.strv.dundee.R
-import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.dundee.common.isUserSignedIn
 import com.strv.dundee.databinding.ActivityMainBinding
 import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.ui.auth.SignInActivity
+import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.ktools.vmb
 
 interface MainView {
@@ -51,8 +51,17 @@ class MainActivity : AppCompatActivity(), MainView {
 				startActivity(SignInActivity.newIntent(this))
 				finish()
 			}
+			R.id.action_options -> vmb.viewModel.optionsOpen.value = vmb.viewModel.optionsOpen.value!!.not()
 		}
 		return super.onOptionsItemSelected(item)
+	}
+
+	override fun onBackPressed() {
+		if (vmb.viewModel.optionsOpen.value!!) {
+			vmb.viewModel.optionsOpen.value = false
+		} else {
+			super.onBackPressed()
+		}
 	}
 
 
