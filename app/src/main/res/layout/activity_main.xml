@@ -95,7 +95,8 @@
 				app:layoutManager="@{LayoutManagers.linear()}"
 				app:liveDataItemBinding="@{viewModel.itemBinding}"
 				app:liveDataItems="@{viewModel.wallets}"
-				app:liveDataAdapter="@{view.lifecycleAwareAdapter}" />
+				app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
+				app:touchHelperCallback="@{viewModel.touchHelperCallback}"/>
 
 			<LinearLayout
 				android:layout_width="match_parent"

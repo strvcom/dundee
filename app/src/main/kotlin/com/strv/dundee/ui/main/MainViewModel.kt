@@ -8,6 +8,8 @@ import android.arch.lifecycle.ViewModel
 import android.widget.ArrayAdapter
 import com.strv.dundee.BR
 import com.strv.dundee.R
+import com.strv.dundee.common.OnItemClickListener
+import com.strv.dundee.common.TouchHelperCallback
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
@@ -34,15 +36,24 @@ class MainViewModel() : ViewModel() {
 	private val userRepository by inject<UserRepository>()
 	private val walletRepository by inject<WalletRepository>()
 
-	interface OnItemClickListener{
-		fun onItemClick(wallet: Wallet)
-	}
-	val itemBinding = ItemBinding.of<Wallet>(BR.item, R.layout.item_wallet).bindExtra(BR.viewModel, this).bindExtra(BR.listener, object : OnItemClickListener {
-		override fun onItemClick(wallet: Wallet) {
-			wallet.logMeD()
+	private val itemClickCallback = object : OnItemClickListener {
+		override fun <T> onItemClick(item: T) {
+			item.logMeD()
 		}
-	})!!
+	}
 
+	val touchHelperCallback = object : TouchHelperCallback {
+		override fun <T> onItemSwiped(item: T) {
+			item.logMeD()
+			if(item is Wallet) {
+				val list = ArrayList(wallets.diffList)
+				list.remove(item)
+				wallets.diffList.update(list)
+			}
+		}
+	}
+
+	val itemBinding = ItemBinding.of<Wallet>(BR.item, R.layout.item_wallet).bindExtra(BR.viewModel, this).bindExtra(BR.listener, itemClickCallback)!!
 	var wallets: DiffObservableListLiveData<Wallet>
 	var user = userRepository.getCurrentUserData()
 	val tickers = HashMap<String, LiveData<Resource<Ticker>>>()

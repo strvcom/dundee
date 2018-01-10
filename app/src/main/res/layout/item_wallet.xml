@@ -13,7 +13,7 @@
 
 		<variable
 			name="listener"
-			type="com.strv.dundee.ui.main.MainViewModel.OnItemClickListener"/>
+			type="com.strv.dundee.common.OnItemClickListener" />
 
 		<variable
 			name="viewModel"
@@ -21,46 +21,78 @@
 
 	</data>
 
-	<LinearLayout
+	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:background="?attr/selectableItemBackground"
-		android:onClick="@{() -> listener.onItemClick(item)}"
-		android:padding="@dimen/spacing_16">
+		android:foreground="?attr/selectableItemBackground"
+		android:onClick="@{() -> listener.onItemClick(item)}">
 
-		<TextView
-			android:layout_width="wrap_content"
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<ImageView
+				android:id="@+id/ic_left"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_delete"
+				android:layout_gravity="center_vertical"
+				android:layout_marginLeft="@dimen/spacing_16"/>
+
+			<ImageView
+				android:id="@+id/ic_right"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_delete"
+				android:layout_gravity="center_vertical|right"
+				android:layout_marginRight="@dimen/spacing_16"/>
+
+		</FrameLayout>
+
+		<!-- background must be set because of swipe to delete functionality -->
+		<!-- tag must be "foreground" because of swipe to delete functionality -->
+		<LinearLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-			android:text="@{Double.toString(item.amount)}"
-			tools:text="2.2323" />
+			android:tag="@string/item_foreground_tag"
+			android:orientation="horizontal"
+			android:background="@color/primary"
+			android:padding="@dimen/spacing_16">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+				android:text="@{Double.toString(item.amount)}"
+				tools:text="2.2323" />
 
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="@dimen/spacing_4"
-			android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-			android:textStyle="bold"
-			android:text="@{item.coin}"
-			android:textColor="@color/accent"
-			tools:text="BTC" />
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="@dimen/spacing_4"
+				android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+				android:textStyle="bold"
+				android:text="@{item.coin}"
+				android:textColor="@color/accent"
+				tools:text="BTC" />
 
-		<Space
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1" />
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1" />
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-			android:text="@{Currency.INSTANCE.formatValue(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
-			tools:text="$1,000.30" />
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
+				tools:text="$1,000.30" />
 
 
-	</LinearLayout>
+		</LinearLayout>
+
+	</FrameLayout>
 
 </layout>
 
