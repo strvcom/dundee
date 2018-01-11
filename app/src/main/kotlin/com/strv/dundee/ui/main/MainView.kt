@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity(), MainView {
 			snackbar.setAction(R.string.undo, { wallet?.let { vmb.viewModel.addWallet(it) } })
 			snackbar.show()
 		})
+		vmb.viewModel.walletOpened.observe(this, Observer { it?.let {startActivity(AddAmountActivity.newIntent(this, it))} })
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {

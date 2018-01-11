@@ -62,20 +62,19 @@
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-				android:text="@{Double.toString(item.amount)}"
-				tools:text="2.2323" />
-
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="@dimen/spacing_4"
+				android:layout_marginRight="@dimen/spacing_4"
 				android:textAppearance="@style/TextAppearance.AppCompat.Display1"
 				android:textStyle="bold"
 				android:text="@{item.coin}"
 				android:textColor="@color/accent"
 				tools:text="BTC" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+				android:text="@{Double.toString(item.amount)}"
+				tools:text="2.2323" />
 
 			<Space
 				android:layout_width="0dp"

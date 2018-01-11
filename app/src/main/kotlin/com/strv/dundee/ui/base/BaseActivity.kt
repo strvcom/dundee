@@ -1,5 +1,6 @@
 package com.strv.dundee.ui.base
 
+import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
@@ -25,5 +26,9 @@ abstract class BaseActivity : AppCompatActivity() {
 		supportActionBar?.setDisplayShowHomeEnabled(true)
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
 		supportActionBar?.setHomeButtonEnabled(true)
+	}
+
+	protected fun setToolbarTitle(@StringRes titleResId: Int) {
+		supportActionBar?.title = getString(titleResId)
 	}
 }

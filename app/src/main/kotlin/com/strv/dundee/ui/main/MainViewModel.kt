@@ -23,7 +23,6 @@ import com.strv.ktools.EventLiveData
 import com.strv.ktools.Resource
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
-import com.strv.ktools.logMeD
 import com.strv.ktools.sharedPrefs
 import com.strv.ktools.stringLiveData
 import me.tatarka.bindingcollectionadapter2.ItemBinding
@@ -33,6 +32,7 @@ import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList
 class MainViewModel() : ViewModel() {
 
 	val walletRemovedSnackBar = EventLiveData<Wallet>()
+	val walletOpened = EventLiveData<Wallet>()
 
 	private val application by inject<Application>()
 	private val bitcoinRepository by inject<BitcoinRepository>()
@@ -41,7 +41,7 @@ class MainViewModel() : ViewModel() {
 
 	private val itemClickCallback = object : OnItemClickListener {
 		override fun <T> onItemClick(item: T) {
-			item.logMeD()
+			if (item is Wallet) walletOpened.publish(item)
 		}
 	}
 
@@ -110,6 +110,6 @@ class MainViewModel() : ViewModel() {
 	}
 
 	private fun removeWallet(wallet: Wallet) {
-		walletRepository.removeWalletFromCurrentUser(wallet)
+		walletRepository.removeWallet(wallet)
 	}
 }

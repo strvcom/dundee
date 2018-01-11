@@ -17,7 +17,7 @@ import com.strv.ktools.logMeD
 import com.strv.ktools.publish
 
 
-class AddAmountViewModel : ViewModel(), LifecycleReceiver {
+class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceiver {
 
 	private val application by inject<Application>()
 	private val walletRepository by inject<WalletRepository>()
@@ -30,8 +30,22 @@ class AddAmountViewModel : ViewModel(), LifecycleReceiver {
 	val progress = MutableLiveData<Boolean>().apply { value = false }
 	var coin = MutableLiveData<String>().apply { value = Coin.BTC }
 	val coinAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Coin.getAll())
+	var wallet: Wallet? = null
 
-	fun addAmount() {
+	init {
+		wallet?.let {
+			amount.value = it.amount.toString()
+			coin.value = it.coin
+			this.wallet = it
+		}
+	}
+
+	fun saveAmount() {
+		if(wallet != null) updateAmount()
+		else addAmount()
+	}
+
+	private fun addAmount(){
 		logD("Adding ${amount.value} $coin")
 		progress.value = true
 
@@ -39,6 +53,23 @@ class AddAmountViewModel : ViewModel(), LifecycleReceiver {
 		walletRepository.addWalletToCurrentUser(data)
 				.addOnSuccessListener {
 					logD("Added ${amount.value} $coin")
+					finish.publish()
+				}
+				.addOnFailureListener { e ->
+					e.logMeD()
+					progress.value = false
+				}
+	}
+
+	private fun updateAmount() {
+		logD("Update to ${amount.value} $coin")
+		progress.value = true
+
+		wallet?.amount = amount.value?.toDouble()
+		wallet?.coin = coin.value
+		walletRepository.updateWallet(wallet!!)
+				.addOnSuccessListener {
+					logD("Updated to ${amount.value} $coin")
 					finish.publish()
 				}
 				.addOnFailureListener { e ->

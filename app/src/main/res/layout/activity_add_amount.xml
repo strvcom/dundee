@@ -79,11 +79,11 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
-					android:text='@{!viewModel.progress ? @string/add : ""}'
+					android:text='@{!viewModel.progress ? @string/save : ""}'
 					android:paddingTop="@dimen/spacing_20"
 					android:paddingBottom="@dimen/spacing_20"
 					android:enabled="@{viewModel.amountValid &amp;&amp; !viewModel.progress}"
-					android:onClick="@{() -> viewModel.addAmount()}" />
+					android:onClick="@{() -> viewModel.saveAmount()}" />
 
 				<ProgressBar
 					android:layout_width="wrap_content"

@@ -21,7 +21,15 @@ class WalletRepository {
 		return walletCollection.add(wallet)
 	}
 
-	fun removeWalletFromCurrentUser(wallet: Wallet): Task<Void> {
+	fun updateWallet(wallet: Wallet): Task<Void> {
+		if (wallet.docId != null) {
+			return walletCollection.document(wallet.docId!!).set(wallet)
+		} else {
+			throw (IllegalArgumentException("Unable to update document. It's document ID is null."))
+		}
+	}
+
+	fun removeWallet(wallet: Wallet): Task<Void> {
 		if (wallet.docId != null) {
 			return walletCollection.document(wallet.docId!!).delete()
 		} else {
