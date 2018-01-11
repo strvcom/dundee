@@ -47,7 +47,6 @@ class MainViewModel() : ViewModel() {
 
 	val touchHelperCallback = object : TouchHelperCallback {
 		override fun <T> onItemSwiped(item: T) {
-			item.logMeD()
 			if (item is Wallet) {
 				removeWallet(item)
 				walletRemovedSnackBar.publish(item)
