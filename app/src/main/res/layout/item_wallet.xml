@@ -52,9 +52,9 @@
 		<!-- background must be set because of swipe to delete functionality -->
 		<!-- tag must be "foreground" because of swipe to delete functionality -->
 		<LinearLayout
+			android:id="@+id/item_foreground"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:tag="@string/item_foreground_tag"
 			android:orientation="horizontal"
 			android:background="@color/primary"
 			android:padding="@dimen/spacing_16">

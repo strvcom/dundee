@@ -51,6 +51,18 @@ class MainViewModel() : ViewModel() {
 				wallets.diffList.update(list)
 			}
 		}
+
+		override fun getItemForegroundViewId(): Int? {
+			return R.id.item_foreground
+		}
+
+		override fun getItemLeftViewId(): Int? {
+			return R.id.ic_left
+		}
+
+		override fun getItemRightViewId(): Int? {
+			return R.id.ic_right
+		}
 	}
 
 	val itemBinding = ItemBinding.of<Wallet>(BR.item, R.layout.item_wallet).bindExtra(BR.viewModel, this).bindExtra(BR.listener, itemClickCallback)!!

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<string name="item_foreground_tag" translatable="false">foreground</string>
-	<string name="item_left_icon_tag" translatable="false">left_icon</string>
-	<string name="item_right_icon_tag" translatable="false">right_icon</string>
-</resources>
