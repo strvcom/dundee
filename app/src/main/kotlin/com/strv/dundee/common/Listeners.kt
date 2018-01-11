@@ -7,16 +7,18 @@ interface ActionDoneCallback {
 	fun onActionDone()
 }
 
-interface OnItemClickListener{
-	fun <T>onItemClick(item: T)
+interface OnItemClickListener<in T> {
+	fun onItemClick(item: T)
 }
 
-interface TouchHelperCallback {
-	fun <T>onItemSwiped(item: T)
+interface TouchHelperCallback<in T> {
+	fun onItemSwiped(item: T)
 	@IdRes
 	fun getItemForegroundViewId(): Int? = null
+
 	@IdRes
 	fun getItemLeftViewId(): Int? = null
+
 	@IdRes
 	fun getItemRightViewId(): Int? = null
 }

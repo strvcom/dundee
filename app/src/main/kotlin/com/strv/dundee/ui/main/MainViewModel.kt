@@ -39,18 +39,16 @@ class MainViewModel() : ViewModel() {
 	private val userRepository by inject<UserRepository>()
 	private val walletRepository by inject<WalletRepository>()
 
-	private val itemClickCallback = object : OnItemClickListener {
-		override fun <T> onItemClick(item: T) {
-			if (item is Wallet) walletOpened.publish(item)
+	private val itemClickCallback = object : OnItemClickListener<Wallet> {
+		override fun onItemClick(item: Wallet) {
+			walletOpened.publish(item)
 		}
 	}
 
-	val touchHelperCallback = object : TouchHelperCallback {
-		override fun <T> onItemSwiped(item: T) {
-			if (item is Wallet) {
-				removeWallet(item)
-				walletRemovedSnackBar.publish(item)
-			}
+	val touchHelperCallback = object : TouchHelperCallback<Wallet> {
+		override fun onItemSwiped(item: Wallet) {
+			removeWallet(item)
+			walletRemovedSnackBar.publish(item)
 		}
 
 		override fun getItemForegroundViewId(): Int? {

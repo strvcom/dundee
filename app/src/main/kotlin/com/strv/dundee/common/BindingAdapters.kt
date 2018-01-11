@@ -125,7 +125,7 @@ fun getBottomSheetOpen(view: CardView): Boolean {
 }
 
 @BindingAdapter("touchHelperCallback")
-fun setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: TouchHelperCallback) {
+fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: TouchHelperCallback<T>) {
 
 	fun getView(viewHolder: RecyclerView.ViewHolder?, @IdRes viewId: Int?): View? {
 		if (viewHolder?.itemView != null && viewId != null) {
@@ -203,7 +203,7 @@ fun setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: TouchHel
 			if (recycler.adapter is BindingRecyclerViewAdapter<*>) {
 				val adapter = recycler.adapter as BindingRecyclerViewAdapter<*>
 				val item = adapter.getAdapterItem(position)
-				item?.let { touchHelperCallback.onItemSwiped(item) }
+				item?.let { touchHelperCallback.onItemSwiped(item as T) }
 			}
 		}
 	}

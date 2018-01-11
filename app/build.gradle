@@ -30,6 +30,7 @@ android {
 
 kapt {
 	generateStubs = true
+	correctErrorTypes = true // avoid unknown type replacing with NonExistentClass
 }
 
 dependencies {
