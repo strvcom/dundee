@@ -19,6 +19,7 @@ import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.UserRepository
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.ktools.DiffObservableListLiveData
+import com.strv.ktools.EventLiveData
 import com.strv.ktools.Resource
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
@@ -30,6 +31,8 @@ import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList
 
 
 class MainViewModel() : ViewModel() {
+
+	val walletRemovedSnackBar = EventLiveData<Wallet>()
 
 	private val application by inject<Application>()
 	private val bitcoinRepository by inject<BitcoinRepository>()
@@ -45,10 +48,9 @@ class MainViewModel() : ViewModel() {
 	val touchHelperCallback = object : TouchHelperCallback {
 		override fun <T> onItemSwiped(item: T) {
 			item.logMeD()
-			if(item is Wallet) {
-				val list = ArrayList(wallets.diffList)
-				list.remove(item)
-				wallets.diffList.update(list)
+			if (item is Wallet) {
+				removeWallet(item)
+				walletRemovedSnackBar.publish(item)
 			}
 		}
 
@@ -102,5 +104,13 @@ class MainViewModel() : ViewModel() {
 
 	fun logout() {
 		userRepository.signOut()
+	}
+
+	fun addWallet(wallet: Wallet) {
+		walletRepository.addWalletToCurrentUser(wallet)
+	}
+
+	private fun removeWallet(wallet: Wallet) {
+		walletRepository.removeWalletFromCurrentUser(wallet)
 	}
 }

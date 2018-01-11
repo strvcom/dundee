@@ -15,4 +15,6 @@
 	<string name="options">Options</string>
 	<string name="price_source">Price Source</string>
 	<string name="currency">Currency</string>
+	<string name="item_removed">Item was removed</string>
+	<string name="undo">Undo</string>
 </resources>

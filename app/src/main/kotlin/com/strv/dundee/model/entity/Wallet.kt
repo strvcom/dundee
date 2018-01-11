@@ -15,7 +15,7 @@ data class Wallet(
 		var coin: String? = null,
 		var amount: Double? = null,
 		@ServerTimestamp var created: Date? = null
-) {
+) : Document() {
 	companion object {
 		const val COLLECTION = "wallets"
 	}

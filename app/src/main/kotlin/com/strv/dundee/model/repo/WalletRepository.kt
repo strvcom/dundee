@@ -14,10 +14,18 @@ class WalletRepository {
 
 	private val walletCollection = firestore.collection(Wallet.COLLECTION)
 
-	fun getWalletsForCurrentUser() = FirestoreDocumentListLiveData(walletCollection.whereEqualTo("uid", auth.currentUser?.uid), Wallet::class.java)
+	fun getWalletsForCurrentUser() = FirestoreDocumentListLiveData(walletCollection.whereEqualTo("uid", auth.currentUser?.uid).orderBy("created"), Wallet::class.java)
 
 	fun addWalletToCurrentUser(wallet: Wallet): Task<DocumentReference> {
 		wallet.uid = auth.currentUser!!.uid
 		return walletCollection.add(wallet)
+	}
+
+	fun removeWalletFromCurrentUser(wallet: Wallet): Task<Void> {
+		if (wallet.docId != null) {
+			return walletCollection.document(wallet.docId!!).delete()
+		} else {
+			throw (IllegalArgumentException("Unable to remove document. It's document ID is null."))
+		}
 	}
 }

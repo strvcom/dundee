@@ -2,6 +2,7 @@
   <dictionary name="dostalleos">
     <words>
       <w>formater</w>
+      <w>snackbar</w>
     </words>
   </dictionary>
 </component>

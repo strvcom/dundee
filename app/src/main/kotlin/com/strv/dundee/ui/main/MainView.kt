@@ -1,8 +1,10 @@
 package com.strv.dundee.ui.main
 
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -37,6 +39,12 @@ class MainActivity : AppCompatActivity(), MainView {
 			startActivity(SignInActivity.newIntent(this))
 			finish()
 		}
+
+		vmb.viewModel.walletRemovedSnackBar.observe(this, Observer { wallet ->
+			val snackbar = Snackbar.make(vmb.rootView, R.string.item_removed, Snackbar.LENGTH_SHORT)
+			snackbar.setAction(R.string.undo, { wallet?.let { vmb.viewModel.addWallet(it) } })
+			snackbar.show()
+		})
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {

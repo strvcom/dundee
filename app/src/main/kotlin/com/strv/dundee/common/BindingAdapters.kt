@@ -21,7 +21,6 @@ import android.widget.TextView
 import com.strv.dundee.R
 import com.strv.ktools.Resource
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
-import java.lang.Exception
 
 
 @BindingAdapter("hide")
@@ -130,7 +129,7 @@ fun setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: TouchHel
 
 	fun getView(viewHolder: RecyclerView.ViewHolder?, @IdRes viewId: Int?): View? {
 		if (viewHolder?.itemView != null && viewId != null) {
-			return viewHolder.itemView.findViewById(viewId) ?: throw Exception("Item view doesn't have view with $viewId id")
+			return viewHolder.itemView.findViewById(viewId) ?: throw IllegalArgumentException("Item view doesn't have view with $viewId id")
 		}
 		return null
 	}
