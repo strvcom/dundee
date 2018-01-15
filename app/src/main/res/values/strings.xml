@@ -18,4 +18,7 @@
 	<string name="currency">Currency</string>
 	<string name="item_removed">Item was removed</string>
 	<string name="undo">Undo</string>
+	<string name="dashboard">Dashboard</string>
+	<string name="graphs">Graphs</string>
+	<string name="finances">Finances</string>
 </resources>

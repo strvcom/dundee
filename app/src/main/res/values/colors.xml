@@ -3,6 +3,7 @@
 	<color name="primary">#fefefe</color>
 	<color name="primaryDark">#f9f9f9</color>
 	<color name="accent">#ffca28</color>
+	<color name="status_bar">#c9a022</color>
 
 	<color name="text_default">#333333</color>
 	<color name="text_inverse">#eeeeee</color>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
+		<import type="com.strv.dundee.model.entity.Currency" />
+		<import type="com.strv.dundee.model.entity.Coin" />
+
+		<variable
+			name="viewModel"
+			type="com.strv.dundee.ui.main.DashboardViewModel" />
+
+		<variable
+			name="view"
+			type="com.strv.dundee.ui.main.DashboardView" />
+
+
+	</data>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:background="@color/accent"
+			android:theme="@style/ThemeOverlay.AppCompat.Dark"
+			android:orientation="horizontal">
+
+			<com.strv.dundee.ui.main.TickerView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				app:ticker="@{viewModel.tickers[Coin.BTC]}"
+				app:coin="@{Coin.BTC}"
+				app:currency="@{viewModel.currency}" />
+
+			<com.strv.dundee.ui.main.TickerView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				app:ticker="@{viewModel.tickers[Coin.ETH]}"
+				app:coin="@{Coin.ETH}"
+				app:currency="@{viewModel.currency}" />
+
+			<com.strv.dundee.ui.main.TickerView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				app:ticker="@{viewModel.tickers[Coin.XRP]}"
+				app:coin="@{Coin.XRP}"
+				app:currency="@{viewModel.currency}" />
+
+			<com.strv.dundee.ui.main.TickerView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				app:ticker="@{viewModel.tickers[Coin.LTC]}"
+				app:coin="@{Coin.LTC}"
+				app:currency="@{viewModel.currency}" />
+
+			<com.strv.dundee.ui.main.TickerView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				app:ticker="@{viewModel.tickers[Coin.BCH]}"
+				app:coin="@{Coin.BCH}"
+				app:currency="@{viewModel.currency}" />
+		</LinearLayout>
+
+		<android.support.v7.widget.RecyclerView
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			app:layoutManager="@{LayoutManagers.linear()}"
+			app:liveDataItemBinding="@{viewModel.itemBinding}"
+			app:liveDataItems="@{viewModel.wallets}"
+			app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
+			app:touchHelperCallback="@{viewModel.touchHelperCallback}" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="@dimen/spacing_16"
+			android:orientation="horizontal">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginRight="@dimen/spacing_4"
+				android:text="@string/total_value" />
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalValue)}"
+				tools:text="$300,000.20" />
+		</LinearLayout>
+
+	</LinearLayout>
+
+</layout>
+
