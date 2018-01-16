@@ -11,7 +11,7 @@
 	<string name="logout">Logout</string>
 	<string name="sign_in">Sign In</string>
 	<string name="hint_amount">Amount</string>
-	<string name="bought_for">Bought for</string>
+	<string name="bought_for">Bought for ($)</string>
 	<string name="save">Save</string>
 	<string name="error_unknown">Unknown error</string>
 	<string name="options">Options</string>

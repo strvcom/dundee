@@ -6,7 +6,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.widget.ArrayAdapter
 import com.strv.dundee.model.entity.Coin
-import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.ktools.EventLiveData
@@ -27,21 +26,23 @@ class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceive
 
 	val amount = MutableLiveData<String>()
 	val boughtFor = MutableLiveData<String>()
+	private val validateFunction = {
+		amount.value != null && amount.value!!.isNotEmpty() && amount.value!!.isNotBlank() &&
+				boughtFor.value != null && boughtFor.value!!.isNotEmpty() && boughtFor.value!!.isNotBlank()
+	}
 	val amountValid = MediatorLiveData<Boolean>()
-			.addValueSource(amount, { it != null && it.isNotEmpty() && it.isNotBlank() })
+			.addValueSource(amount, {validateFunction()})
+			.addValueSource(boughtFor, {validateFunction()})
 	val progress = MutableLiveData<Boolean>().apply { value = false }
 	var coin = MutableLiveData<String>().apply { value = Coin.BTC }
 	val coinAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Coin.getAll())
-	var currency = MutableLiveData<String>().apply { value = Currency.USD }
-	val currencyAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Currency.getAll())
 	var wallet: Wallet? = null
 
 	init {
 		wallet?.let {
 			amount.value = it.amount.toString()
 			coin.value = it.coin
-			it.boughtPrice?.let { boughtFor.value = it.toString() }
-			it.boughtCurrency?.let { currency.value = it }
+			boughtFor.value = it.toString()
 			this.wallet = it
 		}
 	}
@@ -55,12 +56,7 @@ class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceive
 		logD("Adding ${amount.value} $coin")
 		progress.value = true
 
-		val data = Wallet(coin = coin.value, amount = amount.value?.toDouble())
-		if (boughtFor.value != null && !boughtFor.value!!.isEmpty()) {
-			data.boughtPrice = boughtFor.value?.toDouble()
-			data.boughtCurrency = currency.value
-		}
-
+		val data = Wallet(coin = coin.value, amount = amount.value?.toDouble(), boughtPrice = boughtFor.value?.toDouble())
 		walletRepository.addWalletToCurrentUser(data)
 				.addOnSuccessListener {
 					logD("Added ${amount.value} $coin")

@@ -103,7 +103,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						android:text="@string/price_source" />
+						android:text="@string/currency" />
 					<Spinner
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						android:text="@string/currency" />
+						android:text="@string/price_source" />
 					<Spinner
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"

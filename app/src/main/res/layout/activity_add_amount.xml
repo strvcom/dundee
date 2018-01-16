@@ -91,13 +91,6 @@
 
 				</android.support.design.widget.TextInputLayout>
 
-				<Spinner
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="@dimen/spacing_16"
-					android:layout_gravity="center_vertical"
-					app:adapter="@{viewModel.currencyAdapter}"
-					app:selection="@={viewModel.currency}" />
 
 			</LinearLayout>
 

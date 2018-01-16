@@ -16,6 +16,7 @@
 	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_gravity="center"
 		android:padding="@dimen/spacing_8"
 		android:orientation="vertical">
 		<TextView
@@ -34,7 +35,7 @@
 			android:layout_gravity="center"
 			android:textSize="10sp"
 			android:textColor="@color/text_default"
-			android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+			android:textAppearance="@style/TextAppearance.AppCompat.Body1"
 			android:text="@{Currency.INSTANCE.formatValue(currency, ticker.data.lastPrice)}"
 			tools:text="$12,322.32" />
 	</LinearLayout>

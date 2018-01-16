@@ -9,7 +9,7 @@
 
 		<variable
 			name="item"
-			type="com.strv.dundee.model.entity.Wallet" />
+			type="com.strv.dundee.model.entity.WalletOverview" />
 
 		<variable
 			name="listener"
@@ -17,7 +17,7 @@
 
 		<variable
 			name="viewModel"
-			type="com.strv.dundee.ui.main.FinancesViewModel" />
+			type="com.strv.dundee.ui.main.DashboardViewModel" />
 
 	</data>
 

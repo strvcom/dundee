@@ -4,6 +4,10 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
+		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
+		<import type="com.strv.dundee.model.entity.Currency" />
+		<import type="com.strv.dundee.model.entity.Coin" />
+
 		<variable
 			name="viewModel"
 			type="com.strv.dundee.ui.main.FinancesViewModel" />
@@ -15,18 +19,39 @@
 
 	</data>
 
-	<FrameLayout
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical">
 
-		<TextView
-			android:layout_width="wrap_content"
+		<FrameLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:text="Finances"/>
+			android:padding="@dimen/spacing_16"
+			android:background="@color/accent"
+			android:orientation="horizontal">
 
-	</FrameLayout>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:textAppearance="@style/TextAppearance.AppCompat.Title"
+				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalValue)}"
+				tools:text="$300,000.20" />
+
+		</FrameLayout>
+
+		<android.support.v7.widget.RecyclerView
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			app:layoutManager="@{LayoutManagers.linear()}"
+			app:liveDataItemBinding="@{viewModel.itemBinding}"
+			app:liveDataItems="@{viewModel.wallets}"
+			app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
+			app:touchHelperCallback="@{viewModel.touchHelperCallback}" />
+
+	</LinearLayout>
 
 </layout>
 
