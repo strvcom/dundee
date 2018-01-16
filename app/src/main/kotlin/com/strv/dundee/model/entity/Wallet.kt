@@ -19,14 +19,18 @@ data class Wallet(
 		var uid: String? = null,
 		var coin: String? = null,
 		var amount: Double? = null,
-		@ServerTimestamp var created: Date? = null
+		@ServerTimestamp var created: Date? = null,
+		var boughtPrice: Double? = null,
+		var boughtCurrency: String? = null
 ) : Document(), KParcelable {
 
 	private constructor(parcel: Parcel) : this(
 			uid = parcel.readString(),
 			coin = parcel.readString(),
 			amount = parcel.readValue(Double::class.java.classLoader) as? Double,
-			created = parcel.readDate()) {
+			created = parcel.readDate(),
+			boughtPrice = parcel.readValue(Double::class.java.classLoader) as? Double,
+			boughtCurrency = parcel.readString()) {
 		docId = parcel.readString()
 	}
 
@@ -35,6 +39,8 @@ data class Wallet(
 		parcel.writeString(coin)
 		parcel.writeValue(amount)
 		parcel.writeDate(created)
+		parcel.writeValue(boughtPrice)
+		parcel.writeString(boughtCurrency)
 		parcel.writeString(docId)
 	}
 

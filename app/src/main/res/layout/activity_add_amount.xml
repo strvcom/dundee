@@ -71,6 +71,36 @@
 
 			</LinearLayout>
 
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+
+				<android.support.design.widget.TextInputLayout
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1">
+
+					<android.support.design.widget.TextInputEditText
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/bought_for"
+						android:imeOptions="actionDone|flagNoExtractUi"
+						android:inputType="numberDecimal"
+						android:text="@={viewModel.boughtFor}" />
+
+				</android.support.design.widget.TextInputLayout>
+
+				<Spinner
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="@dimen/spacing_16"
+					android:layout_gravity="center_vertical"
+					app:adapter="@{viewModel.currencyAdapter}"
+					app:selection="@={viewModel.currency}" />
+
+			</LinearLayout>
+
 			<FrameLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
