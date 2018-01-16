@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), MainView {
 			finish()
 		}
 
-		vmb.viewModel.navigationManager.currentFragment.observe(this, Observer { it?.let { vmb.viewModel.navigationManager.showFragment(MainActivity@ this, R.id.main_container) } })
+		vmb.viewModel.navigationManager.currentTab.observe(this, Observer { it?.let { vmb.viewModel.navigationManager.showFragment(MainActivity@ this, R.id.main_container) } })
 
 		if (savedInstanceState == null) {
 			vmb.binding.bottomNavigationView.selectedItemId = MainNavigationManager.BottomBarTab.DASHBOARD.id
