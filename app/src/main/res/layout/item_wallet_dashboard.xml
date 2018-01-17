@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
@@ -35,17 +36,17 @@
 				android:id="@+id/ic_left"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:src="@drawable/ic_delete"
 				android:layout_gravity="center_vertical"
-				android:layout_marginLeft="@dimen/spacing_16"/>
+				android:layout_marginLeft="@dimen/spacing_16"
+				android:src="@drawable/ic_delete" />
 
 			<ImageView
 				android:id="@+id/ic_right"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:src="@drawable/ic_delete"
 				android:layout_gravity="center_vertical|right"
-				android:layout_marginRight="@dimen/spacing_16"/>
+				android:layout_marginRight="@dimen/spacing_16"
+				android:src="@drawable/ic_delete" />
 
 		</FrameLayout>
 
@@ -81,13 +82,29 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1" />
 
-			<TextView
+			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
-				tools:text="$1,000.30" />
+				android:orientation="vertical">
 
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="right"
+					android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
+					tools:text="$1,000.30" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="right"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+					android:text="@{item.calculateAndFormatDifference(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
+					app:profitState="@{item.getProfitState(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
+					tools:text="$1,000.30" />
+
+			</LinearLayout>
 
 		</LinearLayout>
 

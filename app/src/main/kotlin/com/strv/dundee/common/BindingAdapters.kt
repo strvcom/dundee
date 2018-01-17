@@ -19,6 +19,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import com.strv.dundee.R
+import com.strv.dundee.model.entity.WalletOverview
 import com.strv.ktools.Resource
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
 
@@ -142,7 +143,7 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 
 		override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
 			val foregroundView = getView(viewHolder, touchHelperCallback.getItemForegroundViewId())
-			if(foregroundView != null) {
+			if (foregroundView != null) {
 				ItemTouchHelper.Callback.getDefaultUIUtil().onSelected(foregroundView)
 			} else {
 				super.onSelectedChanged(viewHolder, actionState)
@@ -151,10 +152,10 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 
 		override fun onChildDrawOver(c: Canvas?, recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
 			val foregroundView = getView(viewHolder, touchHelperCallback.getItemForegroundViewId())
-			if(foregroundView != null) {
+			if (foregroundView != null) {
 				val leftView = getView(viewHolder, touchHelperCallback.getItemLeftViewId())
 				val rightView = getView(viewHolder, touchHelperCallback.getItemRightViewId())
-				if(leftView != null && rightView != null) {
+				if (leftView != null && rightView != null) {
 					if (dX > 0) {
 						leftView.visibility = View.VISIBLE
 						rightView.visibility = View.GONE
@@ -171,10 +172,10 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 
 		override fun onChildDraw(c: Canvas?, recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
 			val foregroundView = getView(viewHolder, touchHelperCallback.getItemForegroundViewId())
-			if(foregroundView != null) {
+			if (foregroundView != null) {
 				val leftView = getView(viewHolder, touchHelperCallback.getItemLeftViewId())
 				val rightView = getView(viewHolder, touchHelperCallback.getItemRightViewId())
-				if(leftView != null && rightView != null) {
+				if (leftView != null && rightView != null) {
 					if (dX > 0) {
 						leftView.visibility = View.VISIBLE
 						rightView.visibility = View.GONE
@@ -191,7 +192,7 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 
 		override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
 			val foregroundView = getView(viewHolder, touchHelperCallback.getItemForegroundViewId())
-			if(foregroundView != null) {
+			if (foregroundView != null) {
 				ItemTouchHelper.Callback.getDefaultUIUtil().clearView(foregroundView)
 			} else {
 				super.clearView(recyclerView, viewHolder)
@@ -210,4 +211,13 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 
 	val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
 	itemTouchHelper.attachToRecyclerView(recycler)
+}
+
+@BindingAdapter("profitState")
+fun setProfitState(view: TextView, profitState: WalletOverview.ProfitState?) {
+	profitState?.let { when (profitState) {
+		WalletOverview.ProfitState.NONE -> view.setTextColor(view.resources.getColor(R.color.currency_none))
+		WalletOverview.ProfitState.PROFIT -> view.setTextColor(view.resources.getColor(R.color.currency_profit))
+		WalletOverview.ProfitState.LOSS -> view.setTextColor(view.resources.getColor(R.color.currency_loss))
+	} }
 }
