@@ -29,6 +29,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val source = mainViewModel.source
 	val currency = mainViewModel.currency
 	val totalValue = MediatorLiveData<Double>()
+	val totalProfit = MediatorLiveData<Double>()
 
 	init {
 		// compose Ticker LiveData (observed by data binding automatically)
@@ -57,11 +58,14 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		// add total value calculation and attach to ticker and wallets LiveData
 		totalValue.addValueSource(wallets, { recalculateTotal() })
 		tickers.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
+		totalProfit.addValueSource(totalValue, {recalculateTotalProfit()})
 	}
 
 	private fun refreshTicker() {
 		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, currency.value!!, liveDataToReuse = tickers[it]) }
 	}
 
-	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount ?: 0.toDouble()) ?: 0.toDouble() } ?: 0.toDouble()
+	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.toDouble() } ?: 0.toDouble()
+
+	private fun recalculateTotalProfit() : Double = totalValue.value?.let { totalValue.value!! - (wallets.value?.data?.sumByDouble { it.boughtPrice } ?: 0.toDouble()) } ?: 0.toDouble()
 }

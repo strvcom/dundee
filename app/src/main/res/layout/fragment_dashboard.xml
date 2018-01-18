@@ -7,6 +7,7 @@
 		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
 		<import type="com.strv.dundee.model.entity.Currency" />
 		<import type="com.strv.dundee.model.entity.Coin" />
+		<import type="com.strv.dundee.model.entity.WalletOverview.ProfitState" />
 
 		<variable
 			name="viewModel"
@@ -73,21 +74,33 @@
 				app:currency="@{viewModel.currency}" />
 		</LinearLayout>
 
-		<FrameLayout
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:padding="@dimen/spacing_16"
+			android:paddingLeft="@dimen/spacing_16"
+			android:paddingRight="@dimen/spacing_16"
+			android:paddingTop="@dimen/spacing_8"
+			android:paddingBottom="@dimen/spacing_8"
 			android:background="@color/accent"
-			android:orientation="horizontal">
+			android:orientation="vertical">
 
 			<TextView
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_gravity="center"
+				android:gravity="center"
 				android:textAppearance="@style/TextAppearance.AppCompat.Title"
 				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalValue)}"
 				tools:text="$300,000.20" />
-		</FrameLayout>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalProfit)}"
+				app:profitState="@{viewModel.totalProfit == 0 ? ProfitState.NONE : viewModel.totalProfit > 0 ? ProfitState.PROFIT : ProfitState.LOSS}"
+				tools:text="$300,000.20" />
+		</LinearLayout>
 
 		<android.support.v7.widget.RecyclerView
 			android:layout_width="match_parent"

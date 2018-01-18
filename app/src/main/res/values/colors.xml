@@ -15,7 +15,7 @@
 	<color name="status_loading">#ff8000</color>
 	<color name="status_error">#ff0011</color>
 
-	<color name="currency_profit">#00d70b</color>
+	<color name="currency_profit">#00ab09</color>
 	<color name="currency_loss">#ff0004</color>
 	<color name="currency_none">#646464</color>
 </resources>
