@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR
 import com.strv.dundee.R
 import com.strv.dundee.model.entity.Coin
+import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.Ticker
 import com.strv.dundee.model.entity.WalletOverview
 import com.strv.dundee.model.repo.BitcoinRepository
@@ -30,6 +31,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val currency = mainViewModel.currency
 	val totalValue = MediatorLiveData<Double>()
 	val totalProfit = MediatorLiveData<Double>()
+	lateinit var exchangeRate: LiveData<Resource<Ticker>>
 
 	init {
 		// compose Ticker LiveData (observed by data binding automatically)
@@ -37,7 +39,9 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
 		// refresh ticker on input changes
 		source.observeForever { refreshTicker() }
-		currency.observeForever { refreshTicker() }
+		currency.observeForever { currencyChange() }
+
+		if(currency.value != Currency.USD) loadExchangeRate()
 
 		val coinWallets = MediatorLiveData<Resource<List<WalletOverview>>>().addValueSource(walletRepository.getWalletsForCurrentUser(), {
 			val result = hashMapOf<String, WalletOverview>()
@@ -59,6 +63,15 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		totalValue.addValueSource(wallets, { recalculateTotal() })
 		tickers.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
 		totalProfit.addValueSource(totalValue, {recalculateTotalProfit()})
+	}
+
+	private fun loadExchangeRate() {
+
+	}
+
+	private fun currencyChange() {
+		if(currency.value != Currency.USD) loadExchangeRate()
+		refreshTicker()
 	}
 
 	private fun refreshTicker() {
