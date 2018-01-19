@@ -8,7 +8,7 @@ class ExchangeRateApi {
 
 	val api = getRetrofitInterface(URL, ExchangeRateApiInterface::class.java)
 
-	fun getExchangeRate(from: String, to: String): Call<out ExchangeResponse> {
-		return api.getEchangeRate(from.toLowerCase(), to.toLowerCase())
+	fun getExchangeRate(source: String, target: String): Call<out ExchangeRateResponse> {
+		return api.getExchangeRate(source.toUpperCase(), target.toUpperCase())
 	}
 }

@@ -5,11 +5,9 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR
 import com.strv.dundee.R
-import com.strv.dundee.model.entity.Coin
-import com.strv.dundee.model.entity.Currency
-import com.strv.dundee.model.entity.Ticker
-import com.strv.dundee.model.entity.WalletOverview
+import com.strv.dundee.model.entity.*
 import com.strv.dundee.model.repo.BitcoinRepository
+import com.strv.dundee.model.repo.ExchangeRateRepository
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.ktools.DiffObservableListLiveData
 import com.strv.ktools.Resource
@@ -23,6 +21,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
 	private val bitcoinRepository by inject<BitcoinRepository>()
 	private val walletRepository by inject<WalletRepository>()
+	private val exchangeRateRepository by inject<ExchangeRateRepository>()
 
 	val itemBinding = ItemBinding.of<WalletOverview>(BR.item, R.layout.item_wallet_dashboard).bindExtra(BR.viewModel, this)!!
 	var wallets: DiffObservableListLiveData<WalletOverview>
@@ -31,7 +30,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val currency = mainViewModel.currency
 	val totalValue = MediatorLiveData<Double>()
 	val totalProfit = MediatorLiveData<Double>()
-	lateinit var exchangeRate: LiveData<Resource<Ticker>>
+	var exchangeRate: LiveData<Resource<ExchangeRate>>? = null
 
 	init {
 		// compose Ticker LiveData (observed by data binding automatically)
@@ -41,11 +40,11 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		source.observeForever { refreshTicker() }
 		currency.observeForever { currencyChange() }
 
-		if(currency.value != Currency.USD) loadExchangeRate()
+		if (currency.value != Currency.USD) loadExchangeRate()
 
 		val coinWallets = MediatorLiveData<Resource<List<WalletOverview>>>().addValueSource(walletRepository.getWalletsForCurrentUser(), {
 			val result = hashMapOf<String, WalletOverview>()
-			Coin.getAll().forEach {result[it] = WalletOverview(it)}
+			Coin.getAll().forEach { result[it] = WalletOverview(it) }
 			it?.data?.fold(result, { accumulator, wallet ->
 				accumulator[wallet.coin!!]!!.amount += wallet.amount!!
 				accumulator[wallet.coin!!]!!.boughtPrice += wallet.boughtPrice!!
@@ -62,15 +61,18 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		// add total value calculation and attach to ticker and wallets LiveData
 		totalValue.addValueSource(wallets, { recalculateTotal() })
 		tickers.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
-		totalProfit.addValueSource(totalValue, {recalculateTotalProfit()})
+		totalProfit.addValueSource(totalValue, { recalculateTotalProfit() })
 	}
 
 	private fun loadExchangeRate() {
-
+		currency.value?.let {
+			exchangeRate?.let { totalProfit.removeSource(it) }
+			exchangeRate = exchangeRateRepository.getExchangeRate(Currency.USD, it)
+			totalProfit.addValueSource(exchangeRate!!, { recalculateTotalProfit() })}
 	}
 
 	private fun currencyChange() {
-		if(currency.value != Currency.USD) loadExchangeRate()
+		if (currency.value != Currency.USD) loadExchangeRate()
 		refreshTicker()
 	}
 
@@ -80,5 +82,13 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
 	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.toDouble() } ?: 0.toDouble()
 
-	private fun recalculateTotalProfit() : Double = totalValue.value?.let { totalValue.value!! - (wallets.value?.data?.sumByDouble { it.boughtPrice } ?: 0.toDouble()) } ?: 0.toDouble()
+	private fun recalculateTotalProfit(): Double = when(currency.value) {
+		Currency.USD -> calculateProfit(1.toDouble())
+		exchangeRate?.value?.data?.target -> calculateProfit(exchangeRate!!.value!!.data!!.rate)
+		else -> 0.toDouble()
+	}
+
+	private fun calculateProfit(exchangeRate: Double): Double{
+		return totalValue.value?.let { totalValue.value!! - (wallets.value?.data?.sumByDouble { it.boughtPrice } ?: 0.toDouble()) * exchangeRate } ?: 0.toDouble()
+	}
 }

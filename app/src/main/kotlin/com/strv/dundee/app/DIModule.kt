@@ -6,9 +6,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.strv.dundee.model.api.bitfinex.BitfinexApi
 import com.strv.dundee.model.api.bitstamp.BitstampApi
-import com.strv.dundee.model.db.BitcoinDatabase
+import com.strv.dundee.model.api.exchangerate.ExchangeRateApi
 import com.strv.dundee.model.cache.BitcoinCache
+import com.strv.dundee.model.cache.ExchangeRateCache
+import com.strv.dundee.model.db.BitcoinDatabase
 import com.strv.dundee.model.repo.BitcoinRepository
+import com.strv.dundee.model.repo.ExchangeRateRepository
 import com.strv.dundee.model.repo.UserRepository
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.ktools.provideSingleton
@@ -20,13 +23,17 @@ object DIModule {
 
 		provideSingleton { BitstampApi() }
 		provideSingleton { BitfinexApi() }
+		provideSingleton { ExchangeRateApi() }
 
 		provideSingleton { BitcoinCache() }
+		provideSingleton { ExchangeRateCache() }
 		provideSingleton { BitcoinRepository() }
+		provideSingleton { ExchangeRateRepository() }
 
 
 		val database = Room.databaseBuilder(application, BitcoinDatabase::class.java, "bitcoin-database").build()
 		provideSingleton { database.tickerDao() }
+		provideSingleton { database.exchangeRate() }
 
 
 		provideSingleton { FirebaseFirestore.getInstance() }
@@ -35,6 +42,7 @@ object DIModule {
 
 		provideSingleton { UserRepository() }
 		provideSingleton { WalletRepository() }
+
 	}
 }
 

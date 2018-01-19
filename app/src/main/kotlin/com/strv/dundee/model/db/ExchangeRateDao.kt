@@ -5,14 +5,15 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import android.arch.persistence.room.Query
-import com.strv.dundee.model.entity.Ticker
+import com.strv.dundee.model.entity.ExchangeRate
+
 
 @Dao
-interface TickerDao {
+interface ExchangeRateDao {
 
 	@Insert(onConflict = REPLACE)
-	fun putTicker(ticker: Ticker)
+	fun putRate(rate: ExchangeRate)
 
-	@Query("SELECT * FROM ticker WHERE source = :arg0 AND currency = :arg1 AND coin = :arg2 LIMIT 1")
-	fun getTicker(source: String, currency: String, coin: String): LiveData<Ticker>
+	@Query("SELECT * FROM exchangeRate WHERE source = :arg0 AND target = :arg1 LIMIT 1")
+	fun getRate(source: String, target: String): LiveData<ExchangeRate>
 }

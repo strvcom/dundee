@@ -8,5 +8,5 @@ import retrofit2.http.Query
 interface ExchangeRateApiInterface {
 
 	@GET("latest")
-	fun getEchangeRate(@Query("base") from: String, @Query("symbols") to: String): Call<ExchangeResponse>
+	fun getExchangeRate(@Query("base") source: String, @Query("symbols") target: String): Call<ExchangeRateResponse>
 }
