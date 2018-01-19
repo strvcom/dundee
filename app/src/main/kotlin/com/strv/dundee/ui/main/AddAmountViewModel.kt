@@ -42,7 +42,7 @@ class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceive
 		wallet?.let {
 			amount.value = it.amount.toString()
 			coin.value = it.coin
-			boughtFor.value = it.toString()
+			boughtFor.value = it.boughtPrice.toString()
 			this.wallet = it
 		}
 	}
@@ -72,6 +72,7 @@ class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceive
 		logD("Update to ${amount.value} $coin")
 		progress.value = true
 
+		wallet?.boughtPrice = boughtFor.value?.toDouble()
 		wallet?.amount = amount.value?.toDouble()
 		wallet?.coin = coin.value
 		walletRepository.updateWallet(wallet!!)
