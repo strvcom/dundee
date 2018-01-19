@@ -7,6 +7,7 @@
 
 		<import type="com.strv.dundee.common.DateFormatter" />
 		<import type="com.strv.dundee.model.entity.Currency" />
+		<import type="com.strv.dundee.model.entity.WalletOverview.ProfitState" />
 
 		<variable
 			name="item"
@@ -92,7 +93,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="right"
 					android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
+					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
 					tools:text="$1,000.30" />
 
 				<TextView
@@ -100,8 +101,8 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="right"
 					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-					android:text="@{item.calculateAndFormatDifference(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
-					app:profitState="@{item.getProfitState(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"
+					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, item.getProfit(viewModel.currency, viewModel.exchangeRate.data, viewModel.tickers.get(item.coin).data.getValue(item.amount)))}"
+					app:profitState="@{item.getProfit(viewModel.currency, viewModel.exchangeRate.data, viewModel.tickers.get(item.coin).data.getValue(item.amount)) == 0 ? ProfitState.NONE : item.getProfit(viewModel.currency, viewModel.exchangeRate.data, viewModel.tickers.get(item.coin).data.getValue(item.amount)) > 0 ? ProfitState.PROFIT : ProfitState.LOSS}"
 					tools:text="$1,000.30" />
 
 			</LinearLayout>
