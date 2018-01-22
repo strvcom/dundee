@@ -15,8 +15,8 @@
 	<string name="save">Save</string>
 	<string name="error_unknown">Unknown error</string>
 	<string name="options">Options</string>
-	<string name="price_source">Price Source</string>
-	<string name="currency">Currency</string>
+	<string name="price_source">Price Source and currency</string>
+	<string name="currency">App currency</string>
 	<string name="item_removed">Item was removed</string>
 	<string name="undo">Undo</string>
 	<string name="dashboard">Dashboard</string>

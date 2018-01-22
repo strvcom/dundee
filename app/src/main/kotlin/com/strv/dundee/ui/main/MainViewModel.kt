@@ -20,8 +20,10 @@ class MainViewModel() : ViewModel() {
 
 	val source by application.sharedPrefs().stringLiveData(BitcoinSource.BITSTAMP)
 	val currency by application.sharedPrefs().stringLiveData(Currency.USD)
+	val apiCurrency by application.sharedPrefs().stringLiveData(Currency.USD)
 	val sourceAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, BitcoinSource.getAll())
 	val currencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getAll())
+	val apiCurrencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getApiCurrencies())
 	val optionsOpen = MutableLiveData<Boolean>().apply { value = false }
 	val navigationManager = MainNavigationManager()
 

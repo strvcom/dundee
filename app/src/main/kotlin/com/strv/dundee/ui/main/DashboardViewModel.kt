@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR
 import com.strv.dundee.R
 import com.strv.dundee.model.entity.Coin
-import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.ExchangeRate
 import com.strv.dundee.model.entity.Ticker
 import com.strv.dundee.model.entity.WalletOverview
@@ -31,6 +30,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val tickers = HashMap<String, LiveData<Resource<Ticker>>>()
 	val source = mainViewModel.source
 	val currency = mainViewModel.currency
+	val apiCurrency = mainViewModel.currency
 	val totalValue = MediatorLiveData<Double>()
 	val totalProfit = MediatorLiveData<Double>()
 	var exchangeRate: LiveData<Resource<ExchangeRate>>? = null
@@ -43,6 +43,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
 		// refresh ticker on input changes
 		source.observeForever { refreshTicker() }
+		apiCurrency.observeForever { refreshTicker() }
 		currency.observeForever { refreshExchangeRate() }
 
 		val coinWallets = MediatorLiveData<Resource<List<WalletOverview>>>().addValueSource(walletRepository.getWalletsForCurrentUser(), {
@@ -69,11 +70,11 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	}
 
 	private fun refreshTicker() {
-		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, Currency.USD, liveDataToReuse = tickers[it]) }
+		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!, liveDataToReuse = tickers[it]) }
 	}
 
 	private fun refreshExchangeRate() {
-		exchangeRate = exchangeRateRepository.getExchangeRate(Currency.USD, currency.value!!, exchangeRate)
+		exchangeRate = exchangeRateRepository.getExchangeRate(apiCurrency.value!!, currency.value!!, exchangeRate)
 	}
 
 	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { (tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.toDouble()) * (exchangeRate?.value?.data?.rate ?: 0.toDouble()) } ?: 0.toDouble()
