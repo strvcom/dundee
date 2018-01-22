@@ -5,7 +5,11 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR
 import com.strv.dundee.R
-import com.strv.dundee.model.entity.*
+import com.strv.dundee.model.entity.Coin
+import com.strv.dundee.model.entity.Currency
+import com.strv.dundee.model.entity.ExchangeRate
+import com.strv.dundee.model.entity.Ticker
+import com.strv.dundee.model.entity.WalletOverview
 import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.ExchangeRateRepository
 import com.strv.dundee.model.repo.WalletRepository
@@ -15,7 +19,6 @@ import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList
-
 
 class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
@@ -36,11 +39,11 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		// compose Ticker LiveData (observed by data binding automatically)
 		refreshTicker()
 
+		refreshExchangeRate()
+
 		// refresh ticker on input changes
 		source.observeForever { refreshTicker() }
-		currency.observeForever { currencyChange() }
-
-		if (currency.value != Currency.USD) loadExchangeRate()
+		currency.observeForever { refreshExchangeRate() }
 
 		val coinWallets = MediatorLiveData<Resource<List<WalletOverview>>>().addValueSource(walletRepository.getWalletsForCurrentUser(), {
 			val result = hashMapOf<String, WalletOverview>()
@@ -60,35 +63,20 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
 		// add total value calculation and attach to ticker and wallets LiveData
 		totalValue.addValueSource(wallets, { recalculateTotal() })
+		totalValue.addValueSource(exchangeRate!!, { recalculateTotal() })
 		tickers.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
 		totalProfit.addValueSource(totalValue, { recalculateTotalProfit() })
 	}
 
-	private fun loadExchangeRate() {
-		currency.value?.let {
-			exchangeRate?.let { totalProfit.removeSource(it) }
-			exchangeRate = exchangeRateRepository.getExchangeRate(Currency.USD, it)
-			totalProfit.addValueSource(exchangeRate!!, { recalculateTotalProfit() })}
-	}
-
-	private fun currencyChange() {
-		if (currency.value != Currency.USD) loadExchangeRate()
-		refreshTicker()
-	}
-
 	private fun refreshTicker() {
-		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, currency.value!!, liveDataToReuse = tickers[it]) }
+		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, Currency.USD, liveDataToReuse = tickers[it]) }
 	}
 
-	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.toDouble() } ?: 0.toDouble()
-
-	private fun recalculateTotalProfit(): Double = when(currency.value) {
-		Currency.USD -> calculateProfit(1.toDouble())
-		exchangeRate?.value?.data?.target -> calculateProfit(exchangeRate!!.value!!.data!!.rate)
-		else -> 0.toDouble()
+	private fun refreshExchangeRate() {
+		exchangeRate = exchangeRateRepository.getExchangeRate(Currency.USD, currency.value!!, exchangeRate)
 	}
 
-	private fun calculateProfit(exchangeRate: Double): Double{
-		return totalValue.value?.let { totalValue.value!! - (wallets.value?.data?.sumByDouble { it.boughtPrice } ?: 0.toDouble()) * exchangeRate } ?: 0.toDouble()
-	}
+	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { (tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.toDouble()) * (exchangeRate?.value?.data?.rate ?: 0.toDouble()) } ?: 0.toDouble()
+
+	private fun recalculateTotalProfit(): Double = totalValue.value?.let { it - (wallets.value?.data?.sumByDouble { it.boughtPrice } ?: 0.toDouble()) * (exchangeRate?.value?.data?.rate ?: 0.toDouble()) } ?: 0.toDouble()
 }

@@ -13,5 +13,5 @@ Notes:
 data class ExchangeRate(
 		var source: String = Currency.USD,
 		var target: String = Currency.EUR,
-		var rate: Double =  0.toDouble()
+		var rate: Double =  1.toDouble()
 )

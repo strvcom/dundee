@@ -8,6 +8,6 @@ data class ExchangeRateResponse(
 		val rates: HashMap<String, Double>
 ){
 	fun getExchangeRate(source: String, target: String) : ExchangeRate {
-		return ExchangeRate(source, target, rates[target] ?: 0.0)
+		return ExchangeRate(source, target, rates[target] ?: 1.toDouble())
 	}
 }

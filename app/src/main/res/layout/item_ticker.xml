@@ -8,7 +8,10 @@
 			type="String" />
 		<variable
 			name="ticker"
-			type="com.strv.ktools.Resource&lt;com.strv.dundee.model.entity.Ticker>" />
+			type="com.strv.dundee.model.entity.Ticker" />
+		<variable
+			name="exchangeRate"
+			type="com.strv.dundee.model.entity.ExchangeRate"/>
 		<variable
 			name="currency"
 			type="String" />
@@ -36,7 +39,7 @@
 			android:textSize="10sp"
 			android:textColor="@color/text_default"
 			android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-			android:text="@{Currency.INSTANCE.formatValue(currency, ticker.data.lastPrice)}"
+			android:text="@{Currency.INSTANCE.formatValue(currency, ticker.lastPrice * exchangeRate.rate)}"
 			tools:text="$12,322.32" />
 	</LinearLayout>
 </layout>

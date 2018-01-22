@@ -7,12 +7,5 @@ data class WalletOverview(
 ) {
 	enum class ProfitState { PROFIT, LOSS, NONE }
 
-	fun getProfit(currency: String?, rate: ExchangeRate?, actualValue: Double?): Double {
-		if (actualValue == null || currency == null) return 0.toDouble()
-		return when(currency) {
-			Currency.USD -> actualValue - boughtPrice
-			rate?.target -> actualValue - boughtPrice * rate.rate
-			else -> 0.toDouble()
-		}
-	}
+	fun getProfit(currency: String?, rate: ExchangeRate?, actualValue: Double?): Double = if (actualValue == null || currency == null || rate == null) 0.toDouble() else (actualValue - boughtPrice) * rate.rate
 }
