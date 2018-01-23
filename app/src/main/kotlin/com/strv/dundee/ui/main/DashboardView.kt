@@ -31,12 +31,6 @@ class DashboardFragment : Fragment(), DashboardView {
 
 	private val vmb by vmb<DashboardViewModel, FragmentDashboardBinding>(R.layout.fragment_dashboard) { DashboardViewModel(ViewModelProviders.of(activity as FragmentActivity).get(MainViewModel::class.java)) }
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-
-
-	}
-
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 		return vmb.rootView
 	}

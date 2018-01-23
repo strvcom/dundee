@@ -15,7 +15,6 @@ import com.strv.dundee.model.entity.Wallet
 import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.ktools.vmb
 
-
 interface FinancesView {
 	val lifecycleAwareAdapter: LifecycleAwareBindingRecyclerViewAdapter<Wallet> // TODO: Temp fix for tatarka - remove when tatarka adds support for lifecycle
 }
@@ -37,9 +36,10 @@ class FinancesFragment : Fragment(), FinancesView {
 		super.onCreate(savedInstanceState)
 
 		vmb.viewModel.walletRemovedSnackBar.observe(this, Observer { wallet ->
-			val snackbar = Snackbar.make(vmb.rootView, R.string.item_removed, Snackbar.LENGTH_SHORT)
-			snackbar.setAction(R.string.undo, { wallet?.let { vmb.viewModel.addWallet(it) } })
-			snackbar.show()
+			Snackbar.make(vmb.rootView, R.string.item_removed, Snackbar.LENGTH_SHORT).apply {
+				setAction(R.string.undo, { wallet?.let { vmb.viewModel.addWallet(it) } })
+				show()
+			}
 		})
 		vmb.viewModel.walletOpened.observe(this, Observer { it?.let { wallet -> activity?.let { startActivity(AddAmountActivity.newIntent(it, wallet)) } } })
 	}

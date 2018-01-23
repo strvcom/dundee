@@ -95,13 +95,14 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		if (apiCurrency.value == exchangeRate!!.value?.data?.source)
 			wallets.value?.data?.sumByDouble {
 				if (tickers[it.coin]?.value?.data?.currency == apiCurrency.value)
-					(tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.toDouble()) * (exchangeRate?.value?.data?.rate ?: 0.toDouble())
-				else 0.toDouble()
-			} ?: 0.toDouble()
-		else 0.toDouble()
+					(tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.0) * (exchangeRate?.value?.data?.rate ?: 0.0)
+				else 0.0
+			} ?: 0.0
+		else 0.0
 
+	// calculation of current total
 	private fun recalculateTotalProfit(): Double =
-		if (totalValue.value != null && totalValue.value != 0.toDouble() && currency.value == usdExchangeRate!!.value?.data?.target)
-			totalValue.value?.let { it - (wallets.value?.data?.sumByDouble { it.boughtPrice } ?: 0.toDouble()) * (usdExchangeRate!!.value?.data?.rate ?: 0.toDouble()) } ?: 0.toDouble()
-		else 0.toDouble()
+		if (totalValue.value != null && totalValue.value != 0.0 && currency.value == usdExchangeRate!!.value?.data?.target)
+			totalValue.value?.let { it - (wallets.value?.data?.sumByDouble { it.boughtPrice } ?: 0.0) * (usdExchangeRate!!.value?.data?.rate ?: 0.0) } ?: 0.0
+		else 0.0
 }

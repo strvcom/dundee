@@ -8,5 +8,5 @@ data class WalletOverview(
 	fun getProfit(currency: String?, exchangeRate: ExchangeRate?, usdRate: ExchangeRate?, ticker: Ticker?): Double =
 		if(ticker?.currency == exchangeRate?.source && currency == exchangeRate?.target && currency == usdRate?.target)
 			ticker!!.lastPrice * amount * exchangeRate!!.rate - boughtPrice * usdRate!!.rate
-		else 0.toDouble()
+		else 0.0
 }

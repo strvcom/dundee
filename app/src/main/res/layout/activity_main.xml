@@ -52,8 +52,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/spacing_56"
 				android:layout_gravity="start"
-				android:background="@color/accent"
-				app:menu="@menu/navigation" />
+				android:background="@color/accent" />
 
 		</LinearLayout>
 
