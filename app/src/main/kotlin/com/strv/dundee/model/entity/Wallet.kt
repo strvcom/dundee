@@ -6,7 +6,7 @@ import com.strv.ktools.KParcelable
 import com.strv.ktools.parcelableCreator
 import com.strv.ktools.readDate
 import com.strv.ktools.writeDate
-import java.util.*
+import java.util.Date
 
 /*
 User object
@@ -20,7 +20,8 @@ data class Wallet(
 		var coin: String? = null,
 		var amount: Double? = null,
 		@ServerTimestamp var created: Date? = null,
-		var boughtPrice: Double? = null
+		var boughtPrice: Double? = null,
+		var boughtCurrency: String? = null
 ) : Document(), KParcelable {
 
 	private constructor(parcel: Parcel) : this(
@@ -28,7 +29,8 @@ data class Wallet(
 			coin = parcel.readString(),
 			amount = parcel.readValue(Double::class.java.classLoader) as? Double,
 			created = parcel.readDate(),
-			boughtPrice = parcel.readValue(Double::class.java.classLoader) as? Double) {
+			boughtPrice = parcel.readValue(Double::class.java.classLoader) as? Double,
+			boughtCurrency = parcel.readString()) {
 		docId = parcel.readString()
 	}
 
@@ -38,6 +40,7 @@ data class Wallet(
 		parcel.writeValue(amount)
 		parcel.writeDate(created)
 		parcel.writeValue(boughtPrice)
+		parcel.writeString(boughtCurrency)
 		parcel.writeString(docId)
 	}
 

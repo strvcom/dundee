@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.widget.ArrayAdapter
 import com.strv.dundee.model.entity.Coin
+import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.ktools.EventLiveData
@@ -35,7 +36,9 @@ class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceive
 			.addValueSource(boughtFor, {validateFunction()})
 	val progress = MutableLiveData<Boolean>().apply { value = false }
 	var coin = MutableLiveData<String>().apply { value = Coin.BTC }
+	var currency = MutableLiveData<String>().apply { value = Currency.USD }
 	val coinAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Coin.getAll())
+	val currencyAdapter = ArrayAdapter(application, android.R.layout.simple_spinner_dropdown_item, Currency.getAll())
 	var wallet: Wallet? = null
 
 	init {
@@ -43,6 +46,7 @@ class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceive
 			amount.value = it.amount.toString()
 			coin.value = it.coin
 			boughtFor.value = it.boughtPrice.toString()
+			currency.value = it.boughtCurrency
 			this.wallet = it
 		}
 	}
@@ -56,7 +60,7 @@ class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceive
 		logD("Adding ${amount.value} $coin")
 		progress.value = true
 
-		val data = Wallet(coin = coin.value, amount = amount.value?.toDouble(), boughtPrice = boughtFor.value?.toDouble())
+		val data = Wallet(coin = coin.value, amount = amount.value?.toDouble(), boughtPrice = boughtFor.value?.toDouble(), boughtCurrency = currency.value)
 		walletRepository.addWalletToCurrentUser(data)
 				.addOnSuccessListener {
 					logD("Added ${amount.value} $coin")
@@ -73,6 +77,7 @@ class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceive
 		progress.value = true
 
 		wallet?.boughtPrice = boughtFor.value?.toDouble()
+		wallet?.boughtCurrency = currency.value
 		wallet?.amount = amount.value?.toDouble()
 		wallet?.coin = coin.value
 		walletRepository.updateWallet(wallet!!)

@@ -1,7 +1,8 @@
 package com.strv.dundee.model.db
 
 import android.arch.persistence.room.TypeConverter
-import java.util.*
+import com.google.gson.Gson
+import java.util.Date
 
 class Converters {
 	@TypeConverter
@@ -12,5 +13,15 @@ class Converters {
 	@TypeConverter
 	fun dateToTimestamp(date: Date?): Long? {
 		return date?.time
+	}
+
+	@TypeConverter
+	fun mapToString(map: Map<*, *>?): String? {
+		return if(map == null) null else Gson().toJson(map)
+	}
+
+	@TypeConverter
+	fun stringToMap(json: String?): Map<*, *>? {
+		return Gson().fromJson(json, HashMap::class.java)
 	}
 }

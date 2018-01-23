@@ -91,8 +91,23 @@
 
 				</android.support.design.widget.TextInputLayout>
 
+				<Spinner
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="@dimen/spacing_16"
+					android:layout_gravity="center_vertical"
+					app:adapter="@{viewModel.currencyAdapter}"
+					app:selection="@={viewModel.currency}" />
 
 			</LinearLayout>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/bought_for_caption"
+				android:gravity="center"
+				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+				android:layout_marginTop="@dimen/spacing_16"/>
 
 			<FrameLayout
 				android:layout_width="match_parent"
