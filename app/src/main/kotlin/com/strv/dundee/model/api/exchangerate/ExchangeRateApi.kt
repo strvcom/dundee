@@ -11,4 +11,10 @@ class ExchangeRateApi {
 	fun getExchangeRate(source: String, target: String): Call<out ExchangeRateResponse> {
 		return api.getExchangeRate(source.toUpperCase(), target.toUpperCase())
 	}
+
+	fun getExchangeRates(source: String, target: List<String>): Call<out ExchangeRateResponse> {
+		var targetString = ""
+		target.forEach { targetString += "$it," }
+		return api.getExchangeRate(source.toUpperCase(), targetString.substring(0, targetString.length - 1))
+	}
 }

@@ -16,12 +16,12 @@ class Converters {
 	}
 
 	@TypeConverter
-	fun mapToString(map: Map<*, *>?): String? {
+	fun mapToString(map: Map<String, Double>?): String? {
 		return if(map == null) null else Gson().toJson(map)
 	}
 
 	@TypeConverter
-	fun stringToMap(json: String?): Map<*, *>? {
-		return Gson().fromJson(json, HashMap::class.java)
+	fun stringToMap(json: String?): Map<String, Double>? {
+		return Gson().fromJson(json, HashMap<String, Double>().javaClass)
 	}
 }

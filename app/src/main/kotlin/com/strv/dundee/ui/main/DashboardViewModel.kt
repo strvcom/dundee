@@ -2,6 +2,7 @@ package com.strv.dundee.ui.main
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR
 import com.strv.dundee.R
@@ -12,11 +13,13 @@ import com.strv.dundee.model.entity.Ticker
 import com.strv.dundee.model.entity.WalletOverview
 import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.ExchangeRateRepository
+import com.strv.dundee.model.repo.ExchangeRatesRepository
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.ktools.DiffObservableListLiveData
 import com.strv.ktools.Resource
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
+import com.strv.ktools.logMe
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList
 
@@ -25,6 +28,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	private val bitcoinRepository by inject<BitcoinRepository>()
 	private val walletRepository by inject<WalletRepository>()
 	private val exchangeRateRepository by inject<ExchangeRateRepository>()
+	private val exchangeRatesRepository by inject<ExchangeRatesRepository>()
 
 	val itemBinding = ItemBinding.of<WalletOverview>(BR.item, R.layout.item_wallet_dashboard).bindExtra(BR.viewModel, this)!!
 	var wallets: DiffObservableListLiveData<WalletOverview>
@@ -77,6 +81,11 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		tickers.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
 		totalProfit.addValueSource(totalValue, { recalculateTotalProfit() })
 		totalProfit.addValueSource(usdExchangeRate!!, { recalculateTotalProfit() })
+
+		exchangeRatesRepository.getExchangeRates(Currency.USD, Currency.getAll().toList()).observeForever(Observer {
+			it?.status.logMe()
+			it?.data.logMe()
+		})
 	}
 
 	private fun refreshTicker() {
