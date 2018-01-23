@@ -38,22 +38,10 @@ class FinancesViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		}
 	}
 
-	val touchHelperCallback = object : TouchHelperCallback<Wallet> {
+	val touchHelperCallback = object : TouchHelperCallback<Wallet>(R.id.item_foreground, R.id.ic_left, R.id.ic_right) {
 		override fun onItemSwiped(item: Wallet) {
 			removeWallet(item)
 			walletRemovedSnackBar.publish(item)
-		}
-
-		override fun getItemForegroundViewId(): Int? {
-			return R.id.item_foreground
-		}
-
-		override fun getItemLeftViewId(): Int? {
-			return R.id.ic_left
-		}
-
-		override fun getItemRightViewId(): Int? {
-			return R.id.ic_right
 		}
 	}
 
