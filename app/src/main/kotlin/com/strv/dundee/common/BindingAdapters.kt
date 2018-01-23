@@ -139,7 +139,7 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 		}
 
 		override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-			val foregroundView = getView(viewHolder, touchHelperCallback.getItemForegroundViewId())
+			val foregroundView = getView(viewHolder, touchHelperCallback.itemForegroundViewId)
 			if (foregroundView != null) {
 				ItemTouchHelper.Callback.getDefaultUIUtil().onSelected(foregroundView)
 			} else {
@@ -148,10 +148,10 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 		}
 
 		override fun onChildDrawOver(c: Canvas?, recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-			val foregroundView = getView(viewHolder, touchHelperCallback.getItemForegroundViewId())
+			val foregroundView = getView(viewHolder, touchHelperCallback.itemForegroundViewId)
 			if (foregroundView != null) {
-				val leftView = getView(viewHolder, touchHelperCallback.getItemLeftViewId())
-				val rightView = getView(viewHolder, touchHelperCallback.getItemRightViewId())
+				val leftView = getView(viewHolder, touchHelperCallback.itemLeftViewId)
+				val rightView = getView(viewHolder, touchHelperCallback.itemRightViewId)
 				if (leftView != null && rightView != null) {
 					if (dX > 0) {
 						leftView.visibility = View.VISIBLE
@@ -168,10 +168,10 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 		}
 
 		override fun onChildDraw(c: Canvas?, recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-			val foregroundView = getView(viewHolder, touchHelperCallback.getItemForegroundViewId())
+			val foregroundView = getView(viewHolder, touchHelperCallback.itemForegroundViewId)
 			if (foregroundView != null) {
-				val leftView = getView(viewHolder, touchHelperCallback.getItemLeftViewId())
-				val rightView = getView(viewHolder, touchHelperCallback.getItemRightViewId())
+				val leftView = getView(viewHolder, touchHelperCallback.itemLeftViewId)
+				val rightView = getView(viewHolder, touchHelperCallback.itemRightViewId)
 				if (leftView != null && rightView != null) {
 					if (dX > 0) {
 						leftView.visibility = View.VISIBLE
@@ -188,7 +188,7 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 		}
 
 		override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
-			val foregroundView = getView(viewHolder, touchHelperCallback.getItemForegroundViewId())
+			val foregroundView = getView(viewHolder, touchHelperCallback.itemForegroundViewId)
 			if (foregroundView != null) {
 				ItemTouchHelper.Callback.getDefaultUIUtil().clearView(foregroundView)
 			} else {
