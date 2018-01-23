@@ -7,7 +7,6 @@
 		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
 		<import type="com.strv.dundee.model.entity.Currency" />
 		<import type="com.strv.dundee.model.entity.Coin" />
-		<import type="com.strv.dundee.model.entity.WalletOverview.ProfitState" />
 
 		<variable
 			name="viewModel"
@@ -103,7 +102,7 @@
 				android:gravity="center"
 				android:textAppearance="@style/TextAppearance.AppCompat.Body1"
 				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalProfit)}"
-				app:profitState="@{viewModel.totalProfit == 0 ? ProfitState.NONE : viewModel.totalProfit > 0 ? ProfitState.PROFIT : ProfitState.LOSS}"
+				app:profitState="@{viewModel.totalProfit}"
 				tools:text="$300,000.20" />
 		</LinearLayout>
 

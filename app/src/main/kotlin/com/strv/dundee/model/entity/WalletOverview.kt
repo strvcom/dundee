@@ -5,7 +5,8 @@ data class WalletOverview(
 		var amount: Double = 0.0,
 		var boughtPrice: Double = 0.0
 ) {
-	enum class ProfitState { PROFIT, LOSS, NONE }
-
-	fun getProfit(currency: String?, rate: ExchangeRate?, actualValue: Double?): Double = if (actualValue == null || currency == null || rate == null) 0.toDouble() else (actualValue - boughtPrice) * rate.rate
+	fun getProfit(currency: String?, exchangeRate: ExchangeRate?, usdRate: ExchangeRate?, ticker: Ticker?): Double =
+		if(ticker?.currency == exchangeRate?.source && currency == exchangeRate?.target && currency == usdRate?.target)
+			ticker!!.lastPrice * amount * exchangeRate!!.rate - boughtPrice * usdRate!!.rate
+		else 0.toDouble()
 }

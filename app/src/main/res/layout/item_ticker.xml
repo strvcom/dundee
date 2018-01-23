@@ -39,7 +39,7 @@
 			android:textSize="10sp"
 			android:textColor="@color/text_default"
 			android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-			android:text="@{Currency.INSTANCE.formatValue(currency, ticker.lastPrice * exchangeRate.rate)}"
+			android:text="@{Currency.INSTANCE.formatValue(currency, ticker.currency.equals(exchangeRate.source) &amp;&amp; currency.equals(exchangeRate.target) ? ticker.lastPrice * exchangeRate.rate : 0.0)}"
 			tools:text="$12,322.32" />
 	</LinearLayout>
 </layout>

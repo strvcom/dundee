@@ -19,10 +19,8 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import com.strv.dundee.R
-import com.strv.dundee.model.entity.WalletOverview
 import com.strv.ktools.Resource
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
-
 
 @BindingAdapter("hide")
 fun setHide(view: View, hide: Boolean) {
@@ -140,7 +138,6 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 			return false
 		}
 
-
 		override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
 			val foregroundView = getView(viewHolder, touchHelperCallback.getItemForegroundViewId())
 			if (foregroundView != null) {
@@ -214,10 +211,12 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 }
 
 @BindingAdapter("profitState")
-fun setProfitState(view: TextView, profitState: WalletOverview.ProfitState?) {
-	profitState?.let { when (profitState) {
-		WalletOverview.ProfitState.NONE -> view.setTextColor(view.resources.getColor(R.color.currency_none))
-		WalletOverview.ProfitState.PROFIT -> view.setTextColor(view.resources.getColor(R.color.currency_profit))
-		WalletOverview.ProfitState.LOSS -> view.setTextColor(view.resources.getColor(R.color.currency_loss))
-	} }
+fun setProfitState(view: TextView, profit: Double?) {
+	profit?.let {
+		when {
+			profit > 0 -> view.setTextColor(view.resources.getColor(R.color.currency_profit))
+			profit < 0 -> view.setTextColor(view.resources.getColor(R.color.currency_loss))
+			else -> view.setTextColor(view.resources.getColor(R.color.currency_none))
+		}
+	}
 }

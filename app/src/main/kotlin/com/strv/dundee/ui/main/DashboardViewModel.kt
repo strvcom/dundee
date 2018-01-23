@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR
 import com.strv.dundee.R
 import com.strv.dundee.model.entity.Coin
+import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.ExchangeRate
 import com.strv.dundee.model.entity.Ticker
 import com.strv.dundee.model.entity.WalletOverview
@@ -30,22 +31,30 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val tickers = HashMap<String, LiveData<Resource<Ticker>>>()
 	val source = mainViewModel.source
 	val currency = mainViewModel.currency
-	val apiCurrency = mainViewModel.currency
+	val apiCurrency = mainViewModel.apiCurrency
 	val totalValue = MediatorLiveData<Double>()
 	val totalProfit = MediatorLiveData<Double>()
-	var exchangeRate: LiveData<Resource<ExchangeRate>>? = null
+	var exchangeRate: LiveData<Resource<ExchangeRate>>? = null        // used for prizes calculation, based on API currency and UI currency
+	var usdExchangeRate: LiveData<Resource<ExchangeRate>>? = null    // used for profit calculation, boughtPrice is in USD
 
 	init {
-		// compose Ticker LiveData (observed by data binding automatically)
+		// compose Ticker and exchange rates LiveData (observed by data binding automatically)
 		refreshTicker()
-
 		refreshExchangeRate()
+		refreshUsdExchangeRate()
 
-		// refresh ticker on input changes
+		// refresh ticker and exchange rates on input changes
+		currency.observeForever {
+			refreshExchangeRate()
+			refreshUsdExchangeRate()
+		}
+		apiCurrency.observeForever {
+			refreshTicker()
+			refreshExchangeRate()
+		}
 		source.observeForever { refreshTicker() }
-		apiCurrency.observeForever { refreshTicker() }
-		currency.observeForever { refreshExchangeRate() }
 
+		// used for transforming Wallet list to WalletOverview list
 		val coinWallets = MediatorLiveData<Resource<List<WalletOverview>>>().addValueSource(walletRepository.getWalletsForCurrentUser(), {
 			val result = hashMapOf<String, WalletOverview>()
 			Coin.getAll().forEach { result[it] = WalletOverview(it) }
@@ -62,11 +71,12 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 			override fun areItemsTheSame(oldItem: WalletOverview?, newItem: WalletOverview?) = oldItem == newItem
 		})
 
-		// add total value calculation and attach to ticker and wallets LiveData
+		// add total value and total profit calculation and attach to ticker, wallets and exchange rates LiveData
 		totalValue.addValueSource(wallets, { recalculateTotal() })
 		totalValue.addValueSource(exchangeRate!!, { recalculateTotal() })
 		tickers.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
 		totalProfit.addValueSource(totalValue, { recalculateTotalProfit() })
+		totalProfit.addValueSource(usdExchangeRate!!, { recalculateTotalProfit() })
 	}
 
 	private fun refreshTicker() {
@@ -77,7 +87,21 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		exchangeRate = exchangeRateRepository.getExchangeRate(apiCurrency.value!!, currency.value!!, exchangeRate)
 	}
 
-	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { (tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.toDouble()) * (exchangeRate?.value?.data?.rate ?: 0.toDouble()) } ?: 0.toDouble()
+	private fun refreshUsdExchangeRate() {
+		usdExchangeRate = exchangeRateRepository.getExchangeRate(Currency.USD, currency.value!!, usdExchangeRate)
+	}
 
-	private fun recalculateTotalProfit(): Double = totalValue.value?.let { it - (wallets.value?.data?.sumByDouble { it.boughtPrice } ?: 0.toDouble()) * (exchangeRate?.value?.data?.rate ?: 0.toDouble()) } ?: 0.toDouble()
+	private fun recalculateTotal(): Double =
+		if (apiCurrency.value == exchangeRate!!.value?.data?.source)
+			wallets.value?.data?.sumByDouble {
+				if (tickers[it.coin]?.value?.data?.currency == apiCurrency.value)
+					(tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.toDouble()) * (exchangeRate?.value?.data?.rate ?: 0.toDouble())
+				else 0.toDouble()
+			} ?: 0.toDouble()
+		else 0.toDouble()
+
+	private fun recalculateTotalProfit(): Double =
+		if (totalValue.value != null && totalValue.value != 0.toDouble() && currency.value == usdExchangeRate!!.value?.data?.target)
+			totalValue.value?.let { it - (wallets.value?.data?.sumByDouble { it.boughtPrice } ?: 0.toDouble()) * (usdExchangeRate!!.value?.data?.rate ?: 0.toDouble()) } ?: 0.toDouble()
+		else 0.toDouble()
 }
