@@ -12,5 +12,5 @@ Notes:
 @Entity(tableName = "exchangeRates", primaryKeys = arrayOf("source"))
 data class ExchangeRates(
 		var source: String = Currency.USD,
-		var rates: Map<String, Double> =  HashMap()
+		var rates: Map<String, Double> = HashMap()
 )

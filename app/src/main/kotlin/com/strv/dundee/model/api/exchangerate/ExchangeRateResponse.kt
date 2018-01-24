@@ -13,6 +13,7 @@ data class ExchangeRateResponse(
 	}
 
 	fun getExchangeRates(source: String) : ExchangeRates {
+		rates.put(source, 1.0)
 		return ExchangeRates(source, rates)
 	}
 }
