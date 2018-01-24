@@ -14,14 +14,11 @@ import com.strv.dundee.ui.auth.SignInActivity
 import com.strv.ktools.vmb
 
 interface MainView {
-	fun addAmount()
 }
 
 class MainActivity : AppCompatActivity(), MainView {
 
 	companion object {
-		private const val ACTION_ADD_AMOUNT = 1
-
 		fun newIntent(context: Context) = Intent(context, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
 	}
 
@@ -72,10 +69,6 @@ class MainActivity : AppCompatActivity(), MainView {
 		} else {
 			super.onBackPressed()
 		}
-	}
-
-	override fun addAmount() {
-		startActivityForResult(AddAmountActivity.newIntent(this), ACTION_ADD_AMOUNT)
 	}
 
 	private fun showFragment(section: MainNavigationManager.Section) {

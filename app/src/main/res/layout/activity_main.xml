@@ -56,23 +56,6 @@
 
 		</LinearLayout>
 
-		<FrameLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="bottom|right"
-			android:layout_marginRight="@dimen/spacing_16"
-			android:layout_marginBottom="@dimen/spacing_72">
-
-			<android.support.design.widget.FloatingActionButton
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_margin="@dimen/spacing_12"
-				android:onClick="@{() -> view.addAmount()}"
-				android:src="@drawable/ic_add"
-				app:fabSize="normal" />
-
-		</FrameLayout>
-
 		<android.support.v7.widget.CardView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

@@ -19,39 +19,37 @@
 
 	</data>
 
-	<LinearLayout
+	<FrameLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical">
-
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:padding="@dimen/spacing_16"
-			android:background="@color/accent"
-			android:orientation="horizontal">
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:textAppearance="@style/TextAppearance.AppCompat.Title"
-				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalValue)}"
-				tools:text="$300,000.20" />
-
-		</FrameLayout>
+		android:layout_height="match_parent">
 
 		<android.support.v7.widget.RecyclerView
 			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1"
+			android:layout_height="match_parent"
 			app:layoutManager="@{LayoutManagers.linear()}"
 			app:liveDataItemBinding="@{viewModel.itemBinding}"
 			app:liveDataItems="@{viewModel.wallets}"
 			app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
 			app:touchHelperCallback="@{viewModel.touchHelperCallback}" />
 
-	</LinearLayout>
+		<FrameLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|right"
+			android:layout_marginRight="@dimen/spacing_16"
+			android:layout_marginBottom="@dimen/spacing_16">
+
+			<android.support.design.widget.FloatingActionButton
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="@dimen/spacing_12"
+				android:onClick="@{() -> view.addAmount()}"
+				android:src="@drawable/ic_add"
+				app:fabSize="normal" />
+
+		</FrameLayout>
+
+	</FrameLayout>
 
 </layout>
 

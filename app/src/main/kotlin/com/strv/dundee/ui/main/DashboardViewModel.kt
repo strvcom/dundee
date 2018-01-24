@@ -26,7 +26,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	private val walletRepository by inject<WalletRepository>()
 	private val exchangeRatesRepository by inject<ExchangeRatesRepository>()
 
-	val itemBinding = ItemBinding.of<WalletOverview>(BR.item, R.layout.item_wallet_dashboard).bindExtra(BR.viewModel, this)!!
+	val itemBinding = ItemBinding.of<WalletOverview>(BR.item, R.layout.item_dashboard).bindExtra(BR.viewModel, this)!!
 	var wallets: DiffObservableListLiveData<WalletOverview>
 	val tickers = HashMap<String, LiveData<Resource<Ticker>>>()
 	val source = mainViewModel.source

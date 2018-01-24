@@ -16,12 +16,15 @@ import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.ktools.vmb
 
 interface FinancesView {
+	fun addAmount()
 	val lifecycleAwareAdapter: LifecycleAwareBindingRecyclerViewAdapter<Wallet> // TODO: Temp fix for tatarka - remove when tatarka adds support for lifecycle
 }
 
 class FinancesFragment : Fragment(), FinancesView {
 
 	companion object {
+		private const val ACTION_ADD_AMOUNT = 1
+
 		fun newInstance() = FinancesFragment().apply {
 			val bundle = Bundle()
 			arguments = bundle
@@ -46,5 +49,9 @@ class FinancesFragment : Fragment(), FinancesView {
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 		return vmb.rootView
+	}
+
+	override fun addAmount() {
+		context?.let { startActivityForResult(AddAmountActivity.newIntent(it), ACTION_ADD_AMOUNT) }
 	}
 }

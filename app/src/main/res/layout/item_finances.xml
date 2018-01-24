@@ -15,10 +15,6 @@
 			name="listener"
 			type="com.strv.dundee.common.OnItemClickListener" />
 
-		<variable
-			name="viewModel"
-			type="com.strv.dundee.ui.main.FinancesViewModel" />
-
 	</data>
 
 	<FrameLayout
@@ -63,7 +59,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginRight="@dimen/spacing_4"
-				android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+				android:textAppearance="@style/TextAppearance.AppCompat.Body1"
 				android:textStyle="bold"
 				android:text="@{item.coin}"
 				android:textColor="@color/accent"
@@ -72,7 +68,7 @@
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+				android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
 				android:text="@{Double.toString(item.amount)}"
 				tools:text="2.2323" />
 
@@ -84,11 +80,9 @@
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+				android:text="@{DateFormatter.INSTANCE.dateToString(item.created)}"
 				tools:text="$1,000.30" />
-
-			<!--android:text="@{Currency.INSTANCE.formatValue(viewModel.currency,viewModel.tickers.get(item.coin).data.getValue(item.amount))}"-->
-
 
 		</LinearLayout>
 
