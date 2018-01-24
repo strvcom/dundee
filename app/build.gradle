@@ -26,6 +26,35 @@ android {
 		main.java.srcDirs += 'src/main/kotlin'
 	}
 	dataBinding.enabled true
+
+	flavorDimensions "default"
+
+	productFlavors {
+
+		finalProduction {
+			dimension "default"
+			applicationId "com.strv.dundee"
+			resValue "string", "app_name", "Project Dundee"
+		}
+
+		demoProduction {
+			dimension "default"
+			applicationId "com.strv.dundee.demo"
+			resValue "string", "app_name", "Project Dundee Demo"
+		}
+
+		develop {
+			dimension "default"
+			applicationId "com.strv.dundee.develop"
+			resValue "string", "app_name", "Project Dundee Develop"
+		}
+
+		mock {
+			dimension "default"
+			applicationId "com.strv.dundee.mock"
+			resValue "string", "app_name", "Project Dundee Mock"
+		}
+	}
 }
 
 kapt {

@@ -82,7 +82,7 @@
 				android:layout_height="wrap_content"
 				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
 				android:text="@{DateFormatter.INSTANCE.dateToString(item.created)}"
-				tools:text="$1,000.30" />
+				tools:text="@tools:sample/date/ddmmyy" />
 
 		</LinearLayout>
 

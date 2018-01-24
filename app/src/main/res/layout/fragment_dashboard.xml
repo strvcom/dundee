@@ -115,7 +115,8 @@
 			app:layoutManager="@{LayoutManagers.linear()}"
 			app:liveDataItemBinding="@{viewModel.itemBinding}"
 			app:liveDataItems="@{viewModel.wallets}"
-			app:liveDataAdapter="@{view.lifecycleAwareAdapter}" />
+			app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
+			tools:listitem="@layout/item_dashboard"/>
 
 	</LinearLayout>
 

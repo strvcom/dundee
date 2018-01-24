@@ -30,7 +30,8 @@
 			app:liveDataItemBinding="@{viewModel.itemBinding}"
 			app:liveDataItems="@{viewModel.wallets}"
 			app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
-			app:touchHelperCallback="@{viewModel.touchHelperCallback}" />
+			app:touchHelperCallback="@{viewModel.touchHelperCallback}"
+			tools:listitem="@layout/item_finances"/>
 
 		<FrameLayout
 			android:layout_width="wrap_content"

@@ -21,11 +21,13 @@ abstract class BaseActivity : AppCompatActivity() {
 
 	protected fun setupToolbar(toolbar: Toolbar) {
 		setSupportActionBar(toolbar)
-		supportActionBar?.setDisplayUseLogoEnabled(false)
-		supportActionBar?.setDisplayShowTitleEnabled(true)
-		supportActionBar?.setDisplayShowHomeEnabled(true)
-		supportActionBar?.setDisplayHomeAsUpEnabled(true)
-		supportActionBar?.setHomeButtonEnabled(true)
+		supportActionBar?.apply {
+			setDisplayUseLogoEnabled(false)
+			setDisplayShowTitleEnabled(true)
+			setDisplayShowHomeEnabled(true)
+			setDisplayHomeAsUpEnabled(true)
+			setHomeButtonEnabled(true)
+		}
 	}
 
 	protected fun setToolbarTitle(@StringRes titleResId: Int) {
