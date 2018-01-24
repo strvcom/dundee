@@ -1,12 +1,18 @@
 package com.strv.dundee.model.entity
 
+import android.arch.lifecycle.LiveData
+import com.strv.ktools.Resource
+
 data class WalletOverview(
 		var coin: String,
 		var amount: Double = 0.0,
 		val boughtPrices: MutableList<Pair<String, Double>> = mutableListOf()
 ) {
-	fun getProfit(currency: String?, exchangeRate: ExchangeRate?, usdRate: ExchangeRate?, ticker: Ticker?): Double = 0.0
-//		if(ticker?.currency == exchangeRate?.source && currency == exchangeRate?.target && currency == usdRate?.target)
-//			ticker!!.lastPrice * amount * exchangeRate!!.rate - boughtPrice * usdRate!!.rate
-//		else 0.0
+	fun getBoughtPrice(currency: String?, exchangeRates: HashMap<String, LiveData<Resource<ExchangeRates>>>): Double =
+		boughtPrices.sumByDouble { (exchangeRates[it.first]?.value?.data?.rates!![currency] ?: 0.0) * it.second }
+
+
+	fun getProfit(currency: String, exchangeRates: HashMap<String, LiveData<Resource<ExchangeRates>>>, ticker: Ticker): Double =
+		ticker.getValue(amount, currency, exchangeRates) - getBoughtPrice(currency, exchangeRates)
+
 }

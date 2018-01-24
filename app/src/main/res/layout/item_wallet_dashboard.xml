@@ -92,7 +92,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="right"
 					android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.tickers.get(item.coin).data.getValue(item.amount) * viewModel.exchangeRate.data.rate)}"
+					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.tickers.get(item.coin).data.getValue(item.amount, viewModel.currency, viewModel.exchangeRates))}"
 					tools:text="$1,000.30" />
 
 				<TextView
@@ -100,8 +100,8 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="right"
 					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, item.getProfit(viewModel.currency, viewModel.exchangeRate.data, viewModel.usdExchangeRate.data, viewModel.tickers.get(item.coin).data))}"
-					app:profitState="@{item.getProfit(viewModel.currency, viewModel.exchangeRate.data, viewModel.usdExchangeRate.data, viewModel.tickers.get(item.coin).data)}"
+					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, item.getProfit(viewModel.currency, viewModel.exchangeRates, viewModel.tickers.get(item.coin).data))}"
+					app:profitState="@{item.getProfit(viewModel.currency, viewModel.exchangeRates, viewModel.tickers.get(item.coin).data)}"
 					tools:text="$1,000.30" />
 
 			</LinearLayout>

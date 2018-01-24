@@ -7,7 +7,6 @@ import com.strv.dundee.BR
 import com.strv.dundee.R
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
-import com.strv.dundee.model.entity.ExchangeRate
 import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.dundee.model.entity.Ticker
 import com.strv.dundee.model.entity.WalletOverview
@@ -36,8 +35,6 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val totalValue = MediatorLiveData<Double>()
 	val totalProfit = MediatorLiveData<Double>()
 	val exchangeRates = HashMap<String, LiveData<Resource<ExchangeRates>>>()
-	var exchangeRate: LiveData<Resource<ExchangeRate>>? = null        // used for prizes calculation, based on API currency and UI currency
-	var usdExchangeRate: LiveData<Resource<ExchangeRate>>? = null    // used for profit calculation, boughtPrice is in USD
 
 	init {
 		// compose Ticker and exchange rates LiveData (observed by data binding automatically)
@@ -92,5 +89,5 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
 	// calculation of current profit
 	private fun recalculateTotalProfit(): Double =
-		(totalValue.value ?: 0.0) - (wallets.value?.data?.sumByDouble { it.boughtPrices.sumByDouble { (exchangeRates[it.first]?.value?.data?.rates!![currency.value] ?: 0.0) * it.second } } ?: 0.0)
+		(totalValue.value ?: 0.0) - (wallets.value?.data?.sumByDouble { it.getBoughtPrice(currency.value, exchangeRates) } ?: 0.0)
 }
