@@ -8,11 +8,9 @@ import com.strv.dundee.model.api.bitfinex.BitfinexApi
 import com.strv.dundee.model.api.bitstamp.BitstampApi
 import com.strv.dundee.model.api.exchangerate.ExchangeRateApi
 import com.strv.dundee.model.cache.BitcoinCache
-import com.strv.dundee.model.cache.ExchangeRateCache
 import com.strv.dundee.model.cache.ExchangeRatesCache
 import com.strv.dundee.model.db.BitcoinDatabase
 import com.strv.dundee.model.repo.BitcoinRepository
-import com.strv.dundee.model.repo.ExchangeRateRepository
 import com.strv.dundee.model.repo.ExchangeRatesRepository
 import com.strv.dundee.model.repo.UserRepository
 import com.strv.dundee.model.repo.WalletRepository
@@ -28,16 +26,14 @@ object DIModule {
 		provideSingleton { ExchangeRateApi() }
 
 		provideSingleton { BitcoinCache() }
-		provideSingleton { ExchangeRateCache() }
 		provideSingleton { ExchangeRatesCache() }
+
 		provideSingleton { BitcoinRepository() }
-		provideSingleton { ExchangeRateRepository() }
 		provideSingleton { ExchangeRatesRepository() }
 
 
 		val database = Room.databaseBuilder(application, BitcoinDatabase::class.java, "bitcoin-database").build()
 		provideSingleton { database.tickerDao() }
-		provideSingleton { database.exchangeRateDao() }
 		provideSingleton { database.exchangeRatesDao() }
 
 

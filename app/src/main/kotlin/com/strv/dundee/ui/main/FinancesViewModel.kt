@@ -75,7 +75,8 @@ class FinancesViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, currency.value!!, liveDataToReuse = tickers[it]) }
 	}
 
-	private fun recalculateTotal(): Double = wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount ?: 0.toDouble()) ?: 0.toDouble() } ?: 0.toDouble()
+	private fun recalculateTotal(): Double = 0.0
+//		wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount ?: 0.toDouble()) ?: 0.toDouble() } ?: 0.toDouble()
 
 	fun addWallet(wallet: Wallet) {
 		walletRepository.addWalletToCurrentUser(wallet)

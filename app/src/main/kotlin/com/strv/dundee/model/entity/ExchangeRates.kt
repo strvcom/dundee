@@ -1,6 +1,7 @@
 package com.strv.dundee.model.entity
 
 import android.arch.persistence.room.Entity
+import java.util.Date
 
 /*
 ExchangeRate object
@@ -11,6 +12,7 @@ Notes:
  */
 @Entity(tableName = "exchangeRates", primaryKeys = arrayOf("source"))
 data class ExchangeRates(
-		var source: String = Currency.USD,
-		var rates: Map<String, Double> = HashMap()
+	var source: String = Currency.USD,
+	var date: Date = Date(),
+	var rates: Map<String, Double> = HashMap()
 )

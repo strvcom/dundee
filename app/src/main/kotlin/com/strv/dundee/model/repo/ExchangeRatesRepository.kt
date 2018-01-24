@@ -10,7 +10,7 @@ import com.strv.ktools.Resource
 import com.strv.ktools.RetrofitCallLiveData
 import com.strv.ktools.inject
 import retrofit2.Response
-
+import java.util.Calendar
 
 class ExchangeRatesRepository {
 
@@ -23,7 +23,13 @@ class ExchangeRatesRepository {
 			cache.putRates(item.getExchangeRates(source))
 		}
 
-		override fun shouldFetch(data: ExchangeRates?) = true
+		override fun shouldFetch(data: ExchangeRates?): Boolean {
+			val calendar = Calendar.getInstance()
+			calendar.time = data?.date
+			calendar.add(Calendar.DAY_OF_YEAR, 1)
+			val calendarNow = Calendar.getInstance()
+			return calendar.get(Calendar.DAY_OF_YEAR) != calendarNow.get(Calendar.DAY_OF_YEAR)
+		}
 
 		override fun loadFromDb(): LiveData<ExchangeRates> = cache.getRates(source)
 

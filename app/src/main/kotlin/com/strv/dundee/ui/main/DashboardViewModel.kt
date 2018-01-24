@@ -85,7 +85,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
 	// calculation of current total
 	private fun recalculateTotal(): Double =
-		wallets.value?.data?.sumByDouble { (tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.0) * (exchangeRates[apiCurrency.value]?.value?.data?.rates!![currency.value] ?: 0.0) } ?: 0.0
+		wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount, currency.value, exchangeRates) ?: 0.0 } ?: 0.0
 
 	// calculation of current profit
 	private fun recalculateTotalProfit(): Double =
