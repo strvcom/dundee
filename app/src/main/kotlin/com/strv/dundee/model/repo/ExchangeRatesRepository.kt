@@ -24,11 +24,13 @@ class ExchangeRatesRepository {
 		}
 
 		override fun shouldFetch(data: ExchangeRates?): Boolean {
-			val calendar = Calendar.getInstance()
-			calendar.time = data?.date
-			calendar.add(Calendar.DAY_OF_YEAR, 1)
-			val calendarNow = Calendar.getInstance()
-			return calendar.get(Calendar.DAY_OF_YEAR) != calendarNow.get(Calendar.DAY_OF_YEAR)
+			return data?.date?.let{
+				val calendar = Calendar.getInstance()
+				calendar.time = it
+				calendar.add(Calendar.DAY_OF_YEAR, 1)
+				val calendarNow = Calendar.getInstance()
+				calendar.get(Calendar.DAY_OF_YEAR) != calendarNow.get(Calendar.DAY_OF_YEAR)
+			} ?: true
 		}
 
 		override fun loadFromDb(): LiveData<ExchangeRates> = cache.getRates(source)

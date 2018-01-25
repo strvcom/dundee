@@ -3,8 +3,8 @@
 
 buildscript {
 	ext {
-		kotlinVersion = '1.2.10'
-		androidPluginVersion = '3.1.0-alpha08'
+		kotlinVersion = '1.2.21'
+		androidPluginVersion = '3.1.0-alpha09'
 		playServicesPluginVersion = '3.1.1'
 		supportLibVersion = '27.0.2'
 		firebaseVersion = '11.8.0'
