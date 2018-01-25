@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	>
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
@@ -41,6 +41,29 @@
 			android:orientation="vertical"
 			app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/wallet_detail_graph_height">
+
+				<!--TODO graph -->
+
+			</FrameLayout>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/spacing_1"
+				android:background="@color/text_default"/>
+
+			<android.support.v7.widget.RecyclerView
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="1"
+				android:clipToPadding="false"
+				app:layoutManager="@{LayoutManagers.linear()}"
+				app:liveDataItemBinding="@{viewModel.itemBinding}"
+				app:liveDataItems="@{viewModel.wallets}"
+				app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
+				tools:listitem="@layout/item_wallet_detail"/>
 
 		</LinearLayout>
 

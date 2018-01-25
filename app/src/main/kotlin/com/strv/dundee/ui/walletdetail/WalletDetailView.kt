@@ -5,11 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import com.strv.dundee.R
 import com.strv.dundee.databinding.ActivityWalletDetailBinding
+import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.model.entity.WalletOverview
 import com.strv.dundee.ui.base.BaseActivity
+import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.ktools.vmb
 
 interface WalletDetailView {
+	val lifecycleAwareAdapter: LifecycleAwareBindingRecyclerViewAdapter<Wallet> // TODO: Temp fix for tatarka - remove when tatarka adds support for lifecycle
 }
 
 class WalletDetailActivity : BaseActivity(), WalletDetailView {
@@ -23,7 +26,10 @@ class WalletDetailActivity : BaseActivity(), WalletDetailView {
 			addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
 	}
 
-	private val vmb by vmb<WalletDetailViewModel, ActivityWalletDetailBinding>(R.layout.activity_wallet_detail) { WalletDetailViewModel() }
+	override val lifecycleAwareAdapter = LifecycleAwareBindingRecyclerViewAdapter<Wallet>(this)
+
+	private val vmb by vmb<WalletDetailViewModel, ActivityWalletDetailBinding>(R.layout.activity_wallet_detail) {
+		WalletDetailViewModel(intent.getParcelableExtra(EXTRA_WALLET_OVERVIEW)) }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

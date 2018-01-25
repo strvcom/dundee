@@ -14,7 +14,11 @@ class WalletRepository {
 
 	private val walletCollection = firestore.collection(Wallet.COLLECTION)
 
-	fun getWalletsForCurrentUser() = FirestoreDocumentListLiveData(walletCollection.whereEqualTo("uid", auth.currentUser?.uid).orderBy("created"), Wallet::class.java)
+	fun getWalletsForCurrentUser(coin: String? = null): FirestoreDocumentListLiveData<Wallet> {
+		var query = walletCollection.whereEqualTo("uid", auth.currentUser?.uid).orderBy(Wallet.ATTR_CREATED)
+		if(coin != null) query = query.whereEqualTo(Wallet.ATTR_COIN, coin)
+		return FirestoreDocumentListLiveData(query,  Wallet::class.java)
+	}
 
 	fun addWalletToCurrentUser(wallet: Wallet): Task<DocumentReference> {
 		wallet.uid = auth.currentUser!!.uid

@@ -46,6 +46,8 @@ data class Wallet(
 
 	companion object {
 		const val COLLECTION = "wallets"
+		const val ATTR_COIN = "coin"
+		const val ATTR_CREATED = "created"
 		@JvmField
 		val CREATOR = parcelableCreator(::Wallet)
 	}

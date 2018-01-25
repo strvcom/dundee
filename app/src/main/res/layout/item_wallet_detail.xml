@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+
+		<import type="com.strv.dundee.common.DateFormatter" />
+		<import type="com.strv.dundee.model.entity.Currency" />
+
+		<variable
+			name="item"
+			type="com.strv.dundee.model.entity.Wallet" />
+
+		<variable
+			name="listener"
+			type="com.strv.dundee.common.OnItemClickListener" />
+
+		<variable
+			name="viewModel"
+			type="com.strv.dundee.ui.walletdetail.WalletDetailViewModel" />
+
+	</data>
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:foreground="?attr/selectableItemBackground"
+		android:onClick="@{() -> listener.onItemClick(item)}">
+
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<ImageView
+				android:id="@+id/ic_left"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:layout_marginLeft="@dimen/spacing_16"
+				android:src="@drawable/ic_delete" />
+
+			<ImageView
+				android:id="@+id/ic_right"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical|right"
+				android:layout_marginRight="@dimen/spacing_16"
+				android:src="@drawable/ic_delete" />
+
+		</FrameLayout>
+
+		<!-- background must be set because of swipe to delete functionality -->
+		<!-- tag must be "foreground" because of swipe to delete functionality -->
+		<LinearLayout
+			android:id="@+id/item_foreground"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:background="@color/primary"
+			android:padding="@dimen/spacing_16">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@{Double.toString(item.amount)}"
+				tools:text="3.4"/>
+
+		</LinearLayout>
+
+	</FrameLayout>
+
+</layout>
+

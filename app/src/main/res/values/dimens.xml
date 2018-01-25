@@ -17,4 +17,6 @@
 	<dimen name="spacing_72">72dp</dimen>
 	<dimen name="spacing_88">88dp</dimen>
 	<dimen name="spacing_96">96dp</dimen>
+
+	<dimen name="wallet_detail_graph_height">190dp</dimen>
 </resources>
