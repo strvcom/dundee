@@ -33,4 +33,8 @@ abstract class BaseActivity : AppCompatActivity() {
 	protected fun setToolbarTitle(@StringRes titleResId: Int) {
 		supportActionBar?.title = getString(titleResId)
 	}
+
+	protected fun setToolbarTitle(title: String) {
+		supportActionBar?.title = title
+	}
 }

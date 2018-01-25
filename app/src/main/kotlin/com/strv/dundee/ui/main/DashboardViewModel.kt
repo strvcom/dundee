@@ -5,6 +5,7 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR
 import com.strv.dundee.R
+import com.strv.dundee.common.OnItemClickListener
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.ExchangeRates
@@ -14,6 +15,7 @@ import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.ExchangeRatesRepository
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.ktools.DiffObservableListLiveData
+import com.strv.ktools.EventLiveData
 import com.strv.ktools.Resource
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
@@ -26,7 +28,16 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	private val walletRepository by inject<WalletRepository>()
 	private val exchangeRatesRepository by inject<ExchangeRatesRepository>()
 
-	val itemBinding = ItemBinding.of<WalletOverview>(BR.item, R.layout.item_dashboard).bindExtra(BR.viewModel, this)!!
+	private val itemClickCallback = object : OnItemClickListener<WalletOverview> {
+		override fun onItemClick(item: WalletOverview) {
+			walletOpened.publish(item)
+		}
+	}
+
+	val walletOpened = EventLiveData<WalletOverview>()
+	val itemBinding = ItemBinding.of<WalletOverview>(BR.item, R.layout.item_dashboard)
+		.bindExtra(BR.viewModel, this)
+		.bindExtra(BR.listener, itemClickCallback)!!
 	var wallets: DiffObservableListLiveData<WalletOverview>
 	val tickers = HashMap<String, LiveData<Resource<Ticker>>>()
 	val source = mainViewModel.source
@@ -85,9 +96,12 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
 	// calculation of current total
 	private fun recalculateTotal(): Double =
-		wallets.value?.data?.sumByDouble { tickers[it.coin]?.value?.data?.getValue(it.amount, currency.value, exchangeRates) ?: 0.0 } ?: 0.0
+		wallets.value?.data?.sumByDouble {
+			tickers[it.coin]?.value?.data?.getValue(it.amount, currency.value, exchangeRates) ?: 0.0
+		} ?: 0.0
 
 	// calculation of current profit
 	private fun recalculateTotalProfit(): Double =
-		(totalValue.value ?: 0.0) - (wallets.value?.data?.sumByDouble { it.getBoughtPrice(currency.value, exchangeRates) } ?: 0.0)
+		(totalValue.value
+			?: 0.0) - (wallets.value?.data?.sumByDouble { it.getBoughtPrice(currency.value, exchangeRates) } ?: 0.0)
 }
