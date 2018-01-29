@@ -91,6 +91,9 @@ dependencies {
 	implementation "com.squareup.retrofit2:converter-gson:2.3.0"
 	implementation "com.squareup.okhttp3:logging-interceptor:3.9.0"
 
+	// Charts
+	implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
 	// Tests
 	testImplementation 'junit:junit:4.12'
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import android.arch.persistence.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import com.strv.dundee.model.api.bitfinex.BitfinexApi
 import com.strv.dundee.model.api.bitstamp.BitstampApi
 import com.strv.dundee.model.api.exchangerate.ExchangeRateApi
@@ -21,6 +22,8 @@ object DIModule {
 		provideSingleton { application }
 		provideSingleton { Config }
 
+		provideSingleton { Gson() }
+
 		provideSingleton { BitstampApi() }
 		provideSingleton { BitfinexApi() }
 		provideSingleton { ExchangeRateApi() }
@@ -34,6 +37,7 @@ object DIModule {
 		val database = Room.databaseBuilder(application, BitcoinDatabase::class.java, "bitcoin-database").build()
 		provideSingleton { database.tickerDao() }
 		provideSingleton { database.exchangeRatesDao() }
+		provideSingleton { database.candleSetDao() }
 
 
 		provideSingleton { FirebaseFirestore.getInstance() }

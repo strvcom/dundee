@@ -16,9 +16,9 @@ data class Ticker(
 	var source: String = BitcoinSource.BITSTAMP,
 	var currency: String = Currency.USD,
 	var coin: String = Coin.BTC,
-	var lastPrice: Double = 0.toDouble(),
-	var highPrice: Double = 0.toDouble(),
-	var lowPrice: Double = 0.toDouble(),
+	var lastPrice: Double = 0.0,
+	var highPrice: Double = 0.0,
+	var lowPrice: Double = 0.0,
 	var timestamp: Long = 0
 ) {
 	fun getValue(amount: Double, targetCurrency: String?, exchangeRates: HashMap<String, LiveData<Resource<ExchangeRates>>>): Double =

@@ -12,7 +12,6 @@ Notes:
 data class User(
 	var uid: String? = FirebaseAuth.getInstance().currentUser?.uid,
 	var email: String? = null
-//		@ServerTimestamp var creationTime: Date? = null
 ) {
 	companion object {
 		const val COLLECTION = "users"
