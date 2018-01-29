@@ -26,7 +26,8 @@ class DiffObservableListLiveData<T>(liveData: LiveData<Resource<List<T>>>, callb
 	}
 }
 
-@BindingAdapter(value = *arrayOf("liveDataItemBinding", "liveDataItems", "liveDataAdapter"), requireAll = false)
+@Suppress("UNCHECKED_CAST")
+@BindingAdapter(value = ["liveDataItemBinding", "liveDataItems", "liveDataAdapter"], requireAll = false)
 fun <T> setAdapterLiveData(recyclerView: RecyclerView, liveDataItemBinding: ItemBinding<T>, liveDataItems: DiffObservableListLiveData<T>, presetAdapter: BindingRecyclerViewAdapter<T>?) {
 	val oldAdapter = recyclerView.adapter as BindingRecyclerViewAdapter<T>?
 	val adapter: BindingRecyclerViewAdapter<T>
@@ -40,7 +41,7 @@ fun <T> setAdapterLiveData(recyclerView: RecyclerView, liveDataItemBinding: Item
 		adapter = presetAdapter
 	}
 	if (oldAdapter !== adapter) {
-		adapter.setItemBinding(liveDataItemBinding)
+		adapter.itemBinding = liveDataItemBinding
 		adapter.setItems(liveDataItems.diffList)
 	}
 

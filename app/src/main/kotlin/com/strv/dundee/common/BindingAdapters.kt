@@ -6,6 +6,7 @@ import android.databinding.InverseBindingListener
 import android.graphics.Canvas
 import android.support.annotation.IdRes
 import android.support.design.widget.BottomSheetBehavior
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -19,7 +20,6 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import com.strv.dundee.R
-import com.strv.ktools.Resource
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
 
 @BindingAdapter("hide")
@@ -69,7 +69,8 @@ fun setOnTextChangedCallback(view: EditText, callback: TextChangedCallback) {
 }
 
 //Spinner
-@BindingAdapter(value = *arrayOf("selection", "selectionAttrChanged", "adapter"), requireAll = false)
+@Suppress("UNCHECKED_CAST")
+@BindingAdapter(value = ["selection", "selectionAttrChanged", "adapter"], requireAll = false)
 fun <T> setAdapter(view: Spinner, newSelection: T?, bindingListener: InverseBindingListener, adapter: ArrayAdapter<T>?) {
 	view.adapter = adapter
 	view.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -87,18 +88,10 @@ fun <T> setAdapter(view: Spinner, newSelection: T?, bindingListener: InverseBind
 	}
 }
 
+@Suppress("UNCHECKED_CAST")
 @InverseBindingAdapter(attribute = "selection", event = "selectionAttrChanged")
 fun <T> getSelectedValue(view: Spinner): T {
 	return view.selectedItem as T
-}
-
-@BindingAdapter("status")
-fun setStatus(view: TextView, status: Resource.Status) {
-	when (status) {
-		Resource.Status.SUCCESS -> view.setTextColor(view.resources.getColor(R.color.status_success))
-		Resource.Status.ERROR -> view.setTextColor(view.resources.getColor(R.color.status_error))
-		Resource.Status.LOADING -> view.setTextColor(view.resources.getColor(R.color.status_loading))
-	}
 }
 
 // Bottom Sheet state 2-way binding
@@ -128,7 +121,8 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 
 	fun getView(viewHolder: RecyclerView.ViewHolder?, @IdRes viewId: Int?): View? {
 		if (viewHolder?.itemView != null && viewId != null) {
-			return viewHolder.itemView.findViewById(viewId) ?: throw IllegalArgumentException("Item view doesn't have view with $viewId id")
+			return viewHolder.itemView.findViewById(viewId)
+				?: throw IllegalArgumentException("Item view doesn't have view with $viewId id")
 		}
 		return null
 	}
@@ -196,6 +190,7 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 			}
 		}
 
+		@Suppress("UNCHECKED_CAST")
 		override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
 			val position = viewHolder?.adapterPosition ?: -1
 			if (recycler.adapter is BindingRecyclerViewAdapter<*>) {
@@ -214,9 +209,9 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 fun setProfitState(view: TextView, profit: Double?) {
 	profit?.let {
 		when {
-			profit > 0 -> view.setTextColor(view.resources.getColor(R.color.currency_profit))
-			profit < 0 -> view.setTextColor(view.resources.getColor(R.color.currency_loss))
-			else -> view.setTextColor(view.resources.getColor(R.color.currency_none))
+			profit > 0 -> view.setTextColor(ContextCompat.getColor(view.context, R.color.currency_profit))
+			profit < 0 -> view.setTextColor(ContextCompat.getColor(view.context, R.color.currency_loss))
+			else -> view.setTextColor(ContextCompat.getColor(view.context, R.color.currency_none))
 		}
 	}
 }

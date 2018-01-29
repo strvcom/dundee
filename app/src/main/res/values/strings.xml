@@ -18,7 +18,8 @@
 	<string name="currency">App currency</string>
 	<string name="item_removed">Item was removed</string>
 	<string name="undo">Undo</string>
-	<string name="dashboard">Dashboard</string>
-	<string name="graphs">Graphs</string>
-	<string name="finances">Finances</string>
+
+	<string name="nav_dashboard">Dashboard</string>
+	<string name="nav_charts">Charts</string>
+	<string name="nav_wallets">Finances</string>
 </resources>

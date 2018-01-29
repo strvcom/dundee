@@ -11,6 +11,7 @@ import com.strv.dundee.R
 import com.strv.dundee.common.isUserSignedIn
 import com.strv.dundee.databinding.ActivityMainBinding
 import com.strv.dundee.ui.auth.SignInActivity
+import com.strv.dundee.ui.nav.MainNavigation
 import com.strv.ktools.vmb
 
 interface MainView {
@@ -33,15 +34,19 @@ class MainActivity : AppCompatActivity(), MainView {
 			finish()
 		}
 
-		MainNavigationManager.Section.values().forEach { vmb.binding.bottomNavigationView.menu.add(Menu.NONE, it.ordinal, Menu.NONE, it.titleResId).apply { setIcon(it.iconResId)} }
+		setupNavigation(savedInstanceState)
+	}
+
+	private fun setupNavigation(savedInstanceState: Bundle?) {
+		MainNavigation.Section.values().forEach { vmb.binding.bottomNavigationView.menu.add(Menu.NONE, it.ordinal, Menu.NONE, it.titleResId).apply { setIcon(it.iconResId) } }
 		vmb.viewModel.navigationManager.currentTab.observe(this, Observer { it?.let { showFragment(it) } })
 
 		if (savedInstanceState == null) {
-			vmb.binding.bottomNavigationView.selectedItemId = MainNavigationManager.Section.DASHBOARD.ordinal
-			vmb.viewModel.navigationManager.goTo(MainNavigationManager.Section.DASHBOARD)
+			vmb.binding.bottomNavigationView.selectedItemId = MainNavigation.Section.DASHBOARD.ordinal
+			vmb.viewModel.navigationManager.goToDashboard()
 		}
 		vmb.binding.bottomNavigationView.setOnNavigationItemSelectedListener {
-			vmb.viewModel.navigationManager.goTo(MainNavigationManager.Section.values()[it.itemId])
+			vmb.viewModel.navigationManager.goTo(MainNavigation.Section.values()[it.itemId])
 			true
 		}
 	}
@@ -71,7 +76,7 @@ class MainActivity : AppCompatActivity(), MainView {
 		}
 	}
 
-	private fun showFragment(section: MainNavigationManager.Section) {
+	private fun showFragment(section: MainNavigation.Section) {
 		detachAllFragments()
 		supportFragmentManager.beginTransaction().apply {
 			var fragment = supportFragmentManager.findFragmentByTag(section.tag)
@@ -86,6 +91,6 @@ class MainActivity : AppCompatActivity(), MainView {
 	}
 
 	private fun detachAllFragments() {
-		MainNavigationManager.Section.values().forEach { supportFragmentManager.findFragmentByTag(it.tag)?.let { supportFragmentManager.beginTransaction().detach(it).commitNowAllowingStateLoss() } }
+		MainNavigation.Section.values().forEach { supportFragmentManager.findFragmentByTag(it.tag)?.let { supportFragmentManager.beginTransaction().detach(it).commitNowAllowingStateLoss() } }
 	}
 }

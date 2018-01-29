@@ -99,6 +99,7 @@ class ViewModelBinding<VM : ViewModel, B : ViewDataBinding> constructor(
 		if (initialized) return
 		if (viewModelFactory != null) {
 			val factory = object : ViewModelProvider.Factory {
+				@Suppress("UNCHECKED_CAST")
 				override fun <T : ViewModel?> create(modelClass: Class<T>) = viewModelFactory.invoke() as T
 			}
 			if (viewModelProvider == null)

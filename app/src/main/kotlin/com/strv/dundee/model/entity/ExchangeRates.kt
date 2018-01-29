@@ -10,7 +10,7 @@ Notes:
 - data class needs to have default value so that it has empty constructor ready for Room
 - properties also need to be vars because Room needs setters
  */
-@Entity(tableName = "exchangeRates", primaryKeys = arrayOf("source"))
+@Entity(tableName = "exchangeRates", primaryKeys = ["source"])
 data class ExchangeRates(
 	var source: String = Currency.USD,
 	var date: Date = Date(),

@@ -5,7 +5,7 @@
 
 	<data>
 
-		<import type="com.strv.dundee.common.DateFormatter" />
+		<import type="com.strv.dundee.common.DateUtils" />
 		<import type="com.strv.dundee.model.entity.Currency" />
 
 		<variable
@@ -18,7 +18,7 @@
 
 		<variable
 			name="viewModel"
-			type="com.strv.dundee.ui.main.DashboardViewModel" />
+			type="com.strv.dundee.ui.dashboard.DashboardViewModel" />
 
 	</data>
 

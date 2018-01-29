@@ -4,7 +4,7 @@
 
 	<data>
 
-		<import type="com.strv.dundee.common.DateFormatter" />
+		<import type="com.strv.dundee.common.DateUtils" />
 		<import type="com.strv.dundee.model.entity.Currency" />
 
 		<variable
@@ -81,7 +81,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-				android:text="@{DateFormatter.INSTANCE.dateToString(item.created)}"
+				android:text="@{DateUtils.INSTANCE.dateToString(item.created)}"
 				tools:text="@tools:sample/date/ddmmyy" />
 
 		</LinearLayout>

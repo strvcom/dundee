@@ -10,11 +10,11 @@
 
 		<variable
 			name="viewModel"
-			type="com.strv.dundee.ui.main.DashboardViewModel" />
+			type="com.strv.dundee.ui.dashboard.DashboardViewModel" />
 
 		<variable
 			name="view"
-			type="com.strv.dundee.ui.main.DashboardView" />
+			type="com.strv.dundee.ui.dashboard.DashboardView" />
 
 
 	</data>
@@ -32,7 +32,7 @@
 			android:theme="@style/ThemeOverlay.AppCompat.Dark"
 			android:orientation="horizontal">
 
-			<com.strv.dundee.ui.main.TickerView
+			<com.strv.dundee.ui.dashboard.TickerWidget
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -41,7 +41,7 @@
 				app:coin="@{Coin.BTC}"
 				app:currency="@{viewModel.currency}" />
 
-			<com.strv.dundee.ui.main.TickerView
+			<com.strv.dundee.ui.dashboard.TickerWidget
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -50,7 +50,7 @@
 				app:coin="@{Coin.ETH}"
 				app:currency="@{viewModel.currency}" />
 
-			<com.strv.dundee.ui.main.TickerView
+			<com.strv.dundee.ui.dashboard.TickerWidget
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -59,7 +59,7 @@
 				app:coin="@{Coin.XRP}"
 				app:currency="@{viewModel.currency}" />
 
-			<com.strv.dundee.ui.main.TickerView
+			<com.strv.dundee.ui.dashboard.TickerWidget
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -68,7 +68,7 @@
 				app:coin="@{Coin.LTC}"
 				app:currency="@{viewModel.currency}" />
 
-			<com.strv.dundee.ui.main.TickerView
+			<com.strv.dundee.ui.dashboard.TickerWidget
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"

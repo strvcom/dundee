@@ -13,6 +13,6 @@ interface ExchangeRatesDao {
 	@Insert(onConflict = REPLACE)
 	fun putRates(rate: ExchangeRates)
 
-	@Query("SELECT * FROM exchangeRates WHERE source = :arg0 LIMIT 1")
+	@Query("SELECT * FROM exchangeRates WHERE source = :source LIMIT 1")
 	fun getRates(source: String): LiveData<ExchangeRates>
 }

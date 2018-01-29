@@ -11,7 +11,7 @@ Notes:
 - data class needs to have default value so that it has empty constructor ready for Room
 - properties also need to be vars because Room needs setters
  */
-@Entity(tableName = "ticker", primaryKeys = arrayOf("source", "currency", "coin"))
+@Entity(tableName = "ticker", primaryKeys = ["source", "currency", "coin"])
 data class Ticker(
 		var source: String = BitcoinSource.BITSTAMP,
 		var currency: String = Currency.USD,

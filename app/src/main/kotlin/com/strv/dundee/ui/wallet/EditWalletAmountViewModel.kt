@@ -1,4 +1,4 @@
-package com.strv.dundee.ui.main
+package com.strv.dundee.ui.wallet
 
 import android.app.Application
 import android.arch.lifecycle.MediatorLiveData
@@ -18,7 +18,7 @@ import com.strv.ktools.logMeD
 import com.strv.ktools.publish
 
 
-class AddAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceiver {
+class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceiver {
 
 	private val application by inject<Application>()
 	private val walletRepository by inject<WalletRepository>()

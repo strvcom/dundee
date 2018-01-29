@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
 	compileSdkVersion 27
@@ -57,16 +58,10 @@ android {
 	}
 }
 
-kapt {
-	generateStubs = true
-	correctErrorTypes = true // avoid unknown type replacing with NonExistentClass
-}
-
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-	kapt "com.android.databinding:compiler:$androidPluginVersion"
 
 	// Android Support Library
 	implementation "com.android.support:appcompat-v7:$supportLibVersion"

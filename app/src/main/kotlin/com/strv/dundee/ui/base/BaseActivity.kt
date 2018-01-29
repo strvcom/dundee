@@ -1,13 +1,13 @@
 package com.strv.dundee.ui.base
 
 import android.support.annotation.StringRes
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-
+import android.view.ViewGroup
 
 abstract class BaseActivity : AppCompatActivity() {
-
 
 	override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 		return when (item?.itemId) {
@@ -36,5 +36,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
 	protected fun setToolbarTitle(title: String) {
 		supportActionBar?.title = title
+	}
+
+	protected fun showSnackbar(message: String) {
+		val rootView = window.decorView.findViewById<ViewGroup>(android.R.id.content)
+		Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT).show()
 	}
 }

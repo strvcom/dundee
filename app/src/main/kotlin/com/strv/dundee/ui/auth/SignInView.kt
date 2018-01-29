@@ -5,19 +5,19 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import com.strv.dundee.R
 import com.strv.dundee.databinding.ActivitySignInBinding
+import com.strv.dundee.ui.base.BaseActivity
 import com.strv.dundee.ui.main.MainActivity
 import com.strv.ktools.vmb
 
-
 interface SignInView {
 	fun openSignUp()
+	fun openMainActivity()
+	fun openGoogleSignInActivity(signInIntent: Intent)
 }
 
-class SignInActivity : AppCompatActivity(), SignInView {
+class SignInActivity : BaseActivity(), SignInView {
 	companion object {
 		private const val ACTION_SIGN_UP = 1
 		private const val ACTION_SIGN_IN_GOOGLE = 2
@@ -35,7 +35,7 @@ class SignInActivity : AppCompatActivity(), SignInView {
 				if (it.success)
 					openMainActivity()
 				else
-					Snackbar.make(vmb.rootView, it.errorMessage ?: getString(R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
+					showSnackbar(it.errorMessage ?: getString(R.string.error_unknown))
 			}
 		})
 
@@ -55,12 +55,12 @@ class SignInActivity : AppCompatActivity(), SignInView {
 		startActivityForResult(SignUpActivity.newIntent(this, vmb.viewModel.email.value, vmb.viewModel.password.value), ACTION_SIGN_UP)
 	}
 
-	private fun openMainActivity() {
+	override fun openMainActivity() {
 		startActivity(MainActivity.newIntent(this))
 		finish()
 	}
 
-	private fun openGoogleSignInActivity(signInIntent: Intent) {
+	override fun openGoogleSignInActivity(signInIntent: Intent) {
 		startActivityForResult(signInIntent, ACTION_SIGN_IN_GOOGLE)
 	}
 }

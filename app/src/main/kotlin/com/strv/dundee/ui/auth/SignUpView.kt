@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import com.strv.dundee.R
 import com.strv.dundee.databinding.ActivitySignUpBinding
 import com.strv.dundee.ui.base.BaseActivity
@@ -39,7 +38,7 @@ class SignUpActivity : BaseActivity(), SignUpView {
 					setResult(Activity.RESULT_OK)
 					finish()
 				} else
-					Snackbar.make(vmb.rootView, it.errorMessage ?: getString(com.strv.dundee.R.string.error_unknown), Snackbar.LENGTH_SHORT).show()
+					showSnackbar(it.errorMessage ?: getString(com.strv.dundee.R.string.error_unknown))
 			}
 		})
 	}

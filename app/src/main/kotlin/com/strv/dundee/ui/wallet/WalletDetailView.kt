@@ -1,4 +1,4 @@
-package com.strv.dundee.ui.walletdetail
+package com.strv.dundee.ui.wallet
 
 import android.content.Context
 import android.content.Intent
@@ -29,7 +29,8 @@ class WalletDetailActivity : BaseActivity(), WalletDetailView {
 	override val lifecycleAwareAdapter = LifecycleAwareBindingRecyclerViewAdapter<Wallet>(this)
 
 	private val vmb by vmb<WalletDetailViewModel, ActivityWalletDetailBinding>(R.layout.activity_wallet_detail) {
-		WalletDetailViewModel(intent.getParcelableExtra(EXTRA_WALLET_OVERVIEW)) }
+		WalletDetailViewModel(intent.getParcelableExtra(EXTRA_WALLET_OVERVIEW))
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

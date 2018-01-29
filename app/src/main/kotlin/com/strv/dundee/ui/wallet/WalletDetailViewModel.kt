@@ -1,4 +1,4 @@
-package com.strv.dundee.ui.walletdetail
+package com.strv.dundee.ui.wallet
 
 import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR

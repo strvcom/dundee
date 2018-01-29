@@ -1,4 +1,4 @@
-package com.strv.dundee.ui.main
+package com.strv.dundee.ui.dashboard
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
@@ -14,6 +14,7 @@ import com.strv.dundee.model.entity.WalletOverview
 import com.strv.dundee.model.repo.BitcoinRepository
 import com.strv.dundee.model.repo.ExchangeRatesRepository
 import com.strv.dundee.model.repo.WalletRepository
+import com.strv.dundee.ui.main.MainViewModel
 import com.strv.ktools.DiffObservableListLiveData
 import com.strv.ktools.EventLiveData
 import com.strv.ktools.Resource

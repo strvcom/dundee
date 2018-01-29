@@ -13,6 +13,6 @@ interface TickerDao {
 	@Insert(onConflict = REPLACE)
 	fun putTicker(ticker: Ticker)
 
-	@Query("SELECT * FROM ticker WHERE source = :arg0 AND currency = :arg1 AND coin = :arg2 LIMIT 1")
+	@Query("SELECT * FROM ticker WHERE source = :source AND currency = :currency AND coin = :coin LIMIT 1")
 	fun getTicker(source: String, currency: String, coin: String): LiveData<Ticker>
 }

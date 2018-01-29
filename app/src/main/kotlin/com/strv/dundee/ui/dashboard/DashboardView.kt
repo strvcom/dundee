@@ -1,4 +1,4 @@
-package com.strv.dundee.ui.main
+package com.strv.dundee.ui.dashboard
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -11,7 +11,8 @@ import android.view.ViewGroup
 import com.strv.dundee.R
 import com.strv.dundee.databinding.FragmentDashboardBinding
 import com.strv.dundee.model.entity.WalletOverview
-import com.strv.dundee.ui.walletdetail.WalletDetailActivity
+import com.strv.dundee.ui.main.MainViewModel
+import com.strv.dundee.ui.wallet.WalletDetailActivity
 import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.ktools.vmb
 

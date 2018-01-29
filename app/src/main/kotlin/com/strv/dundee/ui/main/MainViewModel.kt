@@ -8,6 +8,7 @@ import com.strv.dundee.R
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.repo.UserRepository
+import com.strv.dundee.ui.nav.MainNavigation
 import com.strv.ktools.inject
 import com.strv.ktools.sharedPrefs
 import com.strv.ktools.stringLiveData
@@ -25,7 +26,7 @@ class MainViewModel() : ViewModel() {
 	val currencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getAll())
 	val apiCurrencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getApiCurrencies())
 	val optionsOpen = MutableLiveData<Boolean>().apply { value = false }
-	val navigationManager = MainNavigationManager()
+	val navigationManager = MainNavigation()
 
 	fun logout() {
 		userRepository.signOut()

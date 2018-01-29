@@ -1,4 +1,4 @@
-package com.strv.dundee.ui.main
+package com.strv.dundee.ui.wallet
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -6,26 +6,26 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.strv.dundee.R
-import com.strv.dundee.databinding.ActivityAddAmountBinding
+import com.strv.dundee.databinding.ActivityEditWalletAmountBinding
 import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.ui.base.BaseActivity
 import com.strv.ktools.vmb
 
-interface AddAmountView {
+interface EditWalletAmountView {
 }
 
-class AddAmountActivity : BaseActivity(), AddAmountView {
+class EditWalletAmountActivity : BaseActivity(), EditWalletAmountView {
 
 	companion object {
 		const val EXTRA_WALLET = "wallet"
 
-		fun newIntent(context: Context) = Intent(context, AddAmountActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
-		fun newIntent(context: Context, wallet: Wallet) = Intent(context, AddAmountActivity::class.java).apply {
+		fun newIntent(context: Context) = Intent(context, EditWalletAmountActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
+		fun newIntent(context: Context, wallet: Wallet) = Intent(context, EditWalletAmountActivity::class.java).apply {
 			addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 			putExtra(EXTRA_WALLET, wallet)}
 	}
 
-	private val vmb by vmb<AddAmountViewModel, ActivityAddAmountBinding>(R.layout.activity_add_amount) { AddAmountViewModel(intent.getParcelableExtra(EXTRA_WALLET)) }
+	private val vmb by vmb<EditWalletAmountViewModel, ActivityEditWalletAmountBinding>(R.layout.activity_edit_wallet_amount) { EditWalletAmountViewModel(intent.getParcelableExtra(EXTRA_WALLET)) }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
