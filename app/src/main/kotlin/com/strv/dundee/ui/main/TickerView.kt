@@ -10,7 +10,6 @@ import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.Resource
 
-
 class TickerView : FrameLayout {
 	constructor(context: Context) : super(context)
 	constructor(context: Context, attrs: AttributeSet) : super(context, attrs)

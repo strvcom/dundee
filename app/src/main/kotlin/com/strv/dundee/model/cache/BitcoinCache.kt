@@ -6,7 +6,6 @@ import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.inject
 import com.strv.ktools.log
 
-
 class BitcoinCache {
 	private val tickerDao by inject<TickerDao>()
 

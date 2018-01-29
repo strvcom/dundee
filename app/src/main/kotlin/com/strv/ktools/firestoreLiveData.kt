@@ -15,11 +15,11 @@ class FirestoreDocumentLiveData<T>(private val documentRef: DocumentReference, p
 	private val listener = EventListener<DocumentSnapshot> { value, e ->
 		logD("Loaded ${documentRef.path}, cache: ${value?.metadata?.isFromCache.toString()} error: ${e?.message}")
 		val document = value?.toObject(clazz)
-		if(document != null && document is Document) {
+		if (document != null && document is Document) {
 			document.docId = value.id
 		}
 		setValue(Resource(if (e != null) Resource.Status.ERROR else if (value.metadata.isFromCache) Resource.Status.LOADING else Resource.Status.SUCCESS,
-				document, e?.message))
+			document, e?.message))
 	}
 	private lateinit var listenerRegistration: ListenerRegistration
 
@@ -41,16 +41,16 @@ class FirestoreDocumentQueryLiveData<T>(private val query: Query, private val cl
 	// if cached data are up to date with server DB, listener won't get called again with isFromCache=false
 	private val listener = EventListener<QuerySnapshot> { value, e ->
 		logD("Loaded $query, cache: ${value?.metadata?.isFromCache.toString()} error: ${e?.message}")
-				val list: ArrayList<T> = ArrayList()
+		val list: ArrayList<T> = ArrayList()
 		value?.documents?.mapTo(list) {
 			val item = it.toObject(clazz)
-			if(item is Document) {
+			if (item is Document) {
 				(item as Document).docId = it.id
 			}
 			item
 		}
 		setValue(Resource(if (e != null) Resource.Status.ERROR else if (value.metadata.isFromCache) Resource.Status.LOADING else Resource.Status.SUCCESS,
-				if (!list.isEmpty()) list[0] else null, e?.message))
+			if (!list.isEmpty()) list[0] else null, e?.message))
 	}
 	private lateinit var listenerRegistration: ListenerRegistration
 
@@ -75,7 +75,7 @@ class FirestoreDocumentListLiveData<T>(private val query: Query, private val cla
 		val list: ArrayList<T> = ArrayList()
 		value?.documents?.mapTo(list) {
 			val item = it.toObject(clazz)
-			if(item is Document) {
+			if (item is Document) {
 				(item as Document).docId = it.id
 			}
 			item

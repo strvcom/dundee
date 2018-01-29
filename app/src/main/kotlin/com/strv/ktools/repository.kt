@@ -47,11 +47,11 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 		} else if (liveDataToReuse is CleanableMediatorLiveData<Resource<ResultType>>) {
 			result = liveDataToReuse
 			result.clearSources()
-			result.value = Resource(result.value?.status ?: Resource.Status.LOADING, result.value?.data, result.value?.message)
+			result.value = Resource(result.value?.status
+				?: Resource.Status.LOADING, result.value?.data, result.value?.message)
 		} else {
 			throw IllegalArgumentException("LiveData provided for reuse must be result of previous NetworkBoundResource instance.")
 		}
-
 
 		val dbSource = loadFromDb()
 		result.addSource(dbSource, { data ->
@@ -60,7 +60,8 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 				fetchFromNetwork(dbSource)
 			} else {
 				result.addSource(dbSource, { newData ->
-					result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
+					result.setValue(Resource(Resource.Status.SUCCESS, newData))
+				})
 			}
 		})
 	}
@@ -92,16 +93,16 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 			uiThread {
 				val dbSource = loadFromDb()
 				result.addSource(dbSource, { newData ->
-					result.setValue(Resource(Resource.Status.SUCCESS, newData)) })
+					result.setValue(Resource(Resource.Status.SUCCESS, newData))
+				})
 			}
 		}
 	}
 
-
 	fun getAsLiveData(): LiveData<Resource<ResultType>> = result
 }
 
-class CleanableMediatorLiveData<T> : MediatorLiveData<T>(){
+class CleanableMediatorLiveData<T> : MediatorLiveData<T>() {
 
 	private val sources = ArrayList<LiveData<*>>()
 
@@ -116,7 +117,7 @@ class CleanableMediatorLiveData<T> : MediatorLiveData<T>(){
 	}
 
 	fun clearSources() {
-		sources.forEach({super.removeSource(it)})
+		sources.forEach({ super.removeSource(it) })
 		sources.clear()
 	}
 }

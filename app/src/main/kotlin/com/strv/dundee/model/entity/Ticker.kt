@@ -13,13 +13,13 @@ Notes:
  */
 @Entity(tableName = "ticker", primaryKeys = ["source", "currency", "coin"])
 data class Ticker(
-		var source: String = BitcoinSource.BITSTAMP,
-		var currency: String = Currency.USD,
-		var coin: String = Coin.BTC,
-		var lastPrice: Double = 0.toDouble(),
-		var highPrice: Double = 0.toDouble(),
-		var lowPrice: Double = 0.toDouble(),
-		var timestamp: Long = 0
+	var source: String = BitcoinSource.BITSTAMP,
+	var currency: String = Currency.USD,
+	var coin: String = Coin.BTC,
+	var lastPrice: Double = 0.toDouble(),
+	var highPrice: Double = 0.toDouble(),
+	var lowPrice: Double = 0.toDouble(),
+	var timestamp: Long = 0
 ) {
 	fun getValue(amount: Double, targetCurrency: String?, exchangeRates: HashMap<String, LiveData<Resource<ExchangeRates>>>): Double =
 		amount * lastPrice * (exchangeRates[currency]?.value?.data?.rates!![targetCurrency] ?: 0.0)

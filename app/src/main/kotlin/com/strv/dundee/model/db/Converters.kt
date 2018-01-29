@@ -17,7 +17,7 @@ class Converters {
 
 	@TypeConverter
 	fun mapToString(map: Map<String, Double>?): String? {
-		return if(map == null) null else Gson().toJson(map)
+		return if (map == null) null else Gson().toJson(map)
 	}
 
 	@TypeConverter

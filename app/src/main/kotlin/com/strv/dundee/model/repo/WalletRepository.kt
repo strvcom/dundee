@@ -16,8 +16,8 @@ class WalletRepository {
 
 	fun getWalletsForCurrentUser(coin: String? = null): FirestoreDocumentListLiveData<Wallet> {
 		var query = walletCollection.whereEqualTo("uid", auth.currentUser?.uid).orderBy(Wallet.ATTR_CREATED)
-		if(coin != null) query = query.whereEqualTo(Wallet.ATTR_COIN, coin)
-		return FirestoreDocumentListLiveData(query,  Wallet::class.java)
+		if (coin != null) query = query.whereEqualTo(Wallet.ATTR_COIN, coin)
+		return FirestoreDocumentListLiveData(query, Wallet::class.java)
 	}
 
 	fun addWalletToCurrentUser(wallet: Wallet): Task<DocumentReference> {

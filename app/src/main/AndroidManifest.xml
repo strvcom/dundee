@@ -19,15 +19,15 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".ui.auth.SignInActivity"/>
+		<activity android:name=".ui.auth.SignInActivity" />
 		<activity
 			android:name=".ui.auth.SignUpActivity"
-			android:label="@string/new_account"/>
+			android:label="@string/new_account" />
 		<activity
 			android:name=".ui.wallet.EditWalletAmountActivity"
-			android:label="@string/add_amount"/>
+			android:label="@string/add_amount" />
 		<activity
-			android:name=".ui.wallet.WalletDetailActivity"/>
+			android:name=".ui.wallet.WalletDetailActivity" />
 	</application>
 
 </manifest>

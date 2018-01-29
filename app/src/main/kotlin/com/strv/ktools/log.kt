@@ -2,7 +2,6 @@ package com.strv.ktools
 
 import android.util.Log
 
-
 private var logTag = "Log"
 private var logEnabled = true
 private var showCodeLocation = true

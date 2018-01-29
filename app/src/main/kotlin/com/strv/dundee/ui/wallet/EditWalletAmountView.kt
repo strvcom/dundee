@@ -22,7 +22,8 @@ class EditWalletAmountActivity : BaseActivity(), EditWalletAmountView {
 		fun newIntent(context: Context) = Intent(context, EditWalletAmountActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
 		fun newIntent(context: Context, wallet: Wallet) = Intent(context, EditWalletAmountActivity::class.java).apply {
 			addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-			putExtra(EXTRA_WALLET, wallet)}
+			putExtra(EXTRA_WALLET, wallet)
+		}
 	}
 
 	private val vmb by vmb<EditWalletAmountViewModel, ActivityEditWalletAmountBinding>(R.layout.activity_edit_wallet_amount) { EditWalletAmountViewModel(intent.getParcelableExtra(EXTRA_WALLET)) }
@@ -30,7 +31,7 @@ class EditWalletAmountActivity : BaseActivity(), EditWalletAmountView {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setupToolbar(vmb.binding.toolbar)
-		if(intent.getParcelableExtra<Wallet>(EXTRA_WALLET) != null) setToolbarTitle(R.string.edit_amount)
+		if (intent.getParcelableExtra<Wallet>(EXTRA_WALLET) != null) setToolbarTitle(R.string.edit_amount)
 
 		vmb.viewModel.finish.observe(this, Observer {
 			setResult(Activity.RESULT_OK)

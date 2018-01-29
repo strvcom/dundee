@@ -23,7 +23,6 @@ import com.strv.dundee.BR
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-
 // ViewModelBinding extension functions
 inline fun <reified VM : ViewModel, B : ViewDataBinding> FragmentActivity.vmb(@LayoutRes layoutResId: Int, viewModelProvider: ViewModelProvider? = null) = object : ReadOnlyProperty<FragmentActivity, ViewModelBinding<VM, B>> {
 	var instance = ViewModelBinding<VM, B>(this@vmb, VM::class.java, layoutResId, viewModelProvider, null)
@@ -45,14 +44,13 @@ inline fun <reified VM : ViewModel, B : ViewDataBinding> Fragment.vmb(@LayoutRes
 	override fun getValue(thisRef: Fragment, property: KProperty<*>) = instance
 }
 
-
 // ViewModelBinding class itself
 class ViewModelBinding<VM : ViewModel, B : ViewDataBinding> constructor(
-		private val lifecycleOwner: LifecycleOwner,
-		val viewModelClass: Class<VM>,
-		@LayoutRes val layoutResId: Int,
-		var viewModelProvider: ViewModelProvider?,
-		val viewModelFactory: (() -> VM)?
+	private val lifecycleOwner: LifecycleOwner,
+	val viewModelClass: Class<VM>,
+	@LayoutRes val layoutResId: Int,
+	var viewModelProvider: ViewModelProvider?,
+	val viewModelFactory: (() -> VM)?
 ) {
 	init {
 		if (!(lifecycleOwner is FragmentActivity || lifecycleOwner is Fragment))
@@ -135,7 +133,6 @@ fun <T> ObservableField<T>.observe(observer: (T?) -> Unit) {
 	})
 }
 
-
 // single-event LiveData
 class EventLiveData<T> : MutableLiveData<T>() {
 	private var pending = false
@@ -168,7 +165,6 @@ class EventLiveData<T> : MutableLiveData<T>() {
 fun EventLiveData<Unit>.publish() {
 	publish(Unit)
 }
-
 
 class LiveBus<T> {
 	val observers = HashMap<LifecycleOwner, Observer<T>>()

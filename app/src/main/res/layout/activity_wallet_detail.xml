@@ -52,7 +52,7 @@
 			<View
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/spacing_1"
-				android:background="@color/text_default"/>
+				android:background="@color/text_default" />
 
 			<android.support.v7.widget.RecyclerView
 				android:layout_width="match_parent"
@@ -63,7 +63,7 @@
 				app:liveDataItemBinding="@{viewModel.itemBinding}"
 				app:liveDataItems="@{viewModel.wallets}"
 				app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
-				tools:listitem="@layout/item_wallet_detail"/>
+				tools:listitem="@layout/item_wallet_detail" />
 
 		</LinearLayout>
 

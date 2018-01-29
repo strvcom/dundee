@@ -13,7 +13,6 @@ import com.strv.ktools.RetrofitCallLiveData
 import com.strv.ktools.inject
 import retrofit2.Response
 
-
 class BitcoinRepository {
 	val cache by inject<BitcoinCache>()
 

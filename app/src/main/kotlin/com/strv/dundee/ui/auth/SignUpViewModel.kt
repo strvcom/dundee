@@ -24,25 +24,24 @@ class SignUpViewModel(val defaultEmail: String? = null, val defaultPassword: Str
 	val email = MutableLiveData<String>().apply { value = defaultEmail }
 	val password = MutableLiveData<String>().apply { value = defaultPassword }
 	val formValid = MediatorLiveData<Boolean>()
-			.addValueSource(email, { validateForm() })
-			.addValueSource(password, { validateForm() })
+		.addValueSource(email, { validateForm() })
+		.addValueSource(password, { validateForm() })
 	val progress = MutableLiveData<Boolean>().apply { value = false }
-
 
 	private fun validateForm() = validateEmail(email.value) && validatePassword(password.value, config.MIN_PASSWORD_LENGTH)
 
 	fun createAccount() {
 		progress.value = true
 		userRepository.createUserWithEmailAndPassword(email.value!!, password.value!!)
-				.addOnCompleteListener {
-					progress.value = false
-					if (it.isSuccessful) {
-						logD("Sign Up successful")
-						result.publish(SignUpResult(true))
-					} else {
-						logD("Sign Up error: ${it.exception?.message}")
-						result.publish(SignUpResult(false, it.exception?.message))
-					}
+			.addOnCompleteListener {
+				progress.value = false
+				if (it.isSuccessful) {
+					logD("Sign Up successful")
+					result.publish(SignUpResult(true))
+				} else {
+					logD("Sign Up error: ${it.exception?.message}")
+					result.publish(SignUpResult(false, it.exception?.message))
 				}
+			}
 	}
 }

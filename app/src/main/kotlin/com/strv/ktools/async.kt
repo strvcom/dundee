@@ -20,8 +20,8 @@ fun <T> AnkoAsyncContext<T>.uiThread(f: (T) -> Unit): Boolean {
 }
 
 fun <T> T.doAsync(
-		exceptionHandler: ((Throwable) -> Unit)? = null,
-		task: AnkoAsyncContext<T>.() -> Unit
+	exceptionHandler: ((Throwable) -> Unit)? = null,
+	task: AnkoAsyncContext<T>.() -> Unit
 ): Future<Unit> {
 	val context = AnkoAsyncContext(WeakReference(this))
 	return BackgroundExecutor.submit {
@@ -35,7 +35,7 @@ fun <T> T.doAsync(
 
 internal object BackgroundExecutor {
 	var executor: ExecutorService =
-			Executors.newScheduledThreadPool(2 * Runtime.getRuntime().availableProcessors())
+		Executors.newScheduledThreadPool(2 * Runtime.getRuntime().availableProcessors())
 
 	fun <T> submit(task: () -> T): Future<T> {
 		return executor.submit(task)

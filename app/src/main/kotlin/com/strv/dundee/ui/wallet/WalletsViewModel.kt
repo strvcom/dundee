@@ -14,7 +14,6 @@ import com.strv.ktools.inject
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList
 
-
 class WalletsViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val walletRemovedSnackBar = EventLiveData<Wallet>()
 	val walletOpened = EventLiveData<Wallet>()

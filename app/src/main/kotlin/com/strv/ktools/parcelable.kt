@@ -2,7 +2,7 @@ package com.strv.ktools
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.util.*
+import java.util.Date
 
 // Source: @link:https://medium.com/@BladeCoder/reducing-parcelable-boilerplate-code-using-kotlin-741c3124a49a
 
@@ -37,6 +37,6 @@ inline fun <T> Parcel.writeNullable(value: T?, writer: (T) -> Unit) {
 	}
 }
 
-fun Parcel.readDate() =	readNullable { Date(readLong()) }
+fun Parcel.readDate() = readNullable { Date(readLong()) }
 
 fun Parcel.writeDate(value: Date?) = writeNullable(value) { writeLong(it.time) }

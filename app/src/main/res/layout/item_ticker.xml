@@ -11,7 +11,7 @@
 			type="com.strv.dundee.model.entity.Ticker" />
 		<variable
 			name="exchangeRates"
-			type="java.util.HashMap&lt;java.lang.String, android.arch.lifecycle.LiveData&lt;com.strv.ktools.Resource&lt;com.strv.dundee.model.entity.ExchangeRates>>>"/>
+			type="java.util.HashMap&lt;java.lang.String, android.arch.lifecycle.LiveData&lt;com.strv.ktools.Resource&lt;com.strv.dundee.model.entity.ExchangeRates>>>" />
 		<variable
 			name="currency"
 			type="String" />

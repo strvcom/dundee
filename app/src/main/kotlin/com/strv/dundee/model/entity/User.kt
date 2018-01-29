@@ -10,8 +10,8 @@ Notes:
 - properties also need to be vars because Firestore needs setters
  */
 data class User(
-		var uid: String? = FirebaseAuth.getInstance().currentUser?.uid,
-		var email: String? = null
+	var uid: String? = FirebaseAuth.getInstance().currentUser?.uid,
+	var email: String? = null
 //		@ServerTimestamp var creationTime: Date? = null
 ) {
 	companion object {

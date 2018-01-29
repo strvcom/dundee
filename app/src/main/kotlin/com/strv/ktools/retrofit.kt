@@ -11,7 +11,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 fun <T> Call<T>.then(callback: (response: Response<T>?, error: Throwable?) -> Unit) {
 	enqueue(object : Callback<T> {
 		override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -25,23 +24,23 @@ fun <T> Call<T>.then(callback: (response: Response<T>?, error: Throwable?) -> Un
 }
 
 fun <T> Call<T>.liveData(): LiveData<T> =
-		object : LiveData<T>(), Callback<T> {
-			override fun onResponse(call: Call<T>?, response: Response<T>) {
-				value = response.body()
-			}
-
-			override fun onFailure(call: Call<T>?, t: Throwable) {
-				t.printStackTrace()
-			}
-
-			override fun onActive() {
-				this@liveData.enqueue(this)
-			}
-
-			override fun onInactive() {
-				this@liveData.cancel()
-			}
+	object : LiveData<T>(), Callback<T> {
+		override fun onResponse(call: Call<T>?, response: Response<T>) {
+			value = response.body()
 		}
+
+		override fun onFailure(call: Call<T>?, t: Throwable) {
+			t.printStackTrace()
+		}
+
+		override fun onActive() {
+			this@liveData.enqueue(this)
+		}
+
+		override fun onInactive() {
+			this@liveData.cancel()
+		}
+	}
 
 internal fun <T> getRetrofitInterface(url: String, apiInterface: Class<T>, clientBuilderBase: OkHttpClient.Builder? = null): T {
 	val interceptor = HttpLoggingInterceptor().apply {
@@ -53,11 +52,11 @@ internal fun <T> getRetrofitInterface(url: String, apiInterface: Class<T>, clien
 	val gson = GsonBuilder().create()
 
 	return Retrofit.Builder()
-			.client(client)
-			.baseUrl(url)
-			.addConverterFactory(GsonConverterFactory.create(gson))
-			.build()
-			.create(apiInterface)
+		.client(client)
+		.baseUrl(url)
+		.addConverterFactory(GsonConverterFactory.create(gson))
+		.build()
+		.create(apiInterface)
 }
 
 class RetrofitCallLiveData<T>(val call: Call<out T>, val cancelOnInactive: Boolean = false) : LiveData<Response<out T>>() {

@@ -5,7 +5,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 
-
 class PermissionManager(val activity: FragmentActivity) {
 	private var lastRequestId = 0
 	private val permissionRequests = HashMap<Int, PermissionRequest>()
@@ -45,13 +44,12 @@ class PermissionManager(val activity: FragmentActivity) {
 	}
 }
 
-
 open class PermissionRequest(
-		val permissions: List<String>,
-		val grantedCallback: (grantedPermissions: List<String>) -> Unit = {},
-		val deniedCallback: (deniedPermissions: List<String>) -> Unit = {})
+	val permissions: List<String>,
+	val grantedCallback: (grantedPermissions: List<String>) -> Unit = {},
+	val deniedCallback: (deniedPermissions: List<String>) -> Unit = {})
 
 class SinglePermissionRequest(
-		permission: String,
-		grantedCallback: (grantedPermission: String) -> Unit = {},
-		deniedCallback: (deniedPermission: String) -> Unit = {}) : PermissionRequest(listOf(permission), { grantedCallback(it[0]) }, { deniedCallback(it[0]) })
+	permission: String,
+	grantedCallback: (grantedPermission: String) -> Unit = {},
+	deniedCallback: (deniedPermission: String) -> Unit = {}) : PermissionRequest(listOf(permission), { grantedCallback(it[0]) }, { deniedCallback(it[0]) })

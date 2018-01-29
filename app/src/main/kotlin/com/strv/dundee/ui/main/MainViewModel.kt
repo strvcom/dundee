@@ -13,7 +13,6 @@ import com.strv.ktools.inject
 import com.strv.ktools.sharedPrefs
 import com.strv.ktools.stringLiveData
 
-
 class MainViewModel() : ViewModel() {
 
 	private val application by inject<Application>()

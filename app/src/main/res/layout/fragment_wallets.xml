@@ -31,7 +31,7 @@
 			app:liveDataItems="@{viewModel.wallets}"
 			app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
 			app:touchHelperCallback="@{viewModel.touchHelperCallback}"
-			tools:listitem="@layout/item_wallet_amount"/>
+			tools:listitem="@layout/item_wallet_amount" />
 
 		<FrameLayout
 			android:layout_width="wrap_content"

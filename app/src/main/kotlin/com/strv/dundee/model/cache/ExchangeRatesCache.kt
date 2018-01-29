@@ -6,7 +6,6 @@ import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.ktools.inject
 import com.strv.ktools.log
 
-
 class ExchangeRatesCache {
 	private val exchangeRatesDao by inject<ExchangeRatesDao>()
 

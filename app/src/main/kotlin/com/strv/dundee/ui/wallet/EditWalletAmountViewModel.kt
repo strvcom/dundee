@@ -17,7 +17,6 @@ import com.strv.ktools.logD
 import com.strv.ktools.logMeD
 import com.strv.ktools.publish
 
-
 class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceiver {
 
 	private val application by inject<Application>()
@@ -29,11 +28,11 @@ class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel(), Lifecycle
 	val boughtFor = MutableLiveData<String>()
 	private val validateFunction = {
 		amount.value != null && amount.value!!.isNotEmpty() && amount.value!!.isNotBlank() &&
-				boughtFor.value != null && boughtFor.value!!.isNotEmpty() && boughtFor.value!!.isNotBlank()
+			boughtFor.value != null && boughtFor.value!!.isNotEmpty() && boughtFor.value!!.isNotBlank()
 	}
 	val amountValid = MediatorLiveData<Boolean>()
-			.addValueSource(amount, {validateFunction()})
-			.addValueSource(boughtFor, {validateFunction()})
+		.addValueSource(amount, { validateFunction() })
+		.addValueSource(boughtFor, { validateFunction() })
 	val progress = MutableLiveData<Boolean>().apply { value = false }
 	var coin = MutableLiveData<String>().apply { value = Coin.BTC }
 	var currency = MutableLiveData<String>().apply { value = Currency.USD }
@@ -62,14 +61,14 @@ class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel(), Lifecycle
 
 		val data = Wallet(coin = coin.value, amount = amount.value?.toDouble(), boughtPrice = boughtFor.value?.toDouble(), boughtCurrency = currency.value)
 		walletRepository.addWalletToCurrentUser(data)
-				.addOnSuccessListener {
-					logD("Added ${amount.value} $coin")
-					finish.publish()
-				}
-				.addOnFailureListener { e ->
-					e.logMeD()
-					progress.value = false
-				}
+			.addOnSuccessListener {
+				logD("Added ${amount.value} $coin")
+				finish.publish()
+			}
+			.addOnFailureListener { e ->
+				e.logMeD()
+				progress.value = false
+			}
 	}
 
 	private fun updateAmount() {
@@ -81,13 +80,13 @@ class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel(), Lifecycle
 		wallet?.amount = amount.value?.toDouble()
 		wallet?.coin = coin.value
 		walletRepository.updateWallet(wallet!!)
-				.addOnSuccessListener {
-					logD("Updated to ${amount.value} $coin")
-					finish.publish()
-				}
-				.addOnFailureListener { e ->
-					e.logMeD()
-					progress.value = false
-				}
+			.addOnSuccessListener {
+				logD("Updated to ${amount.value} $coin")
+				finish.publish()
+			}
+			.addOnFailureListener { e ->
+				e.logMeD()
+				progress.value = false
+			}
 	}
 }

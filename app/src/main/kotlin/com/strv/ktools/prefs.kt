@@ -16,39 +16,38 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 private inline fun <T> SharedPreferencesProvider.delegate(
-		defaultValue: T?,
-		key: String? = null,
-		crossinline getter: SharedPreferences.(String, T?) -> T?,
-		crossinline setter: Editor.(String, T?) -> Editor
+	defaultValue: T?,
+	key: String? = null,
+	crossinline getter: SharedPreferences.(String, T?) -> T?,
+	crossinline setter: Editor.(String, T?) -> Editor
 ) =
-		object : ReadWriteProperty<Any?, T?> {
-			override fun getValue(thisRef: Any?, property: KProperty<*>): T? =
-					provide().getter(key ?: property.name, defaultValue)
+	object : ReadWriteProperty<Any?, T?> {
+		override fun getValue(thisRef: Any?, property: KProperty<*>): T? =
+			provide().getter(key ?: property.name, defaultValue)
 
-			override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
-					provide().edit().setter(key ?: property.name, value).apply()
-		}
+		override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
+			provide().edit().setter(key ?: property.name, value).apply()
+	}
 
 private inline fun <T> SharedPreferencesProvider.delegatePrimitive(
-		defaultValue: T,
-		key: String? = null,
-		crossinline getter: SharedPreferences.(String, T) -> T,
-		crossinline setter: Editor.(String, T) -> Editor
+	defaultValue: T,
+	key: String? = null,
+	crossinline getter: SharedPreferences.(String, T) -> T,
+	crossinline setter: Editor.(String, T) -> Editor
 ) =
-		object : ReadWriteProperty<Any?, T> {
-			override fun getValue(thisRef: Any?, property: KProperty<*>): T =
-					provide().getter(key ?: property.name, defaultValue)!!
+	object : ReadWriteProperty<Any?, T> {
+		override fun getValue(thisRef: Any?, property: KProperty<*>): T =
+			provide().getter(key ?: property.name, defaultValue)!!
 
-			override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) =
-					provide().edit().setter(key ?: property.name, value).apply()
-		}
-
+		override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) =
+			provide().edit().setter(key ?: property.name, value).apply()
+	}
 
 private inline fun <T> SharedPreferencesProvider.liveDataDelegate(
-		defaultValue: T? = null,
-		key: String? = null,
-		crossinline getter: SharedPreferences.(String, T?) -> T?,
-		crossinline setter: Editor.(String, T?) -> Editor
+	defaultValue: T? = null,
+	key: String? = null,
+	crossinline getter: SharedPreferences.(String, T?) -> T?,
+	crossinline setter: Editor.(String, T?) -> Editor
 ): ReadOnlyProperty<Any?, MutableLiveData<T?>> = object : MutableLiveData<T?>(), ReadOnlyProperty<Any?, MutableLiveData<T?>> {
 	var originalProperty: KProperty<*>? = null
 
@@ -70,10 +69,10 @@ private inline fun <T> SharedPreferencesProvider.liveDataDelegate(
 }
 
 private inline fun <T> SharedPreferencesProvider.liveDataDelegatePrimitive(
-		defaultValue: T,
-		key: String? = null,
-		crossinline getter: SharedPreferences.(String, T) -> T,
-		crossinline setter: Editor.(String, T) -> Editor
+	defaultValue: T,
+	key: String? = null,
+	crossinline getter: SharedPreferences.(String, T) -> T,
+	crossinline setter: Editor.(String, T) -> Editor
 ): ReadOnlyProperty<Any?, MutableLiveData<T>> = object : MutableLiveData<T>(), ReadOnlyProperty<Any?, MutableLiveData<T>> {
 	var originalProperty: KProperty<*>? = null
 
@@ -118,7 +117,6 @@ private fun sharedPrefs(context: Context, name: String?, mode: Int) = SharedPref
 	else
 		context.getSharedPreferences(name, mode)
 })
-
 
 fun AndroidViewModel.sharedPrefs(name: String? = null, mode: Int = ContextWrapper.MODE_PRIVATE) = sharedPrefs(getApplication(), name, mode)
 fun Activity.sharedPrefs(name: String? = null, mode: Int = ContextWrapper.MODE_PRIVATE) = sharedPrefs(this, name, mode)

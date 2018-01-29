@@ -31,17 +31,17 @@
 				android:id="@+id/ic_left"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:src="@drawable/ic_delete"
 				android:layout_gravity="center_vertical"
-				android:layout_marginLeft="@dimen/spacing_16"/>
+				android:layout_marginLeft="@dimen/spacing_16"
+				android:src="@drawable/ic_delete" />
 
 			<ImageView
 				android:id="@+id/ic_right"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:src="@drawable/ic_delete"
 				android:layout_gravity="center_vertical|right"
-				android:layout_marginRight="@dimen/spacing_16"/>
+				android:layout_marginRight="@dimen/spacing_16"
+				android:src="@drawable/ic_delete" />
 
 		</FrameLayout>
 

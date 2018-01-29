@@ -23,7 +23,8 @@ class WalletDetailActivity : BaseActivity(), WalletDetailView {
 
 		fun newIntent(context: Context, wallet: WalletOverview) = Intent(context, WalletDetailActivity::class.java).apply {
 			putExtra(EXTRA_WALLET_OVERVIEW, wallet)
-			addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
+			addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+		}
 	}
 
 	override val lifecycleAwareAdapter = LifecycleAwareBindingRecyclerViewAdapter<Wallet>(this)
