@@ -10,7 +10,6 @@ class SingletonDIProvider<T>(provider: () -> T) : DIProvider<T>(provider) {
 	val instance by lazy { provider() }
 }
 
-
 object DIStorage {
 	private val provided = HashMap<String, HashMap<String, DIProvider<Any>>?>()
 
@@ -24,12 +23,16 @@ object DIStorage {
 
 // public methods
 inline fun <reified T : Any> inject(scope: String = DI_SCOPE_GLOBAL) = object : ReadOnlyProperty<Any?, T> {
+	var value: T? = null
 	override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-		val found = DIStorage.get(scope, T::class.java.name) ?: throw IllegalStateException("Dependency for property ${property.name}: ${T::class.java.name} not provided.")
+		if (value != null) return value!!
+
+		val found = DIStorage.get(scope, T::class.java.name)
+			?: throw IllegalStateException("Dependency for property ${property.name}: ${T::class.java.name} not provided.")
 		return when (found) {
 			is SingletonDIProvider -> found.instance as T
 			else -> found.provider.invoke() as T
-		}
+		}.also { value = it }
 	}
 
 }
