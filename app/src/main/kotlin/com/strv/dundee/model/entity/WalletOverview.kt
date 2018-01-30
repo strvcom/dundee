@@ -14,8 +14,8 @@ data class WalletOverview(
 	fun getBoughtPrice(currency: String?, exchangeRates: HashMap<String, ExchangeRatesLiveData>): Double =
 		boughtPrices.sumByDouble { (exchangeRates[it.first]?.value?.data?.rates?.get(currency) ?: 0.0) * it.second }
 
-	fun getProfit(currency: String, exchangeRates: HashMap<String, ExchangeRatesLiveData>, ticker: Ticker): Double =
-		ticker.getValue(amount, currency, exchangeRates) - getBoughtPrice(currency, exchangeRates)
+	fun getProfit(currency: String, exchangeRates: HashMap<String, ExchangeRatesLiveData>, ticker: Ticker?): Double =
+		ticker?.let { it.getValue(amount, currency, exchangeRates) - getBoughtPrice(currency, exchangeRates) } ?: 0.0
 
 	private constructor(parcel: Parcel) : this(
 		coin = parcel.readString(),
