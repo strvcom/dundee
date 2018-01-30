@@ -3,16 +3,27 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
+
 android {
 	compileSdkVersion 27
 	defaultConfig {
 		applicationId "com.strv.dundee"
 		minSdkVersion 21
 		targetSdkVersion 27
-		versionCode 1
-		versionName "1.0"
+		versionCode gitTagCount
+		versionName gitTagName
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 	}
+
+	signingConfigs {
+		release {
+			storeFile file(signingKeyStoreFile)
+			keyAlias signingKeyAlias
+			keyPassword signingKeyPassword
+			storePassword signingKeyPassword
+		}
+	}
+
 	buildTypes {
 		release {
 			postprocessing {
@@ -21,13 +32,10 @@ android {
 				obfuscate false
 				optimizeCode false
 				proguardFile 'proguard-rules.pro'
+				signingConfig signingConfigs.release
 			}
 		}
 	}
-	sourceSets {
-		main.java.srcDirs += 'src/main/kotlin'
-	}
-	dataBinding.enabled true
 
 	flavorDimensions "default"
 
@@ -59,6 +67,24 @@ android {
 			applicationId "com.strv.dundee.mock"
 			resValue "string", "app_name", "Project Dundee Mock"
 			buildConfigField "boolean", "LOGS", "true"
+		}
+	}
+
+
+	sourceSets {
+		main.java.srcDirs += 'src/main/kotlin'
+	}
+	dataBinding.enabled true
+
+	applicationVariants.all {variant ->
+		if (variant.buildType.name == "release") {
+			variant.outputs.all {output ->
+				def date = new Date().format('yyyyMMdd')
+				outputFileName = "${appName}-${variant.name}-${variant.versionName}-${variant.versionCode}-${date}.apk"
+			}
+			aaptOptions.cruncherEnabled true
+		} else {
+			aaptOptions.cruncherEnabled false
 		}
 	}
 }

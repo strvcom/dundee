@@ -3,6 +3,18 @@
 
 buildscript {
 	ext {
+		appName = 'dundee'
+
+		// app versions
+		gitTagName = 'git describe --tags --abbrev=0'.execute([], project.rootDir).text.trim()
+		gitTagCount = 'git tag --list'.execute([], project.rootDir).text.split("\n").size()
+
+		// signing config
+		signingKeyStoreFile = '../extras/release.jks'
+		signingKeyAlias = 'dundee'
+		signingKeyPassword = 'Z5GHgCtRL2qS'
+
+		// library versions
 		kotlinVersion = '1.2.21'
 		androidPluginVersion = '3.1.0-alpha09'
 		playServicesPluginVersion = '3.1.2'
