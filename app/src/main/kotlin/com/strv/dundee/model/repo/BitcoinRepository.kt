@@ -20,5 +20,5 @@ class BitcoinRepository {
 
 	fun getTicker(source: String, coin: String, currency: String) = TickerLiveData(cache, getApi(source)).apply { refresh(source, coin, currency) }
 
-	fun getCandles(source: String, coin: String, currency: String, timeFrame: String) = CandlesLiveData(cache, getApi(source)).apply { setup(source, coin, currency, timeFrame) }
+	fun getCandles(source: String, coin: String, currency: String, timeFrame: String) = CandlesLiveData(cache, getApi(source)).apply { refresh(source, coin, currency, timeFrame) }
 }

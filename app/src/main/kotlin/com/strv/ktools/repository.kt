@@ -34,7 +34,7 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 		fun createCall(): LiveData<Response<out RequestType>>
 	}
 
-	private var callback: Callback<ResultType, RequestType>? = null
+	private lateinit var callback: Callback<ResultType, RequestType>
 
 	init {
 		result.value = Resource(Resource.Status.LOADING, null)
@@ -46,10 +46,10 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 		result.value = Resource(result.value?.status
 			?: Resource.Status.LOADING, result.value?.data, result.value?.message)
 
-		val dbSource = callback!!.loadFromDb()
+		val dbSource = callback.loadFromDb()
 		result.addSource(dbSource, { data ->
 			result.removeSource(dbSource)
-			if (callback!!.shouldFetch(data)) {
+			if (callback.shouldFetch(data)) {
 				fetchFromNetwork(dbSource)
 			} else {
 				result.addSource(dbSource, { newData ->
@@ -60,8 +60,7 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 	}
 
 	private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
-		checkCallback()
-		val apiResponse = callback!!.createCall()
+		val apiResponse = callback.createCall()
 		// we re-attach dbSource as a new source,
 		// it will dispatch its latest value quickly
 		result.addSource(dbSource, { newData -> result.setValue(Resource(Resource.Status.LOADING, newData)) })
@@ -83,11 +82,9 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 	@MainThread
 	private fun saveResultAndReInit(response: Response<out RequestType>) {
 		doAsync {
-			checkCallback()
-			callback!!.saveCallResult(response.body()!!)
+			callback.saveCallResult(response.body()!!)
 			uiThread {
-				checkCallback()
-				val dbSource = callback!!.loadFromDb()
+				val dbSource = callback.loadFromDb()
 				result.addSource(dbSource, { newData ->
 					result.setValue(Resource(Resource.Status.SUCCESS, newData))
 				})
@@ -100,17 +97,11 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 	@MainThread
 	protected fun onFetchFailed() {
 	}
-
-	private fun checkCallback() {
-		if (callback == null) throw IllegalStateException("NetworkBoundResource Callback not defined")
-	}
-
-	fun getAsLiveData(): LiveData<Resource<ResultType>> = result
 }
 
 open class ResourceLiveData<ResultType, RequestType> : MediatorLiveData<Resource<ResultType>>() {
 
-	private val resource = NetworkBoundResource<ResultType, RequestType>(this)
+	private val resource = NetworkBoundResource(this)
 
 	private val sources = ArrayList<LiveData<*>>()
 

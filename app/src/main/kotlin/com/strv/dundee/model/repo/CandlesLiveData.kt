@@ -11,7 +11,7 @@ import com.strv.ktools.RetrofitCallLiveData
 import retrofit2.Response
 
 class CandlesLiveData(val cache: BitcoinCache, val api: BitcoinApi) : ResourceLiveData<CandleSet, CandlesProvider>() {
-	fun setup(source: String, coin: String, currency: String, timeFrame: String) {
+	fun refresh(source: String, coin: String, currency: String, timeFrame: String) {
 		setupResource(object : NetworkBoundResource.Callback<CandleSet, CandlesProvider> {
 			override fun saveCallResult(item: CandlesProvider) {
 				cache.putCandles(item.getCandles(source, currency, coin, timeFrame))

@@ -18,6 +18,6 @@ class ChartsViewModel(private val mainViewModel: MainViewModel) : ViewModel() {
 	}
 
 	private fun refreshCandles() {
-		candles.setup(BitcoinSource.BITFINEX, Coin.BTC, mainViewModel.apiCurrency.value!!, timeFrame.value!!)
+		candles.refresh(BitcoinSource.BITFINEX, Coin.BTC, mainViewModel.apiCurrency.value!!, timeFrame.value!!)
 	}
 }
