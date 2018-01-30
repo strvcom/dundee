@@ -22,5 +22,5 @@ data class Ticker(
 	var timestamp: Long = 0
 ) {
 	fun getValue(amount: Double, targetCurrency: String?, exchangeRates: HashMap<String, LiveData<Resource<ExchangeRates>>>): Double =
-		amount * lastPrice * (exchangeRates[currency]?.value?.data?.rates!![targetCurrency] ?: 0.0)
+		amount * lastPrice * (exchangeRates[currency]?.value?.data?.rates?.get(targetCurrency) ?: 0.0)
 }

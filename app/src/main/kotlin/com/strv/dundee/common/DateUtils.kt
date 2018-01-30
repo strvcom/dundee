@@ -11,3 +11,5 @@ object DateUtils {
 }
 
 fun Date.isOlderThan(calendarUnit: Int, value: Int) = this.before(Calendar.getInstance().apply { add(calendarUnit, -value) }.time)
+
+fun Date.daysToNow() = Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - Calendar.getInstance().apply { time = this@daysToNow }.get(Calendar.DAY_OF_YEAR)

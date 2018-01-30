@@ -2,7 +2,7 @@ package com.strv.dundee.model.repo
 
 import android.arch.lifecycle.LiveData
 import com.strv.dundee.app.Config
-import com.strv.dundee.common.isOlderThan
+import com.strv.dundee.common.daysToNow
 import com.strv.dundee.model.api.exchangerate.ExchangeRateApi
 import com.strv.dundee.model.api.exchangerate.ExchangeRateResponse
 import com.strv.dundee.model.cache.ExchangeRatesCache
@@ -11,7 +11,6 @@ import com.strv.ktools.NetworkBoundResource
 import com.strv.ktools.Resource
 import com.strv.ktools.RetrofitCallLiveData
 import com.strv.ktools.inject
-import java.util.Calendar
 
 class ExchangeRatesRepository {
 
@@ -24,8 +23,7 @@ class ExchangeRatesRepository {
 			cache.putRates(item.getExchangeRates(source))
 		}
 
-		override fun shouldFetch(data: ExchangeRates?) = data?.date?.isOlderThan(Calendar.DAY_OF_YEAR, -Config.EXCHANGE_RATE_TTL_DAYS)
-			?: true
+		override fun shouldFetch(data: ExchangeRates?) = (data?.date?.daysToNow() ?: 2) > Config.EXCHANGE_RATE_TTL_DAYS
 
 		override fun loadFromDb(): LiveData<ExchangeRates> = cache.getRates(source)
 
