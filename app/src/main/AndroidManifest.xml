@@ -28,6 +28,7 @@
 			android:label="@string/add_amount" />
 		<activity
 			android:name=".ui.wallet.WalletDetailActivity" />
+
 	</application>
 
 </manifest>

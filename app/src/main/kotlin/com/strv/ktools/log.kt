@@ -8,7 +8,7 @@ private var showCodeLocation = true
 private var showCodeLocationThread = false
 private var showCodeLocationLine = false
 
-fun setEnabled(enabled: Boolean) {
+fun setLogEnabled(enabled: Boolean) {
 	logEnabled = enabled
 }
 

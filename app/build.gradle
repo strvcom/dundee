@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 android {
 	compileSdkVersion 27
@@ -36,24 +37,28 @@ android {
 			dimension "default"
 			applicationId "com.strv.dundee"
 			resValue "string", "app_name", "Project Dundee"
+			buildConfigField "boolean", "LOGS", "false"
 		}
 
 		demoProduction {
 			dimension "default"
 			applicationId "com.strv.dundee.demo"
 			resValue "string", "app_name", "Project Dundee Demo"
+			buildConfigField "boolean", "LOGS", "false"
 		}
 
 		develop {
 			dimension "default"
 			applicationId "com.strv.dundee.develop"
 			resValue "string", "app_name", "Project Dundee Develop"
+			buildConfigField "boolean", "LOGS", "true"
 		}
 
 		mock {
 			dimension "default"
 			applicationId "com.strv.dundee.mock"
 			resValue "string", "app_name", "Project Dundee Mock"
+			buildConfigField "boolean", "LOGS", "true"
 		}
 	}
 }
@@ -76,6 +81,9 @@ dependencies {
 	implementation "com.google.firebase:firebase-firestore:$firebaseVersion"
 	implementation "com.google.firebase:firebase-auth:$firebaseVersion"
 	implementation "com.google.android.gms:play-services-auth:$firebaseVersion"
+	implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+		transitive = true
+	}
 
 	// Android Arch
 	implementation "android.arch.lifecycle:extensions:$archVersion"
