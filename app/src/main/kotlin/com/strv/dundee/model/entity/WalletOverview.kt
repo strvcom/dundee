@@ -1,9 +1,8 @@
 package com.strv.dundee.model.entity
 
-import android.arch.lifecycle.LiveData
 import android.os.Parcel
+import com.strv.dundee.model.repo.ExchangeRatesLiveData
 import com.strv.ktools.KParcelable
-import com.strv.ktools.Resource
 import com.strv.ktools.parcelableCreator
 
 data class WalletOverview(
@@ -12,10 +11,10 @@ data class WalletOverview(
 	val boughtPrices: MutableList<Pair<String, Double>> = mutableListOf()
 ) : KParcelable {
 
-	fun getBoughtPrice(currency: String?, exchangeRates: HashMap<String, LiveData<Resource<ExchangeRates>>>): Double =
+	fun getBoughtPrice(currency: String?, exchangeRates: HashMap<String, ExchangeRatesLiveData>): Double =
 		boughtPrices.sumByDouble { (exchangeRates[it.first]?.value?.data?.rates!![currency] ?: 0.0) * it.second }
 
-	fun getProfit(currency: String, exchangeRates: HashMap<String, LiveData<Resource<ExchangeRates>>>, ticker: Ticker): Double =
+	fun getProfit(currency: String, exchangeRates: HashMap<String, ExchangeRatesLiveData>, ticker: Ticker): Double =
 		ticker.getValue(amount, currency, exchangeRates) - getBoughtPrice(currency, exchangeRates)
 
 	private constructor(parcel: Parcel) : this(
