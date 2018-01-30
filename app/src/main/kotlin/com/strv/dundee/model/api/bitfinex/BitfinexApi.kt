@@ -2,7 +2,6 @@ package com.strv.dundee.model.api.bitfinex
 
 import android.arch.lifecycle.LiveData
 import com.strv.dundee.model.api.BitcoinApi
-import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.CandleSet
 import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.getRetrofitInterface
@@ -19,6 +18,6 @@ class BitfinexApi : BitcoinApi {
 	}
 
 	override fun getCandles(coin: String, currency: String, timeFrame: String): LiveData<Response<CandleSet>> {
-		return api.getCandles("${coin.toUpperCase()}${currency.toUpperCase()}", timeFrame).mapLiveData({ it?.getCandles(BitcoinSource.BITFINEX, currency, coin, timeFrame) })
+		return api.getCandles("${coin.toUpperCase()}${currency.toUpperCase()}", timeFrame).mapLiveData({ it?.getCandles(currency, coin, timeFrame) })
 	}
 }
