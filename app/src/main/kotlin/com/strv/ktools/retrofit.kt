@@ -22,25 +22,11 @@ fun <T> Call<T>.then(callback: (response: Response<T>?, error: Throwable?) -> Un
 		}
 	})
 }
+fun <T, S> Response<T>.map(mapFunction: (T?) -> S?) = if (isSuccessful) Response.success(mapFunction(body()), raw()) else Response.error(errorBody(), raw())
 
-fun <T> Call<T>.liveData(): LiveData<T> =
-	object : LiveData<T>(), Callback<T> {
-		override fun onResponse(call: Call<T>?, response: Response<T>) {
-			value = response.body()
-		}
+fun <T> Call<T>.liveData(cancelOnInactive: Boolean = false) = RetrofitCallLiveData(this, cancelOnInactive)
+fun <T, S> Call<T>.mapLiveData(mapFunction: (T?) -> S?, cancelOnInactive: Boolean = false) = RetrofitMapCallLiveData(this, mapFunction, cancelOnInactive)
 
-		override fun onFailure(call: Call<T>?, t: Throwable) {
-			t.printStackTrace()
-		}
-
-		override fun onActive() {
-			this@liveData.enqueue(this)
-		}
-
-		override fun onInactive() {
-			this@liveData.cancel()
-		}
-	}
 
 internal fun <T> getRetrofitInterface(url: String, apiInterface: Class<T>, clientBuilderBase: OkHttpClient.Builder? = null): T {
 	val interceptor = HttpLoggingInterceptor().apply {
@@ -59,13 +45,13 @@ internal fun <T> getRetrofitInterface(url: String, apiInterface: Class<T>, clien
 		.create(apiInterface)
 }
 
-class RetrofitCallLiveData<T>(val call: Call<out T>, val cancelOnInactive: Boolean = false) : LiveData<Response<out T>>() {
+open class RetrofitMapCallLiveData<T, S>(val call: Call<T>, val mapFunction: (T?) -> S?, val cancelOnInactive: Boolean = false) : LiveData<Response<S>>() {
 	override fun onActive() {
 		super.onActive()
 		if (call.isExecuted)
 			return
 		call.then { response, error ->
-			value = response
+			value = response?.map(mapFunction)
 		}
 	}
 
@@ -74,5 +60,6 @@ class RetrofitCallLiveData<T>(val call: Call<out T>, val cancelOnInactive: Boole
 		if (cancelOnInactive)
 			call.cancel()
 	}
-
 }
+
+class RetrofitCallLiveData<T>(call: Call<T>, cancelOnInactive: Boolean = false) : RetrofitMapCallLiveData<T, T>(call, { it }, cancelOnInactive)

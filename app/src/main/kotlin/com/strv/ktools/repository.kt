@@ -31,7 +31,7 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 
 		// Called to create the API call.
 		@MainThread
-		fun createCall(): LiveData<Response<out RequestType>>
+		fun createCall(): LiveData<Response<RequestType>>
 	}
 
 	private lateinit var callback: Callback<ResultType, RequestType>
