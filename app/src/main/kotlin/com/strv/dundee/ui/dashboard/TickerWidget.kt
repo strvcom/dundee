@@ -1,13 +1,12 @@
 package com.strv.dundee.ui.dashboard
 
-import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.strv.dundee.databinding.ItemTickerBinding
-import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.dundee.model.entity.Ticker
+import com.strv.dundee.model.repo.ExchangeRatesLiveData
 import com.strv.ktools.Resource
 
 class TickerWidget : FrameLayout {
@@ -23,7 +22,7 @@ class TickerWidget : FrameLayout {
 			rootBinding.ticker = value?.data
 		}
 
-	var exchangeRates: HashMap<String, LiveData<Resource<ExchangeRates>>>? = null
+	var exchangeRates: HashMap<String, ExchangeRatesLiveData>? = null
 		set(value) {
 			rootBinding.exchangeRates = value
 		}

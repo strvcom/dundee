@@ -1,6 +1,5 @@
 package com.strv.dundee.ui.dashboard
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR
@@ -8,11 +7,11 @@ import com.strv.dundee.R
 import com.strv.dundee.common.OnItemClickListener
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.entity.Currency
-import com.strv.dundee.model.entity.ExchangeRates
-import com.strv.dundee.model.entity.Ticker
 import com.strv.dundee.model.entity.WalletOverview
 import com.strv.dundee.model.repo.BitcoinRepository
+import com.strv.dundee.model.repo.ExchangeRatesLiveData
 import com.strv.dundee.model.repo.ExchangeRatesRepository
+import com.strv.dundee.model.repo.TickerLiveData
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.dundee.ui.main.MainViewModel
 import com.strv.ktools.DiffObservableListLiveData
@@ -40,20 +39,20 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		.bindExtra(BR.viewModel, this)
 		.bindExtra(BR.listener, itemClickCallback)!!
 	var wallets: DiffObservableListLiveData<WalletOverview>
-	val tickers = HashMap<String, LiveData<Resource<Ticker>>>()
+	val tickers = HashMap<String, TickerLiveData>()
 	val source = mainViewModel.source
 	val currency = mainViewModel.currency
 	val apiCurrency = mainViewModel.apiCurrency
 	val totalValue = MediatorLiveData<Double>()
 	val totalProfit = MediatorLiveData<Double>()
-	val exchangeRates = HashMap<String, LiveData<Resource<ExchangeRates>>>()
+	val exchangeRates = HashMap<String, ExchangeRatesLiveData>()
 
 	init {
 		// compose Ticker and exchange rates LiveData (observed by data binding automatically)
-		refreshTicker()
-		refreshExchangeRates()
+		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!) }
+		Currency.getAll().forEach { exchangeRates[it] = exchangeRatesRepository.getExchangeRates(it, Currency.getAll().toList()) }
 
-		// refresh ticker and exchange rates on input changes
+		// setup ticker and exchange rates on input changes
 		currency.observeForever {
 			refreshExchangeRates()
 		}
@@ -88,11 +87,11 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	}
 
 	private fun refreshTicker() {
-		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!, liveDataToReuse = tickers[it]) }
+		Coin.getAll().forEach { tickers[it]?.refresh(source.value!!, it, apiCurrency.value!!) }
 	}
 
 	private fun refreshExchangeRates() {
-		Currency.getAll().forEach { exchangeRates[it] = exchangeRatesRepository.getExchangeRates(it, Currency.getAll().toList(), liveDataToReuse = exchangeRates[it]) }
+		Currency.getAll().forEach { exchangeRates[it]?.refresh(it, Currency.getAll().toList()) }
 	}
 
 	// calculation of current total

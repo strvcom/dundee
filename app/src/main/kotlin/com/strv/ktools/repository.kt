@@ -13,50 +13,43 @@ class Resource<T>(val status: Status, val data: T? = null, val message: String? 
 
 // ResultType: Type for the Resource data
 // RequestType: Type for the API response
-abstract class NetworkBoundResource<ResultType, RequestType> @MainThread
-internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
-	private val result: CleanableMediatorLiveData<Resource<ResultType>>
+class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData<ResultType, RequestType>) {
 
-	// Called to save the result of the API response into the database
-	@WorkerThread
-	protected abstract fun saveCallResult(item: RequestType)
+	interface Callback<ResultType, RequestType> {
+		// Called to save the result of the API response into the database
+		@WorkerThread
+		fun saveCallResult(item: RequestType)
 
-	// Called with the data in the database to decide whether it should be
-	// fetched from the network.
-	@MainThread
-	protected abstract fun shouldFetch(data: ResultType?): Boolean
+		// Called with the data in the database to decide whether it should be
+		// fetched from the network.
+		@MainThread
+		fun shouldFetch(data: ResultType?): Boolean
 
-	// Called to get the cached data from the database
-	@MainThread
-	protected abstract fun loadFromDb(): LiveData<ResultType>
+		// Called to get the cached data from the database
+		@MainThread
+		fun loadFromDb(): LiveData<ResultType>
 
-	// Called to create the API call.
-	@MainThread
-	protected abstract fun createCall(): LiveData<Response<out RequestType>>
-
-	// Called when the fetch fails. The child class may want to reset components
-	// like rate limiter.
-	@MainThread
-	protected fun onFetchFailed() {
+		// Called to create the API call.
+		@MainThread
+		fun createCall(): LiveData<Response<out RequestType>>
 	}
 
-	init {
-		if (liveDataToReuse == null) {
-			result = CleanableMediatorLiveData()
-			result.value = Resource(Resource.Status.LOADING, null)
-		} else if (liveDataToReuse is CleanableMediatorLiveData<Resource<ResultType>>) {
-			result = liveDataToReuse
-			result.clearSources()
-			result.value = Resource(result.value?.status
-				?: Resource.Status.LOADING, result.value?.data, result.value?.message)
-		} else {
-			throw IllegalArgumentException("LiveData provided for reuse must be result of previous NetworkBoundResource instance.")
-		}
+	private var callback: Callback<ResultType, RequestType>? = null
 
-		val dbSource = loadFromDb()
+	init {
+		result.value = Resource(Resource.Status.LOADING, null)
+	}
+
+	fun setup(resourceCallback: Callback<ResultType, RequestType>) {
+		callback = resourceCallback
+		result.clearSources()
+		result.value = Resource(result.value?.status
+			?: Resource.Status.LOADING, result.value?.data, result.value?.message)
+
+		val dbSource = callback!!.loadFromDb()
 		result.addSource(dbSource, { data ->
 			result.removeSource(dbSource)
-			if (shouldFetch(data)) {
+			if (callback!!.shouldFetch(data)) {
 				fetchFromNetwork(dbSource)
 			} else {
 				result.addSource(dbSource, { newData ->
@@ -67,7 +60,8 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 	}
 
 	private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
-		val apiResponse = createCall()
+		checkCallback()
+		val apiResponse = callback!!.createCall()
 		// we re-attach dbSource as a new source,
 		// it will dispatch its latest value quickly
 		result.addSource(dbSource, { newData -> result.setValue(Resource(Resource.Status.LOADING, newData)) })
@@ -89,9 +83,11 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 	@MainThread
 	private fun saveResultAndReInit(response: Response<out RequestType>) {
 		doAsync {
-			saveCallResult(response.body()!!)
+			checkCallback()
+			callback!!.saveCallResult(response.body()!!)
 			uiThread {
-				val dbSource = loadFromDb()
+				checkCallback()
+				val dbSource = callback!!.loadFromDb()
 				result.addSource(dbSource, { newData ->
 					result.setValue(Resource(Resource.Status.SUCCESS, newData))
 				})
@@ -99,12 +95,28 @@ internal constructor(liveDataToReuse: LiveData<Resource<ResultType>>? = null) {
 		}
 	}
 
+	// Called when the fetch fails. The child class may want to reset components
+	// like rate limiter.
+	@MainThread
+	protected fun onFetchFailed() {
+	}
+
+	private fun checkCallback() {
+		if (callback == null) throw IllegalStateException("NetworkBoundResource Callback not defined")
+	}
+
 	fun getAsLiveData(): LiveData<Resource<ResultType>> = result
 }
 
-class CleanableMediatorLiveData<T> : MediatorLiveData<T>() {
+open class ResourceLiveData<ResultType, RequestType> : MediatorLiveData<Resource<ResultType>>() {
+
+	private val resource = NetworkBoundResource<ResultType, RequestType>(this)
 
 	private val sources = ArrayList<LiveData<*>>()
+
+	fun setupResource(resourceCallback: NetworkBoundResource.Callback<ResultType, RequestType>) {
+		resource.setup(resourceCallback)
+	}
 
 	override fun <S : Any?> addSource(source: LiveData<S>, onChanged: Observer<S>) {
 		super.addSource(source, onChanged)
