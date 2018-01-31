@@ -53,14 +53,15 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		Currency.getAll().forEach { exchangeRates[it] = exchangeRatesRepository.getExchangeRates(it, Currency.getAll().toList()) }
 
 		// setup ticker and exchange rates on input changes
-		currency.observeForever {
-			refreshExchangeRates()
+		exchangeRates.forEach { cur, exchangeRate ->
+			exchangeRate.addSource(currency, { exchangeRate.refresh(cur, Currency.getAll().toList()) })
+			exchangeRate.addSource(apiCurrency, { exchangeRate.refresh(cur, Currency.getAll().toList()) })
 		}
-		apiCurrency.observeForever {
-			refreshTicker()
-			refreshExchangeRates()
+
+		tickers.forEach { coin, ticker ->
+			ticker.addSource(apiCurrency, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
+			ticker.addSource(source, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
 		}
-		source.observeForever { refreshTicker() }
 
 		// used for transforming Wallet list to WalletOverview list
 		val coinWallets = MediatorLiveData<Resource<List<WalletOverview>>>().addValueSource(walletRepository.getWalletsForCurrentUser(), {
@@ -84,14 +85,6 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		tickers.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
 		exchangeRates.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
 		totalProfit.addValueSource(totalValue, { recalculateTotalProfit() })
-	}
-
-	private fun refreshTicker() {
-		Coin.getAll().forEach { tickers[it]?.refresh(source.value!!, it, apiCurrency.value!!) }
-	}
-
-	private fun refreshExchangeRates() {
-		Currency.getAll().forEach { exchangeRates[it]?.refresh(it, Currency.getAll().toList()) }
 	}
 
 	// calculation of current total
