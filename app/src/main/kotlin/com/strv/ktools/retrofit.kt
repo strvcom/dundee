@@ -27,7 +27,6 @@ fun <T, S> Response<T>.map(mapFunction: (T?) -> S?) = if (isSuccessful) Response
 fun <T> Call<T>.liveData(cancelOnInactive: Boolean = false) = RetrofitCallLiveData(this, cancelOnInactive)
 fun <T, S> Call<T>.mapLiveData(mapFunction: (T?) -> S?, cancelOnInactive: Boolean = false) = RetrofitMapCallLiveData(this, mapFunction, cancelOnInactive)
 
-
 internal fun <T> getRetrofitInterface(url: String, apiInterface: Class<T>, clientBuilderBase: OkHttpClient.Builder? = null): T {
 	val interceptor = HttpLoggingInterceptor().apply {
 		level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
