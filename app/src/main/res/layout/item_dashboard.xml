@@ -92,7 +92,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="right"
 					android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.tickers.get(item.coin).data.getValue(item.amount, viewModel.currency, viewModel.exchangeRates))}"
+					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.exchangeRates.data.calculate(viewModel.tickers.get(item.coin).data.currency, viewModel.currency, viewModel.tickers.get(item.coin).data.getValue(item.amount)))}"
 					tools:text="$1,000.30" />
 
 				<TextView

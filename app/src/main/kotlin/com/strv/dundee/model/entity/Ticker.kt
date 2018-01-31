@@ -1,7 +1,6 @@
 package com.strv.dundee.model.entity
 
 import android.arch.persistence.room.Entity
-import com.strv.dundee.model.repo.ExchangeRatesLiveData
 
 /*
 Ticker object
@@ -20,6 +19,5 @@ data class Ticker(
 	var lowPrice: Double = 0.0,
 	var timestamp: Long = 0
 ) {
-	fun getValue(amount: Double, targetCurrency: String?, exchangeRates: HashMap<String, ExchangeRatesLiveData>): Double =
-		amount * lastPrice * (exchangeRates[currency]?.value?.data?.rates?.get(targetCurrency) ?: 0.0)
+	fun getValue(amount: Double) = amount * lastPrice
 }

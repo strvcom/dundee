@@ -11,7 +11,7 @@
 			type="com.strv.dundee.model.entity.Ticker" />
 		<variable
 			name="exchangeRates"
-			type="java.util.HashMap&lt;java.lang.String, com.strv.dundee.model.repo.ExchangeRatesLiveData>" />
+			type="com.strv.dundee.model.entity.ExchangeRates" />
 		<variable
 			name="currency"
 			type="String" />
@@ -39,7 +39,7 @@
 			android:textSize="10sp"
 			android:textColor="@color/text_default"
 			android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-			android:text="@{Currency.INSTANCE.formatValue(currency, ticker.lastPrice * exchangeRates.get(ticker.currency).data.rates.get(currency))}"
+			android:text="@{Currency.INSTANCE.formatValue(currency, exchangeRates.calculate(ticker.currency, currency, ticker.lastPrice))}"
 			tools:text="$12,322.32" />
 	</LinearLayout>
 </layout>

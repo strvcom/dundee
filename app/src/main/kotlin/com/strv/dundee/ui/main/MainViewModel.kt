@@ -7,6 +7,8 @@ import android.widget.ArrayAdapter
 import com.strv.dundee.R
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Currency
+import com.strv.dundee.model.repo.ExchangeRatesLiveData
+import com.strv.dundee.model.repo.ExchangeRatesRepository
 import com.strv.dundee.model.repo.UserRepository
 import com.strv.dundee.ui.nav.MainNavigation
 import com.strv.ktools.inject
@@ -17,6 +19,7 @@ class MainViewModel() : ViewModel() {
 
 	private val application by inject<Application>()
 	private val userRepository by inject<UserRepository>()
+	private val exchangeRatesRepository by inject<ExchangeRatesRepository>()
 
 	val source by application.sharedPrefs().stringLiveData(BitcoinSource.BITSTAMP)
 	val currency by application.sharedPrefs().stringLiveData(Currency.USD)
@@ -26,6 +29,11 @@ class MainViewModel() : ViewModel() {
 	val apiCurrencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getApiCurrencies())
 	val optionsOpen = MutableLiveData<Boolean>().apply { value = false }
 	val navigationManager = MainNavigation()
+	val exchangeRates: ExchangeRatesLiveData
+
+	init {
+		exchangeRates = exchangeRatesRepository.getExchangeRates(Currency.USD, Currency.getAll().toList())
+	}
 
 	fun logout() {
 		userRepository.signOut()

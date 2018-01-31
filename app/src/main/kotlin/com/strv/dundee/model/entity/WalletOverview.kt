@@ -11,11 +11,11 @@ data class WalletOverview(
 	val boughtPrices: MutableList<Pair<String, Double>> = mutableListOf()
 ) : KParcelable {
 
-	fun getBoughtPrice(currency: String?, exchangeRates: HashMap<String, ExchangeRatesLiveData>): Double =
-		boughtPrices.sumByDouble { (exchangeRates[it.first]?.value?.data?.rates?.get(currency) ?: 0.0) * it.second }
+	fun getBoughtPrice(currency: String?, exchangeRates: ExchangeRatesLiveData?): Double =
+		boughtPrices.sumByDouble { exchangeRates?.value?.data?.calculate(it.first, currency, it.second) ?: 0.0 }
 
-	fun getProfit(currency: String, exchangeRates: HashMap<String, ExchangeRatesLiveData>, ticker: Ticker?): Double =
-		ticker?.let { it.getValue(amount, currency, exchangeRates) - getBoughtPrice(currency, exchangeRates) } ?: 0.0
+	fun getProfit(currency: String?, exchangeRates: ExchangeRatesLiveData?, ticker: Ticker?): Double =
+		(exchangeRates?.value?.data?.calculate(ticker?.currency, currency, ticker?.getValue(amount)) ?: 0.0) - getBoughtPrice(currency, exchangeRates)
 
 	private constructor(parcel: Parcel) : this(
 		coin = parcel.readString(),

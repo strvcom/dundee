@@ -6,11 +6,8 @@ import com.strv.dundee.BR
 import com.strv.dundee.R
 import com.strv.dundee.common.OnItemClickListener
 import com.strv.dundee.model.entity.Coin
-import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.WalletOverview
 import com.strv.dundee.model.repo.BitcoinRepository
-import com.strv.dundee.model.repo.ExchangeRatesLiveData
-import com.strv.dundee.model.repo.ExchangeRatesRepository
 import com.strv.dundee.model.repo.TickerLiveData
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.dundee.ui.main.MainViewModel
@@ -26,7 +23,6 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 
 	private val bitcoinRepository by inject<BitcoinRepository>()
 	private val walletRepository by inject<WalletRepository>()
-	private val exchangeRatesRepository by inject<ExchangeRatesRepository>()
 
 	private val itemClickCallback = object : OnItemClickListener<WalletOverview> {
 		override fun onItemClick(item: WalletOverview) {
@@ -43,14 +39,13 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val source = mainViewModel.source
 	val currency = mainViewModel.currency
 	val apiCurrency = mainViewModel.apiCurrency
+	val exchangeRates = mainViewModel.exchangeRates
 	val totalValue = MediatorLiveData<Double>()
 	val totalProfit = MediatorLiveData<Double>()
-	val exchangeRates = HashMap<String, ExchangeRatesLiveData>()
 
 	init {
 		// compose Ticker and exchange rates LiveData (observed by data binding automatically)
 		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!) }
-		Currency.getAll().forEach { exchangeRates[it] = exchangeRatesRepository.getExchangeRates(it, Currency.getAll().toList()) }
 
 		// setup ticker on input changes
 		tickers.forEach { coin, ticker ->
@@ -76,20 +71,21 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		})
 
 		// add total value and total profit calculation and attach to ticker, wallets and exchange rates LiveData
+		totalValue.addValueSource(currency, { recalculateTotal() })
 		totalValue.addValueSource(wallets, { recalculateTotal() })
+		totalValue.addValueSource(exchangeRates, { recalculateTotal() })
 		tickers.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
-		exchangeRates.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
 		totalProfit.addValueSource(totalValue, { recalculateTotalProfit() })
 	}
 
 	// calculation of current total
 	private fun recalculateTotal(): Double =
 		wallets.value?.data?.sumByDouble {
-			tickers[it.coin]?.value?.data?.getValue(it.amount, currency.value, exchangeRates) ?: 0.0
+			exchangeRates.value?.data?.calculate(tickers[it.coin]?.value?.data?.currency, currency.value,
+				tickers[it.coin]?.value?.data?.getValue(it.amount) ?: 0.0) ?: 0.0
 		} ?: 0.0
 
 	// calculation of current profit
 	private fun recalculateTotalProfit(): Double =
-		(totalValue.value
-			?: 0.0) - (wallets.value?.data?.sumByDouble { it.getBoughtPrice(currency.value, exchangeRates) } ?: 0.0)
+		(totalValue.value ?: 0.0) - (wallets.value?.data?.sumByDouble { it.getBoughtPrice(currency.value, exchangeRates) } ?: 0.0)
 }
