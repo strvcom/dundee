@@ -16,7 +16,7 @@ data class ExchangeRates(
 	var date: Date = Date(),
 	var rates: Map<String, Double> = HashMap()
 ) {
-	fun calculate(sourceCurrency: String?, targetCurrency: String?, amount: Double?): Double = (amount ?: 0.0) * getRate(sourceCurrency, targetCurrency)
+	fun calculate(sourceCurrency: String, targetCurrency: String, amount: Double): Double = amount * getRate(sourceCurrency, targetCurrency)
 
-	private fun getRate(sourceCurrency: String?, targetCurrency: String?): Double = rates[sourceCurrency]?.let { (rates[targetCurrency] ?: 0.0) / it } ?: 0.0
+	private fun getRate(sourceCurrency: String, targetCurrency: String): Double = rates[sourceCurrency]?.let { (rates[targetCurrency] ?: 0.0) / it } ?: 0.0
 }
