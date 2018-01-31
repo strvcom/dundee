@@ -102,7 +102,7 @@
 				android:layout_height="@dimen/spacing_24"
 				android:layout_gravity="center"
 				android:layout_margin="@dimen/spacing_16"
-				app:show="@{viewModel.progress}" />
+				app:invisible="@{!viewModel.progress}" />
 
 			<TextView
 				android:layout_width="wrap_content"
