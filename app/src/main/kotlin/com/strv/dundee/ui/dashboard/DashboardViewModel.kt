@@ -52,12 +52,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!) }
 		Currency.getAll().forEach { exchangeRates[it] = exchangeRatesRepository.getExchangeRates(it, Currency.getAll().toList()) }
 
-		// setup ticker and exchange rates on input changes
-		exchangeRates.forEach { cur, exchangeRate ->
-			exchangeRate.addSource(currency, { exchangeRate.refresh(cur, Currency.getAll().toList()) })
-			exchangeRate.addSource(apiCurrency, { exchangeRate.refresh(cur, Currency.getAll().toList()) })
-		}
-
+		// setup ticker on input changes
 		tickers.forEach { coin, ticker ->
 			ticker.addSource(apiCurrency, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
 			ticker.addSource(source, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
