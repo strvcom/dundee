@@ -1,13 +1,25 @@
 package com.strv.dundee.model.repo
 
-import com.strv.dundee.model.api.BitcoinApi
+import com.strv.dundee.model.api.bitfinex.BitfinexApi
+import com.strv.dundee.model.api.bitstamp.BitstampApi
 import com.strv.dundee.model.cache.BitcoinCache
+import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.CandleSet
 import com.strv.ktools.NetworkBoundResource
 import com.strv.ktools.ResourceLiveData
+import com.strv.ktools.inject
 
-class CandlesLiveData(val cache: BitcoinCache, val api: BitcoinApi) : ResourceLiveData<CandleSet, CandleSet>() {
+class CandlesLiveData : ResourceLiveData<CandleSet, CandleSet>() {
+	val cache by inject<BitcoinCache>()
+	val bitstampApi by inject<BitstampApi>()
+	val bitfinexApi by inject<BitfinexApi>()
+
 	fun refresh(source: String, coin: String, currency: String, timeFrame: String) {
+		val api = when (source) {
+			BitcoinSource.BITSTAMP -> bitstampApi
+			BitcoinSource.BITFINEX -> bitfinexApi
+			else -> bitstampApi
+		}
 		setupResource(object : NetworkBoundResource.Callback<CandleSet, CandleSet> {
 			override fun saveCallResult(item: CandleSet) {
 				cache.putCandles(item)

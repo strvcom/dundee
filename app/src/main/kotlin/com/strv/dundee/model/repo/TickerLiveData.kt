@@ -1,13 +1,26 @@
 package com.strv.dundee.model.repo
 
-import com.strv.dundee.model.api.BitcoinApi
+import com.strv.dundee.model.api.bitfinex.BitfinexApi
+import com.strv.dundee.model.api.bitstamp.BitstampApi
 import com.strv.dundee.model.cache.BitcoinCache
+import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.NetworkBoundResource
 import com.strv.ktools.ResourceLiveData
+import com.strv.ktools.inject
 
-class TickerLiveData(val cache: BitcoinCache, val api: BitcoinApi) : ResourceLiveData<Ticker, Ticker>() {
+class TickerLiveData : ResourceLiveData<Ticker, Ticker>() {
+	val cache by inject<BitcoinCache>()
+	val bitstampApi by inject<BitstampApi>()
+	val bitfinexApi by inject<BitfinexApi>()
+
 	fun refresh(source: String, coin: String, currency: String) {
+		val api = when (source) {
+			BitcoinSource.BITSTAMP -> bitstampApi
+			BitcoinSource.BITFINEX -> bitfinexApi
+			else -> bitstampApi
+		}
+
 		setupResource(object : NetworkBoundResource.Callback<Ticker, Ticker> {
 			override fun saveCallResult(item: Ticker) {
 				cache.putTicker(item)
