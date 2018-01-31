@@ -2,7 +2,6 @@ package com.strv.ktools
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.Observer
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
 import retrofit2.Response
@@ -35,6 +34,7 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 	}
 
 	private lateinit var callback: Callback<ResultType, RequestType>
+	private val savedSources = mutableSetOf<LiveData<*>>()
 
 	init {
 		result.value = Resource(Resource.Status.LOADING, null)
@@ -42,16 +42,23 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 
 	fun setup(resourceCallback: Callback<ResultType, RequestType>) {
 		callback = resourceCallback
-		result.clearSources()
+
+		// clear saved sources from previous setup
+		savedSources.forEach { result.removeSource(it) }
+		savedSources.clear()
+
 		result.value = Resource(result.value?.status
 			?: Resource.Status.LOADING, result.value?.data, result.value?.message)
 
 		val dbSource = callback.loadFromDb()
+		savedSources.add(dbSource)
 		result.addSource(dbSource, { data ->
+			savedSources.remove(dbSource)
 			result.removeSource(dbSource)
 			if (callback.shouldFetch(data)) {
 				fetchFromNetwork(dbSource)
 			} else {
+				savedSources.add(dbSource)
 				result.addSource(dbSource, { newData ->
 					result.setValue(Resource(Resource.Status.SUCCESS, newData))
 				})
@@ -63,15 +70,20 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 		val apiResponse = callback.createCall()
 		// we re-attach dbSource as a new source,
 		// it will dispatch its latest value quickly
+		savedSources.add(dbSource)
 		result.addSource(dbSource, { newData -> result.setValue(Resource(Resource.Status.LOADING, newData)) })
+		savedSources.add(apiResponse)
 		result.addSource(apiResponse, { response ->
+			savedSources.remove(apiResponse)
 			result.removeSource(apiResponse)
+			savedSources.remove(dbSource)
 			result.removeSource(dbSource)
 
 			if (response != null && response.isSuccessful) {
 				saveResultAndReInit(response)
 			} else {
 				onFetchFailed()
+				savedSources.add(dbSource)
 				result.addSource(dbSource, { newData ->
 					result.setValue(Resource(Resource.Status.ERROR, newData, response?.message()))
 				})
@@ -85,6 +97,7 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 			callback.saveCallResult(response.body()!!)
 			uiThread {
 				val dbSource = callback.loadFromDb()
+				savedSources.add(dbSource)
 				result.addSource(dbSource, { newData ->
 					result.setValue(Resource(Resource.Status.SUCCESS, newData))
 				})
@@ -103,24 +116,7 @@ open class ResourceLiveData<ResultType, RequestType> : MediatorLiveData<Resource
 
 	private val resource = NetworkBoundResource(this)
 
-	private val sources = ArrayList<LiveData<*>>()
-
 	fun setupResource(resourceCallback: NetworkBoundResource.Callback<ResultType, RequestType>) {
 		resource.setup(resourceCallback)
-	}
-
-	override fun <S : Any?> addSource(source: LiveData<S>, onChanged: Observer<S>) {
-		super.addSource(source, onChanged)
-		sources.add(source)
-	}
-
-	override fun <S : Any?> removeSource(toRemote: LiveData<S>) {
-		super.removeSource(toRemote)
-		sources.remove(toRemote)
-	}
-
-	fun clearSources() {
-		sources.forEach({ super.removeSource(it) })
-		sources.clear()
 	}
 }

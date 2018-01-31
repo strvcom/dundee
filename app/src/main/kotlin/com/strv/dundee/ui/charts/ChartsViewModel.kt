@@ -14,7 +14,7 @@ class ChartsViewModel(private val mainViewModel: MainViewModel) : ViewModel() {
 	var candles = bitcoinRepository.getCandles(BitcoinSource.BITFINEX, Coin.BTC, mainViewModel.apiCurrency.value!!, timeFrame.value!!)
 
 	init {
-		mainViewModel.apiCurrency.observeForever { refreshCandles() }
+		candles.addSource(mainViewModel.apiCurrency, { refreshCandles() })
 	}
 
 	private fun refreshCandles() {
