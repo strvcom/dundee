@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.strv.dundee.R
 import com.strv.dundee.model.entity.CandleSet
 import com.strv.dundee.model.entity.Currency
+import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.dundee.ui.charts.MarkerView
 import com.strv.ktools.Resource
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
@@ -227,14 +228,15 @@ fun setProfitState(view: TextView, profit: Double?) {
 	}
 }
 
-@BindingAdapter("coin", "currency")
-fun setupChart(chart: LineChart, coin: String?, currency: String) {
-	chart.marker = MarkerView(chart.context, currency)
+@BindingAdapter("markerCurrency" )
+fun setupChart(chart: LineChart, markerCurrency: String) {
+	chart.marker = MarkerView(chart.context, markerCurrency)
 	chart.axisLeft.isEnabled = false
 	chart.description.isEnabled = false
 
 	chart.axisRight.apply {
 		setDrawAxisLine(false)
+		labelCount = 2
 	}
 
 	chart.xAxis.apply {
@@ -243,13 +245,15 @@ fun setupChart(chart: LineChart, coin: String?, currency: String) {
 			val date = Date(timestamp)
 			DateFormat.getDateInstance(DateFormat.MEDIUM).format(date)
 		}
-		labelCount = 4
+		labelCount = 2
 		setDrawAxisLine(false)
 	}
+
+	chart.invalidate()
 }
 
-@BindingAdapter("candles")
-fun setCandles(chart: LineChart, candles: Resource<CandleSet>) {
+@BindingAdapter("candles", "currency", "exchangeRates")
+fun setCandles(chart: LineChart, candles: Resource<CandleSet>, currency: String, exchangeRates: ExchangeRates) {
 	val entries = candles.data?.candles?.map { Entry(it.timestamp.toFloat(), it.middle.toFloat()) }?.sortedBy { it.x }
 	if(entries != null && !entries.isEmpty()) {
 		val btcDataSet = LineDataSet(entries, "${candles.data?.currency}/${candles.data?.coin}").apply {
@@ -258,7 +262,7 @@ fun setCandles(chart: LineChart, candles: Resource<CandleSet>) {
 			lineWidth = chart.resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
 		}
 
-		chart.axisRight.setValueFormatter { value, axis -> Currency.formatValue(candles.data?.currency, value.toDouble()) }
+		chart.axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(candles.data.currency, currency, value.toDouble())) }
 
 		val data = LineData(btcDataSet)
 		chart.setData(data)
