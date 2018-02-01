@@ -19,8 +19,18 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.strv.dundee.R
+import com.strv.dundee.model.entity.CandleSet
+import com.strv.dundee.model.entity.Currency
+import com.strv.dundee.ui.charts.MarkerView
+import com.strv.ktools.Resource
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
+import java.text.DateFormat
+import java.util.Date
 
 @BindingAdapter("hide")
 fun setHide(view: View, hide: Boolean) {
@@ -192,7 +202,8 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 
 		@Suppress("UNCHECKED_CAST")
 		override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
-			val position = viewHolder?.adapterPosition ?: -1
+			val position = viewHolder?.adapterPosition
+				?: -1
 			if (recycler.adapter is BindingRecyclerViewAdapter<*>) {
 				val adapter = recycler.adapter as BindingRecyclerViewAdapter<*>
 				val item = adapter.getAdapterItem(position)
@@ -213,5 +224,44 @@ fun setProfitState(view: TextView, profit: Double?) {
 			profit < 0 -> view.setTextColor(ContextCompat.getColor(view.context, R.color.currency_loss))
 			else -> view.setTextColor(ContextCompat.getColor(view.context, R.color.currency_none))
 		}
+	}
+}
+
+@BindingAdapter("coin", "currency")
+fun setupChart(chart: LineChart, coin: String?, currency: String) {
+	chart.marker = MarkerView(chart.context, currency)
+	chart.axisLeft.isEnabled = false
+	chart.description.isEnabled = false
+
+	chart.axisRight.apply {
+		setDrawAxisLine(false)
+	}
+
+	chart.xAxis.apply {
+		setValueFormatter { value, axis ->
+			val timestamp = value.toLong()
+			val date = Date(timestamp)
+			DateFormat.getDateInstance(DateFormat.MEDIUM).format(date)
+		}
+		labelCount = 4
+		setDrawAxisLine(false)
+	}
+}
+
+@BindingAdapter("candles")
+fun setCandles(chart: LineChart, candles: Resource<CandleSet>) {
+	val entries = candles.data?.candles?.map { Entry(it.timestamp.toFloat(), it.middle.toFloat()) }?.sortedBy { it.x }
+	if(entries != null && !entries.isEmpty()) {
+		val btcDataSet = LineDataSet(entries, "${candles.data?.currency}/${candles.data?.coin}").apply {
+			setDrawCircles(false)
+			color = ContextCompat.getColor(chart.context, R.color.accent)
+			lineWidth = chart.resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
+		}
+
+		chart.axisRight.setValueFormatter { value, axis -> Currency.formatValue(candles.data?.currency, value.toDouble()) }
+
+		val data = LineData(btcDataSet)
+		chart.setData(data)
+		chart.invalidate()
 	}
 }

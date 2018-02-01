@@ -5,19 +5,19 @@ import android.arch.lifecycle.ViewModel
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Coin
 import com.strv.dundee.model.repo.BitcoinRepository
+import com.strv.dundee.model.repo.CandlesLiveData
 import com.strv.dundee.ui.main.MainViewModel
 import com.strv.ktools.inject
 
-class ChartsViewModel(private val mainViewModel: MainViewModel) : ViewModel() {
+class ChartsViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 	private val bitcoinRepository by inject<BitcoinRepository>()
 	val timeFrame = MutableLiveData<String>().apply { value = "1D" }
-	var candles = bitcoinRepository.getCandles(BitcoinSource.BITFINEX, Coin.BTC, mainViewModel.apiCurrency.value!!, timeFrame.value!!)
+	val candles = HashMap<String, CandlesLiveData>()
 
 	init {
-		candles.addSource(mainViewModel.apiCurrency, { refreshCandles() })
-	}
-
-	private fun refreshCandles() {
-		candles.refresh(BitcoinSource.BITFINEX, Coin.BTC, mainViewModel.apiCurrency.value!!, timeFrame.value!!)
+		Coin.getAll().forEach { candles[it] = bitcoinRepository.getCandles(BitcoinSource.BITFINEX, it, mainViewModel.apiCurrency.value!!, timeFrame.value!!) }
+		candles.forEach { coin, candle ->
+			candle.addSource(mainViewModel.apiCurrency, { candle.refresh(BitcoinSource.BITFINEX, coin, mainViewModel.apiCurrency.value!!, timeFrame.value!!) })
+		}
 	}
 }

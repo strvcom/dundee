@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	>
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<data>
+		<import type="com.strv.dundee.model.entity.Coin" />
+
 		<variable
 			name="viewModel"
 			type="com.strv.dundee.ui.charts.ChartsViewModel" />
@@ -14,17 +16,52 @@
 
 	</data>
 
-	<FrameLayout
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical">
 
 		<com.github.mikephil.charting.charts.LineChart
-			android:id="@+id/chart"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent" />
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			app:candles="@{viewModel.candles[Coin.BTC]}"
+			app:currency="@{viewModel.mainViewModel.currency}"
+			app:coin="@{Coin.BTC}"/>
 
-	</FrameLayout>
+		<com.github.mikephil.charting.charts.LineChart
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			app:candles="@{viewModel.candles[Coin.ETH]}"
+			app:currency="@{viewModel.mainViewModel.currency}"
+			app:coin="@{Coin.ETH}" />
+
+		<com.github.mikephil.charting.charts.LineChart
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			app:candles="@{viewModel.candles[Coin.XRP]}"
+			app:currency="@{viewModel.mainViewModel.currency}"
+			app:coin="@{Coin.XRP}"/>
+
+		<com.github.mikephil.charting.charts.LineChart
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			app:candles="@{viewModel.candles[Coin.LTC]}"
+			app:currency="@{viewModel.mainViewModel.currency}"
+			app:coin="@{Coin.LTC}" />
+
+		<com.github.mikephil.charting.charts.LineChart
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			app:candles="@{viewModel.candles[Coin.BCH]}"
+			app:currency="@{viewModel.mainViewModel.currency}"
+			app:coin="@{Coin.BCH}"/>
+
+	</LinearLayout>
 
 </layout>
 

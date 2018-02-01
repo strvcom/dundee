@@ -84,7 +84,6 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 			val fromCurrency = tickers[it.coin]?.value?.data?.currency
 			val toCurrency = currency.value
 			val amount = tickers[it.coin]?.value?.data?.getValue(it.amount)
-
 			exchangeRates.value?.data?.calculate(fromCurrency, toCurrency, amount) ?: 0.0
 		} ?: 0.0
 
