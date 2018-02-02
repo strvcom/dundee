@@ -2,6 +2,7 @@ package com.strv.dundee.model.repo
 
 import com.strv.dundee.model.api.bitfinex.BitfinexApi
 import com.strv.dundee.model.api.bitstamp.BitstampApi
+import com.strv.dundee.model.api.coincap.CoincapApi
 import com.strv.dundee.model.cache.BitcoinCache
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Ticker
@@ -13,11 +14,13 @@ class TickerLiveData : ResourceLiveData<Ticker>() {
 	val cache by inject<BitcoinCache>()
 	val bitstampApi by inject<BitstampApi>()
 	val bitfinexApi by inject<BitfinexApi>()
+	val coincapApi by inject<CoincapApi>()
 
 	fun refresh(source: String, coin: String, currency: String) {
 		val api = when (source) {
 			BitcoinSource.BITSTAMP -> bitstampApi
 			BitcoinSource.BITFINEX -> bitfinexApi
+			BitcoinSource.COINCAP -> coincapApi
 			else -> bitstampApi
 		}
 

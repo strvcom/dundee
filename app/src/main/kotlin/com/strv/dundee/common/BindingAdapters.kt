@@ -256,7 +256,7 @@ fun setupChart(chart: LineChart, markerCurrency: String) {
 fun setCandles(chart: LineChart, candles: Resource<CandleSet>, currency: String, exchangeRates: ExchangeRates) {
 	val entries = candles.data?.candles?.map { Entry(it.timestamp.toFloat(), it.middle.toFloat()) }?.sortedBy { it.x }
 	if(entries != null && !entries.isEmpty()) {
-		val btcDataSet = LineDataSet(entries, "${candles.data?.currency}/${candles.data?.coin}").apply {
+		val btcDataSet = LineDataSet(entries, "${candles.data.currency}/${candles.data.coin}").apply {
 			setDrawCircles(false)
 			color = ContextCompat.getColor(chart.context, R.color.accent)
 			lineWidth = chart.resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
@@ -264,8 +264,7 @@ fun setCandles(chart: LineChart, candles: Resource<CandleSet>, currency: String,
 
 		chart.axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(candles.data.currency, currency, value.toDouble())) }
 
-		val data = LineData(btcDataSet)
-		chart.setData(data)
+		chart.data = LineData(btcDataSet)
 		chart.invalidate()
 	}
 }

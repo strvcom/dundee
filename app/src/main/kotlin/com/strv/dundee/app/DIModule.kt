@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.strv.dundee.model.api.bitfinex.BitfinexApi
 import com.strv.dundee.model.api.bitstamp.BitstampApi
+import com.strv.dundee.model.api.coincap.CoincapApi
 import com.strv.dundee.model.api.exchangerate.ExchangeRateApi
 import com.strv.dundee.model.cache.BitcoinCache
 import com.strv.dundee.model.cache.ExchangeRatesCache
@@ -26,6 +27,7 @@ object DIModule {
 
 		provideSingleton { BitstampApi() }
 		provideSingleton { BitfinexApi() }
+		provideSingleton { CoincapApi() }
 		provideSingleton { ExchangeRateApi() }
 
 		provideSingleton { BitcoinCache() }
