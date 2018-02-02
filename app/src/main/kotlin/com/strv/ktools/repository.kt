@@ -6,41 +6,68 @@ import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
 import retrofit2.Response
 
-class Resource<T>(val status: Status, val data: T? = null, val message: String? = null) {
+/**
+ * Resource wrapper adding status to its value
+ */
+data class Resource<T>(
+	val status: Status,
+	val data: T? = null,
+	val message: String? = null
+) {
 	enum class Status { SUCCESS, ERROR, LOADING }
 }
 
-// ResultType: Type for the Resource data
-// RequestType: Type for the API response
-class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData<ResultType, RequestType>) {
+/**
+ * BaseClass for making any resource accessible via LiveData interface with database cache support
+ */
+open class ResourceLiveData<T> : MediatorLiveData<Resource<T>>() {
+	private val resource = NetworkBoundResource(this)
 
-	interface Callback<ResultType, RequestType> {
+	fun setupResource(resourceCallback: NetworkBoundResource.Callback<T>) {
+		resource.setup(resourceCallback)
+	}
+}
+
+// -- internal --
+
+/**
+ * NetworkBoundResource based on https://developer.android.com/topic/libraries/architecture/guide.html, but modified
+ * Note: use Call<T>.map() extension function to map Retrofit response to the entity object - therefore we don't need RequestType and ResponseType separately
+ */
+class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
+	interface Callback<T> {
 		// Called to save the result of the API response into the database
 		@WorkerThread
-		fun saveCallResult(item: RequestType)
+		fun saveCallResult(item: T)
 
 		// Called with the data in the database to decide whether it should be
 		// fetched from the network.
 		@MainThread
-		fun shouldFetch(data: ResultType?): Boolean
+		fun shouldFetch(data: T?): Boolean
 
 		// Called to get the cached data from the database
 		@MainThread
-		fun loadFromDb(): LiveData<ResultType>
+		fun loadFromDb(): LiveData<T>
 
 		// Called to create the API call.
 		@MainThread
-		fun createCall(): LiveData<Response<RequestType>>
+		fun createCall(): LiveData<Response<T>>
+
+		// Called when the fetch fails. The child class may want to reset components
+		// like rate limiter.
+		@MainThread
+		fun onFetchFailed() {
+		}
 	}
 
-	private lateinit var callback: Callback<ResultType, RequestType>
+	private lateinit var callback: Callback<T>
 	private val savedSources = mutableSetOf<LiveData<*>>()
 
 	init {
 		result.value = Resource(Resource.Status.LOADING, null)
 	}
 
-	fun setup(resourceCallback: Callback<ResultType, RequestType>) {
+	fun setup(resourceCallback: Callback<T>) {
 		callback = resourceCallback
 
 		// clear saved sources from previous setup
@@ -66,7 +93,7 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 		})
 	}
 
-	private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
+	private fun fetchFromNetwork(dbSource: LiveData<T>) {
 		val apiResponse = callback.createCall()
 		// we re-attach dbSource as a new source,
 		// it will dispatch its latest value quickly
@@ -82,7 +109,7 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 			if (response != null && response.isSuccessful) {
 				saveResultAndReInit(response)
 			} else {
-				onFetchFailed()
+				callback.onFetchFailed()
 				savedSources.add(dbSource)
 				result.addSource(dbSource, { newData ->
 					result.setValue(Resource(Resource.Status.ERROR, newData, response?.message()))
@@ -92,7 +119,7 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 	}
 
 	@MainThread
-	private fun saveResultAndReInit(response: Response<out RequestType>) {
+	private fun saveResultAndReInit(response: Response<T>) {
 		doAsync {
 			callback.saveCallResult(response.body()!!)
 			uiThread {
@@ -103,20 +130,5 @@ class NetworkBoundResource<ResultType, RequestType>(val result: ResourceLiveData
 				})
 			}
 		}
-	}
-
-	// Called when the fetch fails. The child class may want to reset components
-	// like rate limiter.
-	@MainThread
-	protected fun onFetchFailed() {
-	}
-}
-
-open class ResourceLiveData<ResultType, RequestType> : MediatorLiveData<Resource<ResultType>>() {
-
-	private val resource = NetworkBoundResource(this)
-
-	fun setupResource(resourceCallback: NetworkBoundResource.Callback<ResultType, RequestType>) {
-		resource.setup(resourceCallback)
 	}
 }

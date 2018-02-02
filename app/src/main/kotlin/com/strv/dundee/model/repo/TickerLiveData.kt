@@ -9,7 +9,7 @@ import com.strv.ktools.NetworkBoundResource
 import com.strv.ktools.ResourceLiveData
 import com.strv.ktools.inject
 
-class TickerLiveData : ResourceLiveData<Ticker, Ticker>() {
+class TickerLiveData : ResourceLiveData<Ticker>() {
 	val cache by inject<BitcoinCache>()
 	val bitstampApi by inject<BitstampApi>()
 	val bitfinexApi by inject<BitfinexApi>()
@@ -21,7 +21,7 @@ class TickerLiveData : ResourceLiveData<Ticker, Ticker>() {
 			else -> bitstampApi
 		}
 
-		setupResource(object : NetworkBoundResource.Callback<Ticker, Ticker> {
+		setupResource(object : NetworkBoundResource.Callback<Ticker> {
 			override fun saveCallResult(item: Ticker) {
 				cache.putTicker(item)
 			}

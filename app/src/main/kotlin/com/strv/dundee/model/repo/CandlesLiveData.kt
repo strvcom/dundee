@@ -9,7 +9,7 @@ import com.strv.ktools.NetworkBoundResource
 import com.strv.ktools.ResourceLiveData
 import com.strv.ktools.inject
 
-class CandlesLiveData : ResourceLiveData<CandleSet, CandleSet>() {
+class CandlesLiveData : ResourceLiveData<CandleSet>() {
 	val cache by inject<BitcoinCache>()
 	val bitstampApi by inject<BitstampApi>()
 	val bitfinexApi by inject<BitfinexApi>()
@@ -20,7 +20,7 @@ class CandlesLiveData : ResourceLiveData<CandleSet, CandleSet>() {
 			BitcoinSource.BITFINEX -> bitfinexApi
 			else -> bitstampApi
 		}
-		setupResource(object : NetworkBoundResource.Callback<CandleSet, CandleSet> {
+		setupResource(object : NetworkBoundResource.Callback<CandleSet> {
 			override fun saveCallResult(item: CandleSet) {
 				cache.putCandles(item)
 			}

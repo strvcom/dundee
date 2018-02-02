@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(), MainView {
 		fun newIntent(context: Context) = Intent(context, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
 	}
 
-	private val vmb by vmb<MainViewModel, ActivityMainBinding>(R.layout.activity_main) { MainViewModel() }
+	private val vmb by vmb<MainViewModel, ActivityMainBinding>(R.layout.activity_main)
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

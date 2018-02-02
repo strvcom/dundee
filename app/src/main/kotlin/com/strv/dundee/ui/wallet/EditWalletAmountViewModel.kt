@@ -10,14 +10,13 @@ import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.ktools.EventLiveData
-import com.strv.ktools.LifecycleReceiver
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
 import com.strv.ktools.logD
 import com.strv.ktools.logMeD
 import com.strv.ktools.publish
 
-class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel(), LifecycleReceiver {
+class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel() {
 
 	private val application by inject<Application>()
 	private val walletRepository by inject<WalletRepository>()
