@@ -265,7 +265,7 @@ fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exc
 		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
 
 		data = LineData(btcDataSet)
-		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(candles.data.currency, currency, value.toDouble()))}
+		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble()))}
 		data.setDrawValues(false)
 		invalidate()
 	}
