@@ -7,5 +7,5 @@ data class History(
 	var source: String = BitcoinSource.BITSTAMP,
 	var currency: String = Currency.USD,
 	var coin: String = Coin.BTC,
-	var prices: List<HistroyPrice> = listOf()
+	var prices: List<HistoryPrice> = listOf()
 )

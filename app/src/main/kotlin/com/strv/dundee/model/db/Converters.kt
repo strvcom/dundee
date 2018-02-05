@@ -3,7 +3,7 @@ package com.strv.dundee.model.db
 import android.arch.persistence.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.strv.dundee.model.entity.HistroyPrice
+import com.strv.dundee.model.entity.HistoryPrice
 import com.strv.ktools.inject
 import java.util.Date
 
@@ -32,13 +32,13 @@ class Converters {
 	}
 
 	@TypeConverter
-	fun historyPriceListToString(list: List<HistroyPrice>?): String? {
+	fun historyPriceListToString(list: List<HistoryPrice>?): String? {
 		return list?.let { gson.toJson(it) }
 	}
 
 	@TypeConverter
-	fun stringToHistoryPriceList(json: String?): List<HistroyPrice>? {
-		val prizes: List<HistroyPrice>? = gson.fromJson(json, object : TypeToken<List<HistroyPrice>>() {}.type)
+	fun stringToHistoryPriceList(json: String?): List<HistoryPrice>? {
+		val prizes: List<HistoryPrice>? = gson.fromJson(json, object : TypeToken<List<HistoryPrice>>() {}.type)
 		return prizes
 	}
 }
