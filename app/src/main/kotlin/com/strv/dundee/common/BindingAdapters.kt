@@ -248,6 +248,7 @@ fun LineChart.setupChart(markerCurrency: String) {
 		setDrawAxisLine(false)
 	}
 
+	isScaleYEnabled = false
 	invalidate()
 }
 
@@ -264,6 +265,11 @@ fun LineChart.setCandles(candles: Resource<CandleSet>, currency: String, exchang
 		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(candles.data.currency, currency, value.toDouble())) }
 
 		data = LineData(btcDataSet)
+		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(candles.data.currency, currency, value.toDouble()))}
+		data.setDrawValues(false)
 		invalidate()
+	}
+	else {
+		clear()
 	}
 }
