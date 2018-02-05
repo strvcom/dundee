@@ -1,6 +1,7 @@
 package com.strv.dundee.model.api.bitstamp
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import com.strv.dundee.model.api.BitcoinApi
 import com.strv.dundee.model.entity.History
 import com.strv.dundee.model.entity.Ticker
@@ -17,7 +18,7 @@ class BitstampApi : BitcoinApi {
 		return api.getTicker("${coin.toLowerCase()}${currency.toLowerCase()}").mapLiveData({ it?.getTicker(currency, coin) })
 	}
 
-	override fun getHistory(coin: String, currency: String, timeFrame: String?): LiveData<Response<History>> {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	override fun getHistory(coin: String, currency: String): LiveData<Response<History>> {
+		return MutableLiveData()
 	}
 }

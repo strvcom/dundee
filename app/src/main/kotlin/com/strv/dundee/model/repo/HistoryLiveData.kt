@@ -16,7 +16,7 @@ class HistoryLiveData : ResourceLiveData<History>() {
 	val bitfinexApi by inject<BitfinexApi>()
 	val coincapApi by inject<CoincapApi>()
 
-	fun refresh(source: String, coin: String, currency: String, timeFrame: String? = null) {
+	fun refresh(source: String, coin: String, currency: String) {
 		val api = when (source) {
 			BitcoinSource.BITSTAMP -> bitstampApi
 			BitcoinSource.BITFINEX -> bitfinexApi
@@ -32,7 +32,7 @@ class HistoryLiveData : ResourceLiveData<History>() {
 
 			override fun loadFromDb() = cache.getHistory(source, currency, coin)
 
-			override fun createCall() = api.getHistory(coin, currency, timeFrame)
+			override fun createCall() = api.getHistory(coin, currency)
 		})
 	}
 }

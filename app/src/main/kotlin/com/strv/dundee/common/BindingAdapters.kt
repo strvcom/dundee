@@ -254,7 +254,7 @@ fun LineChart.setupChart(markerCurrency: String) {
 
 @BindingAdapter("historyPrizes", "currency", "exchangeRates")
 fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exchangeRates: ExchangeRates) {
-	val entries = historyPrizes.data?.prices?.map { Entry(it.timestamp.toFloat(), it.middle.toFloat()) }?.sortedBy { it.x }
+	val entries = historyPrizes.data?.prices?.map { Entry(it.timestamp.toFloat(), it.price.toFloat()) }?.sortedBy { it.x }
 	if (entries != null && !entries.isEmpty()) {
 		val btcDataSet = LineDataSet(entries, "${historyPrizes.data.currency}/${historyPrizes.data.coin}").apply {
 			setDrawCircles(false)

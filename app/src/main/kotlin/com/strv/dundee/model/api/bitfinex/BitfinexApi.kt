@@ -17,7 +17,7 @@ class BitfinexApi : BitcoinApi {
 		return api.getTicker("${coin.toUpperCase()}${currency.toUpperCase()}").mapLiveData({ it?.getTicker(currency, coin) })
 	}
 
-	override fun getHistory(coin: String, currency: String, timeFrame: String?): LiveData<Response<History>> {
-		return api.getCandles("${coin.toUpperCase()}${currency.toUpperCase()}", timeFrame!!).mapLiveData({ it?.getHistory(currency, coin) })
+	override fun getHistory(coin: String, currency: String): LiveData<Response<History>> {
+		return api.getCandles("${coin.toUpperCase()}${currency.toUpperCase()}").mapLiveData({ it?.getHistory(currency, coin) })
 	}
 }

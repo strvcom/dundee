@@ -17,7 +17,7 @@ class CoincapApi : BitcoinApi {
 		return api.getTicker(coin.toUpperCase()).mapLiveData({ it?.getTicker(currency, coin) })
 	}
 
-	override fun getHistory(coin: String, currency: String, timeFrame: String?): LiveData<Response<History>> {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	override fun getHistory(coin: String, currency: String): LiveData<Response<History>> {
+		return api.getHistory(coin).mapLiveData({ it?.getHistory(currency, coin)})
 	}
 }
