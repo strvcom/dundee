@@ -7,7 +7,6 @@ import android.graphics.Canvas
 import android.support.annotation.IdRes
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Editable
@@ -34,13 +33,13 @@ import java.text.DateFormat
 import java.util.Date
 
 @BindingAdapter("hide")
-fun setHide(view: View, hide: Boolean) {
-	view.visibility = if (hide) View.GONE else View.VISIBLE
+fun View.setHide(hide: Boolean) {
+	visibility = if (hide) View.GONE else View.VISIBLE
 }
 
 @BindingAdapter("show")
-fun setShow(view: View, show: Boolean) {
-	view.visibility = if (show) View.VISIBLE else View.GONE
+fun View.setShow(show: Boolean) {
+	visibility = if (show) View.VISIBLE else View.GONE
 }
 
 @BindingAdapter("invisible")
@@ -49,8 +48,8 @@ fun setInvisible(view: View, invisible: Boolean) {
 }
 
 @BindingAdapter("onActionDoneCallback")
-fun setOnActionDoneCallback(view: EditText, callback: ActionDoneCallback) {
-	view.setOnEditorActionListener { _, actionId, _ ->
+fun EditText.setOnActionDoneCallback(callback: ActionDoneCallback) {
+	setOnEditorActionListener { _, actionId, _ ->
 		if (actionId == EditorInfo.IME_ACTION_DONE) {
 			callback.onActionDone()
 			true
@@ -63,8 +62,8 @@ interface TextChangedCallback {
 }
 
 @BindingAdapter("onTextChangedCallback")
-fun setOnTextChangedCallback(view: EditText, callback: TextChangedCallback) {
-	view.addTextChangedListener(object : TextWatcher {
+fun EditText.setOnTextChangedCallback(callback: TextChangedCallback) {
+	addTextChangedListener(object : TextWatcher {
 		override fun afterTextChanged(editable: Editable?) {
 			callback.onTextChanged()
 		}
@@ -82,11 +81,11 @@ fun setOnTextChangedCallback(view: EditText, callback: TextChangedCallback) {
 //Spinner
 @Suppress("UNCHECKED_CAST")
 @BindingAdapter(value = ["selection", "selectionAttrChanged", "adapter"], requireAll = false)
-fun <T> setAdapter(view: Spinner, newSelection: T?, bindingListener: InverseBindingListener, adapter: ArrayAdapter<T>?) {
-	view.adapter = adapter
-	view.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+fun <T> Spinner.setAdapter(newSelection: T?, bindingListener: InverseBindingListener, adapter: ArrayAdapter<T>?) {
+	this.adapter = adapter
+	onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 		override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, p3: Long) {
-			if (newSelection != view.getItemAtPosition(position))
+			if (newSelection != getItemAtPosition(position))
 				bindingListener.onChange()
 		}
 
@@ -94,21 +93,21 @@ fun <T> setAdapter(view: Spinner, newSelection: T?, bindingListener: InverseBind
 	}
 
 	if (newSelection != null) {
-		val pos = (view.adapter as ArrayAdapter<T>).getPosition(newSelection)
-		view.setSelection(pos)
+		val pos = (this.adapter as ArrayAdapter<T>).getPosition(newSelection)
+		setSelection(pos)
 	}
 }
 
 @Suppress("UNCHECKED_CAST")
 @InverseBindingAdapter(attribute = "selection", event = "selectionAttrChanged")
-fun <T> getSelectedValue(view: Spinner): T {
-	return view.selectedItem as T
+fun <T> Spinner.getSelectedValue(): T {
+	return selectedItem as T
 }
 
 // Bottom Sheet state 2-way binding
 @BindingAdapter("bottomSheetOpen", "bottomSheetStateChanged", requireAll = false)
-fun setBottomSheetOpen(view: View, open: Boolean, bindingListener: InverseBindingListener) {
-	val behavior = BottomSheetBehavior.from(view)
+fun View.setBottomSheetOpen(open: Boolean, bindingListener: InverseBindingListener) {
+	val behavior = BottomSheetBehavior.from(this)
 	behavior.setBottomSheetCallback(null)
 	behavior.state = if (open) BottomSheetBehavior.STATE_COLLAPSED else BottomSheetBehavior.STATE_HIDDEN
 	behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -122,13 +121,13 @@ fun setBottomSheetOpen(view: View, open: Boolean, bindingListener: InverseBindin
 }
 
 @InverseBindingAdapter(attribute = "bottomSheetOpen", event = "bottomSheetStateChanged")
-fun getBottomSheetOpen(view: CardView): Boolean {
-	val behavior = BottomSheetBehavior.from(view)
+fun View.getBottomSheetOpen(): Boolean {
+	val behavior = BottomSheetBehavior.from(this)
 	return behavior.state == BottomSheetBehavior.STATE_COLLAPSED
 }
 
 @BindingAdapter("touchHelperCallback")
-fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: TouchHelperCallback<T>) {
+fun <T> RecyclerView.setTouchHelperCallback(touchHelperCallback: TouchHelperCallback<T>) {
 
 	fun getView(viewHolder: RecyclerView.ViewHolder?, @IdRes viewId: Int?): View? {
 		if (viewHolder?.itemView != null && viewId != null) {
@@ -205,8 +204,8 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 		override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
 			val position = viewHolder?.adapterPosition
 				?: -1
-			if (recycler.adapter is BindingRecyclerViewAdapter<*>) {
-				val adapter = recycler.adapter as BindingRecyclerViewAdapter<*>
+			if (adapter is BindingRecyclerViewAdapter<*>) {
+				val adapter = adapter as BindingRecyclerViewAdapter<*>
 				val item = adapter.getAdapterItem(position)
 				item?.let { touchHelperCallback.onItemSwiped(item as T) }
 			}
@@ -214,32 +213,32 @@ fun <T> setTouchHelperCallback(recycler: RecyclerView, touchHelperCallback: Touc
 	}
 
 	val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-	itemTouchHelper.attachToRecyclerView(recycler)
+	itemTouchHelper.attachToRecyclerView(this)
 }
 
 @BindingAdapter("profitState")
-fun setProfitState(view: TextView, profit: Double?) {
+fun TextView.setProfitState(profit: Double?) {
 	profit?.let {
-		when {
-			profit > 0 -> view.setTextColor(ContextCompat.getColor(view.context, R.color.currency_profit))
-			profit < 0 -> view.setTextColor(ContextCompat.getColor(view.context, R.color.currency_loss))
-			else -> view.setTextColor(ContextCompat.getColor(view.context, R.color.currency_none))
-		}
+		setTextColor(ContextCompat.getColor(context, when {
+			profit > 0 -> R.color.currency_profit
+			profit < 0 -> R.color.currency_loss
+			else -> R.color.currency_none
+		}))
 	}
 }
 
-@BindingAdapter("markerCurrency" )
-fun setupChart(chart: LineChart, markerCurrency: String) {
-	chart.marker = MarkerView(chart.context, markerCurrency)
-	chart.axisLeft.isEnabled = false
-	chart.description.isEnabled = false
+@BindingAdapter("markerCurrency")
+fun LineChart.setupChart(markerCurrency: String) {
+	marker = MarkerView(context, markerCurrency)
+	axisLeft.isEnabled = false
+	description.isEnabled = false
 
-	chart.axisRight.apply {
+	axisRight.apply {
 		setDrawAxisLine(false)
 		labelCount = 2
 	}
 
-	chart.xAxis.apply {
+	xAxis.apply {
 		setValueFormatter { value, axis ->
 			val timestamp = value.toLong()
 			val date = Date(timestamp)
@@ -249,22 +248,22 @@ fun setupChart(chart: LineChart, markerCurrency: String) {
 		setDrawAxisLine(false)
 	}
 
-	chart.invalidate()
+	invalidate()
 }
 
 @BindingAdapter("candles", "currency", "exchangeRates")
-fun setCandles(chart: LineChart, candles: Resource<CandleSet>, currency: String, exchangeRates: ExchangeRates) {
+fun LineChart.setCandles(candles: Resource<CandleSet>, currency: String, exchangeRates: ExchangeRates) {
 	val entries = candles.data?.candles?.map { Entry(it.timestamp.toFloat(), it.middle.toFloat()) }?.sortedBy { it.x }
-	if(entries != null && !entries.isEmpty()) {
+	if (entries != null && !entries.isEmpty()) {
 		val btcDataSet = LineDataSet(entries, "${candles.data.currency}/${candles.data.coin}").apply {
 			setDrawCircles(false)
-			color = ContextCompat.getColor(chart.context, R.color.accent)
-			lineWidth = chart.resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
+			color = ContextCompat.getColor(context, R.color.accent)
+			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
 		}
 
-		chart.axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(candles.data.currency, currency, value.toDouble())) }
+		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(candles.data.currency, currency, value.toDouble())) }
 
-		chart.data = LineData(btcDataSet)
-		chart.invalidate()
+		data = LineData(btcDataSet)
+		invalidate()
 	}
 }
