@@ -25,7 +25,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"
-			app:candles="@{viewModel.candles[Coin.BTC]}"
+			app:historyPrizes="@{viewModel.history[Coin.BTC]}"
 			app:currency="@{viewModel.mainViewModel.currency}"
 			app:markerCurrency="@{viewModel.mainViewModel.currency}"
 			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
@@ -34,7 +34,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"
-			app:candles="@{viewModel.candles[Coin.ETH]}"
+			app:historyPrizes="@{viewModel.history[Coin.ETH]}"
 			app:currency="@{viewModel.mainViewModel.currency}"
 			app:markerCurrency="@{viewModel.mainViewModel.currency}"
 			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
@@ -43,7 +43,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"
-			app:candles="@{viewModel.candles[Coin.XRP]}"
+			app:historyPrizes="@{viewModel.history[Coin.XRP]}"
 			app:currency="@{viewModel.mainViewModel.currency}"
 			app:markerCurrency="@{viewModel.mainViewModel.currency}"
 			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
@@ -52,7 +52,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"
-			app:candles="@{viewModel.candles[Coin.LTC]}"
+			app:historyPrizes="@{viewModel.history[Coin.LTC]}"
 			app:currency="@{viewModel.mainViewModel.currency}"
 			app:markerCurrency="@{viewModel.mainViewModel.currency}"
 			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
@@ -61,7 +61,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"
-			app:candles="@{viewModel.candles[Coin.BCH]}"
+			app:historyPrizes="@{viewModel.history[Coin.BCH]}"
 			app:currency="@{viewModel.mainViewModel.currency}"
 			app:markerCurrency="@{viewModel.mainViewModel.currency}"
 			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />

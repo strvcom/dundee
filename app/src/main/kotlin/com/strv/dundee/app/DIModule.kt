@@ -39,7 +39,7 @@ object DIModule {
 		val database = Room.databaseBuilder(application, BitcoinDatabase::class.java, "bitcoin-database").build()
 		provideSingleton { database.tickerDao() }
 		provideSingleton { database.exchangeRatesDao() }
-		provideSingleton { database.candleSetDao() }
+		provideSingleton { database.historyDao() }
 
 
 		provideSingleton { FirebaseFirestore.getInstance() }

@@ -1,6 +1,6 @@
 package com.strv.dundee.model.entity
 
-data class Candle(
+data class HistroyPrice(
 	val timestamp: Long = 0,
 	val open: Double = 0.0,
 	val close: Double = 0.0,

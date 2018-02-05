@@ -2,7 +2,7 @@ package com.strv.dundee.model.api.bitstamp
 
 import android.arch.lifecycle.LiveData
 import com.strv.dundee.model.api.BitcoinApi
-import com.strv.dundee.model.entity.CandleSet
+import com.strv.dundee.model.entity.History
 import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.getRetrofitInterface
 import com.strv.ktools.mapLiveData
@@ -17,7 +17,7 @@ class BitstampApi : BitcoinApi {
 		return api.getTicker("${coin.toLowerCase()}${currency.toLowerCase()}").mapLiveData({ it?.getTicker(currency, coin) })
 	}
 
-	override fun getCandles(coin: String, currency: String, timeFrame: String): LiveData<Response<CandleSet>> {
+	override fun getHistory(coin: String, currency: String, timeFrame: String?): LiveData<Response<History>> {
 		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 	}
 }

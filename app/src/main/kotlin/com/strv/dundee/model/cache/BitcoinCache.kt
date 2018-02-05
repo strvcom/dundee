@@ -1,16 +1,16 @@
 package com.strv.dundee.model.cache
 
 import android.arch.lifecycle.LiveData
-import com.strv.dundee.model.db.CandleSetDao
+import com.strv.dundee.model.db.HistoryDao
 import com.strv.dundee.model.db.TickerDao
-import com.strv.dundee.model.entity.CandleSet
+import com.strv.dundee.model.entity.History
 import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.inject
 import com.strv.ktools.log
 
 class BitcoinCache {
 	private val tickerDao by inject<TickerDao>()
-	private val candleSetDao by inject<CandleSetDao>()
+	private val historyDao by inject<HistoryDao>()
 
 	fun getTicker(source: String, currency: String, coin: String): LiveData<Ticker> {
 		val fromDb = tickerDao.getTicker(source, currency, coin)
@@ -23,14 +23,14 @@ class BitcoinCache {
 		tickerDao.putTicker(ticker)
 	}
 
-	fun putCandles(candleSet: CandleSet) {
-		log("Saving candleSet to db: $candleSet")
-		candleSetDao.putCandleSet(candleSet)
+	fun putHistory(history: History) {
+		log("Saving history to db: $history")
+		historyDao.putHistory(history)
 	}
 
-	fun getCandles(source: String, currency: String, coin: String, timeFrame: String): LiveData<CandleSet> {
-		val fromDb = candleSetDao.getCandleSet(source, currency, coin, timeFrame)
-		log("Reading candleSet from db: ${fromDb.value}")
+	fun getHistory(source: String, currency: String, coin: String): LiveData<History> {
+		val fromDb = historyDao.getHistory(source, currency, coin)
+		log("Reading history from db: ${fromDb.value}")
 		return fromDb
 	}
 }

@@ -24,9 +24,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.strv.dundee.R
-import com.strv.dundee.model.entity.CandleSet
 import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.ExchangeRates
+import com.strv.dundee.model.entity.History
 import com.strv.dundee.ui.charts.MarkerView
 import com.strv.ktools.Resource
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
@@ -253,21 +253,21 @@ fun setupChart(chart: LineChart, markerCurrency: String) {
 	chart.invalidate()
 }
 
-@BindingAdapter("candles", "currency", "exchangeRates")
-fun setCandles(chart: LineChart, candles: Resource<CandleSet>, currency: String, exchangeRates: ExchangeRates) {
-	val entries = candles.data?.candles?.map { Entry(it.timestamp.toFloat(), it.middle.toFloat()) }?.sortedBy { it.x }
+@BindingAdapter("historyPrizes", "currency", "exchangeRates")
+fun setCandles(chart: LineChart, historyPrizes: Resource<History>, currency: String, exchangeRates: ExchangeRates) {
+	val entries = historyPrizes.data?.prices?.map { Entry(it.timestamp.toFloat(), it.middle.toFloat()) }?.sortedBy { it.x }
 	if(entries != null && !entries.isEmpty()) {
-		val btcDataSet = LineDataSet(entries, "${candles.data.currency}/${candles.data.coin}").apply {
+		val btcDataSet = LineDataSet(entries, "${historyPrizes.data.currency}/${historyPrizes.data.coin}").apply {
 			setDrawCircles(false)
 			color = ContextCompat.getColor(chart.context, R.color.accent)
 			lineWidth = chart.resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
 		}
 
-		chart.axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(candles.data.currency, currency, value.toDouble())) }
+		chart.axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
 
 
 		chart.data = LineData(btcDataSet)
-		chart.data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(candles.data.currency, currency, value.toDouble()))}
+		chart.data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble()))}
 		chart.data.setDrawValues(false)
 		chart.invalidate()
 	}
