@@ -23,10 +23,12 @@ private inline fun <T> SharedPreferencesProvider.delegate(
 ) =
 	object : ReadWriteProperty<Any?, T?> {
 		override fun getValue(thisRef: Any?, property: KProperty<*>): T? =
-			provide().getter(key ?: property.name, defaultValue)
+			provide().getter(key
+				?: property.name, defaultValue)
 
 		override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
-			provide().edit().setter(key ?: property.name, value).apply()
+			provide().edit().setter(key
+				?: property.name, value).apply()
 	}
 
 private inline fun <T> SharedPreferencesProvider.delegatePrimitive(
@@ -37,10 +39,12 @@ private inline fun <T> SharedPreferencesProvider.delegatePrimitive(
 ) =
 	object : ReadWriteProperty<Any?, T> {
 		override fun getValue(thisRef: Any?, property: KProperty<*>): T =
-			provide().getter(key ?: property.name, defaultValue)!!
+			provide().getter(key
+				?: property.name, defaultValue)!!
 
 		override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) =
-			provide().edit().setter(key ?: property.name, value).apply()
+			provide().edit().setter(key
+				?: property.name, value).apply()
 	}
 
 private inline fun <T> SharedPreferencesProvider.liveDataDelegate(
@@ -48,7 +52,8 @@ private inline fun <T> SharedPreferencesProvider.liveDataDelegate(
 	key: String? = null,
 	crossinline getter: SharedPreferences.(String, T?) -> T?,
 	crossinline setter: Editor.(String, T?) -> Editor
-): ReadOnlyProperty<Any?, MutableLiveData<T?>> = object : MutableLiveData<T?>(), ReadOnlyProperty<Any?, MutableLiveData<T?>> {
+): ReadOnlyProperty<Any?, MutableLiveData<T?>> = object : MutableLiveData<T?>(), ReadOnlyProperty<Any?, MutableLiveData<T?>>, SharedPreferences.OnSharedPreferenceChangeListener {
+
 	var originalProperty: KProperty<*>? = null
 
 	override fun getValue(thisRef: Any?, property: KProperty<*>): MutableLiveData<T?> {
@@ -57,14 +62,36 @@ private inline fun <T> SharedPreferencesProvider.liveDataDelegate(
 	}
 
 	override fun getValue(): T? {
-		val persistable by delegate(defaultValue, key ?: originalProperty!!.name, getter, setter)
-		return super.getValue() ?: persistable ?: defaultValue
+		val persistable by delegate(defaultValue, key
+			?: originalProperty!!.name, getter, setter)
+		return super.getValue()
+			?: persistable
+			?: defaultValue
 	}
 
 	override fun setValue(value: T?) {
 		super.setValue(value)
-		var persistable by delegate(defaultValue, key ?: originalProperty!!.name, getter, setter)
+		var persistable by delegate(defaultValue, key
+			?: originalProperty!!.name, getter, setter)
 		persistable = value
+	}
+
+	override fun onActive() {
+		super.onActive()
+		value = provide().getter(key
+			?: originalProperty!!.name, defaultValue)
+		provide().registerOnSharedPreferenceChangeListener(this)
+	}
+
+	override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, changedKey: String) {
+		if (changedKey == key ?: originalProperty!!.name) {
+			value = sharedPreferences.getter(changedKey, defaultValue)
+		}
+	}
+
+	override fun onInactive() {
+		super.onInactive()
+		provide().unregisterOnSharedPreferenceChangeListener(this)
 	}
 }
 
@@ -73,7 +100,7 @@ private inline fun <T> SharedPreferencesProvider.liveDataDelegatePrimitive(
 	key: String? = null,
 	crossinline getter: SharedPreferences.(String, T) -> T,
 	crossinline setter: Editor.(String, T) -> Editor
-): ReadOnlyProperty<Any?, MutableLiveData<T>> = object : MutableLiveData<T>(), ReadOnlyProperty<Any?, MutableLiveData<T>> {
+): ReadOnlyProperty<Any?, MutableLiveData<T>> = object : MutableLiveData<T>(), ReadOnlyProperty<Any?, MutableLiveData<T>>, SharedPreferences.OnSharedPreferenceChangeListener {
 	var originalProperty: KProperty<*>? = null
 
 	override fun getValue(thisRef: Any?, property: KProperty<*>): MutableLiveData<T> {
@@ -82,14 +109,36 @@ private inline fun <T> SharedPreferencesProvider.liveDataDelegatePrimitive(
 	}
 
 	override fun getValue(): T {
-		val persistable by delegatePrimitive(defaultValue, key ?: originalProperty!!.name, getter, setter)
-		return super.getValue() ?: persistable ?: defaultValue
+		val persistable by delegatePrimitive(defaultValue, key
+			?: originalProperty!!.name, getter, setter)
+		return super.getValue()
+			?: persistable
+			?: defaultValue
 	}
 
 	override fun setValue(value: T) {
 		super.setValue(value)
-		var persistable by delegatePrimitive(defaultValue, key ?: originalProperty!!.name, getter, setter)
+		var persistable by delegatePrimitive(defaultValue, key
+			?: originalProperty!!.name, getter, setter)
 		persistable = value
+	}
+
+	override fun onActive() {
+		super.onActive()
+		value = provide().getter(key
+			?: originalProperty!!.name, defaultValue)
+		provide().registerOnSharedPreferenceChangeListener(this)
+	}
+
+	override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, changedKey: String) {
+		if (changedKey == key ?: originalProperty!!.name) {
+			value = sharedPreferences.getter(changedKey, defaultValue)
+		}
+	}
+
+	override fun onInactive() {
+		super.onInactive()
+		provide().unregisterOnSharedPreferenceChangeListener(this)
 	}
 }
 

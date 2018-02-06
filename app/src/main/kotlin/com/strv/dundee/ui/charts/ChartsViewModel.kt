@@ -13,7 +13,7 @@ class ChartsViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 
 	init {
 		Coin.getAll().forEach { history[it] = bitcoinRepository.getHistory(mainViewModel.source.value!!, it, mainViewModel.apiCurrency.value!!) }
-		history.forEach { coin, history ->
+		history.forEach { (coin, history) ->
 			history.addSource(mainViewModel.apiCurrency, { history.refresh(mainViewModel.source.value!!, coin, mainViewModel.apiCurrency.value!!) })
 			history.addSource(mainViewModel.source, { history.refresh(mainViewModel.source.value!!, coin, mainViewModel.apiCurrency.value!!) })
 		}

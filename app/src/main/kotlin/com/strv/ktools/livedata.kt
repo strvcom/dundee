@@ -62,3 +62,8 @@ fun <S, T> LiveData<T>.map(mapFunction: (T) -> S) = Transformations.map(this, ma
  * Shorthand for switch mapping LiveData instead of using static methods from Transformations
  */
 fun <S, T> LiveData<T>.switchMap(switchMapFunction: (T) -> LiveData<S>) = Transformations.switchMap(this, switchMapFunction)
+
+/**
+ * Shorthand for creating MutableLiveData
+ */
+fun <T> mutableLiveDataOf(value: T) = MutableLiveData<T>().apply { this.value = value }
