@@ -31,29 +31,17 @@ class DiffObservableListLiveData<T>(liveData: LiveData<Resource<List<T>>>, callb
 fun <T> setAdapterLiveData(recyclerView: RecyclerView, liveDataItemBinding: ItemBinding<T>, liveDataItems: DiffObservableListLiveData<T>, presetAdapter: BindingRecyclerViewAdapter<T>?) {
 	val oldAdapter = recyclerView.adapter as BindingRecyclerViewAdapter<T>?
 	val adapter: BindingRecyclerViewAdapter<T>
-	if (presetAdapter == null) {
-		if (oldAdapter == null) {
-			adapter = BindingRecyclerViewAdapter()
-		} else {
-			adapter = oldAdapter
-		}
-	} else {
-		adapter = presetAdapter
-	}
+	adapter = presetAdapter ?: (oldAdapter
+		?: BindingRecyclerViewAdapter())
 	if (oldAdapter !== adapter) {
 		adapter.itemBinding = liveDataItemBinding
 		adapter.setItems(liveDataItems.diffList)
-	}
-
-	if (oldAdapter !== adapter) {
 		recyclerView.adapter = adapter
 	}
 }
 
-class LifecycleAwareBindingRecyclerViewAdapter<T>(val lifecycleOwner: LifecycleOwner) : BindingRecyclerViewAdapter<T>() {
+class LifecycleAwareBindingRecyclerViewAdapter<T>(private val lifecycleOwner: LifecycleOwner) : BindingRecyclerViewAdapter<T>() {
 	override fun onCreateBinding(inflater: LayoutInflater, @LayoutRes layoutId: Int, viewGroup: ViewGroup): ViewDataBinding {
-		val binding = super.onCreateBinding(inflater, layoutId, viewGroup)
-		binding.setLifecycleOwner(lifecycleOwner)
-		return binding
+		return super.onCreateBinding(inflater, layoutId, viewGroup).apply { setLifecycleOwner(lifecycleOwner) }
 	}
 }
