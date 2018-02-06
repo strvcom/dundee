@@ -48,7 +48,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!) }
 
 		// setup ticker on input changes
-		tickers.forEach { coin, ticker ->
+		tickers.forEach{ (coin, ticker) ->
 			ticker.addSource(apiCurrency, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
 			ticker.addSource(source, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
 		}
