@@ -78,6 +78,8 @@ private inline fun <T> SharedPreferencesProvider.liveDataDelegate(
 
 	override fun onActive() {
 		super.onActive()
+		value = provide().getter(key
+			?: originalProperty!!.name, defaultValue)
 		provide().registerOnSharedPreferenceChangeListener(this)
 	}
 
@@ -123,6 +125,8 @@ private inline fun <T> SharedPreferencesProvider.liveDataDelegatePrimitive(
 
 	override fun onActive() {
 		super.onActive()
+		value = provide().getter(key
+			?: originalProperty!!.name, defaultValue)
 		provide().registerOnSharedPreferenceChangeListener(this)
 	}
 
