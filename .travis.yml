@@ -13,3 +13,6 @@ before_install:
 script:
   # Verify release build
   - ./gradlew assembleFinalProductionRelease
+
+  # Verify unit tests
+  - ./gradlew testFinalProductionReleaseUnitTest
