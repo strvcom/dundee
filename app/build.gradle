@@ -78,6 +78,8 @@ android {
 
 	sourceSets {
 		main.java.srcDirs += 'src/main/kotlin'
+		test.java.srcDirs += 'src/test/kotlin'
+		androidTest.java.srcDirs += 'src/androidTest/kotlin'
 	}
 	dataBinding.enabled true
 
@@ -135,6 +137,9 @@ dependencies {
 
 	// Tests
 	testImplementation 'junit:junit:4.12'
+	testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+	testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
+	testImplementation 'org.amshove.kluent:kluent:1.34'
 }
 
 apply plugin: 'com.google.gms.google-services'
