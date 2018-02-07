@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "168810109500-bnhsea8hj9r8b40jn6g50p8e3k6rg34a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee",
+            "certificate_hash": "da01f8b7c7ac906be6a6eaebbd34aef33a4e3895"
+          }
+        },
+        {
+          "client_id": "168810109500-37bb5b99lei17hu1dm1aembpggu3d3vf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee",
+            "certificate_hash": "0140ddafebc03120571fd0665db2eb57fb2d3062"
+          }
+        },
+        {
           "client_id": "168810109500-mthkbbkiijp12tnsadbt1kginocmppti.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -59,6 +75,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "168810109500-s1tohkfaf46evo44romqpmkbepgns9la.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee.demo",
+            "certificate_hash": "da01f8b7c7ac906be6a6eaebbd34aef33a4e3895"
+          }
+        },
+        {
+          "client_id": "168810109500-7qt9gjmg0n1hvnaus75ue4cq5ou4nu0p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee.demo",
+            "certificate_hash": "0140ddafebc03120571fd0665db2eb57fb2d3062"
+          }
+        },
+        {
+          "client_id": "168810109500-o8anvnhqr7map3beva270q64jivrev92.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee.demo",
+            "certificate_hash": "69881abe7bf1e2abb40bf9a132093f0d656fada1"
+          }
+        },
+        {
           "client_id": "168810109500-itr1rult8iuadre98i0s20ltas0ab2bi.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -73,8 +113,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168810109500-itr1rult8iuadre98i0s20ltas0ab2bi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
@@ -90,6 +135,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "168810109500-f84t3m5cu9gjbrm543kou8eft1cpt43e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee.develop",
+            "certificate_hash": "da01f8b7c7ac906be6a6eaebbd34aef33a4e3895"
+          }
+        },
+        {
+          "client_id": "168810109500-rv8u35dhaakug6q9r1fjcua43q63i4i8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee.develop",
+            "certificate_hash": "0140ddafebc03120571fd0665db2eb57fb2d3062"
+          }
+        },
+        {
+          "client_id": "168810109500-rlh6foi6nglkgkgbrevq50oqbdhbgp94.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee.develop",
+            "certificate_hash": "69881abe7bf1e2abb40bf9a132093f0d656fada1"
+          }
+        },
+        {
           "client_id": "168810109500-itr1rult8iuadre98i0s20ltas0ab2bi.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -104,8 +173,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168810109500-itr1rult8iuadre98i0s20ltas0ab2bi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
@@ -121,6 +195,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "168810109500-dq0h0i3i7vkpk48h3m9rq1epvrc45kq8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee.mock",
+            "certificate_hash": "da01f8b7c7ac906be6a6eaebbd34aef33a4e3895"
+          }
+        },
+        {
+          "client_id": "168810109500-s1eeq70213kupm0cpa7ic2mhkq0jhji7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee.mock",
+            "certificate_hash": "0140ddafebc03120571fd0665db2eb57fb2d3062"
+          }
+        },
+        {
+          "client_id": "168810109500-dbd0qajbg456uaqpol11epjpem8nrd2o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.strv.dundee.mock",
+            "certificate_hash": "69881abe7bf1e2abb40bf9a132093f0d656fada1"
+          }
+        },
+        {
           "client_id": "168810109500-itr1rult8iuadre98i0s20ltas0ab2bi.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -135,8 +233,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168810109500-itr1rult8iuadre98i0s20ltas0ab2bi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
