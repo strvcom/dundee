@@ -38,7 +38,6 @@ class Converters {
 
 	@TypeConverter
 	fun stringToHistoryPriceList(json: String?): List<HistoryPrice>? {
-		val prizes: List<HistoryPrice>? = gson.fromJson(json, object : TypeToken<List<HistoryPrice>>() {}.type)
-		return prizes
+		return gson.fromJson(json, object : TypeToken<List<HistoryPrice>>() {}.type)
 	}
 }
