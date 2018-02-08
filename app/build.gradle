@@ -42,7 +42,7 @@ android {
 		unitTests.all {
 			testLogging {
 				events "failed"
-				exceptionFormat "short"
+				exceptionFormat "full"
 			}
 		}
 		unitTests {
