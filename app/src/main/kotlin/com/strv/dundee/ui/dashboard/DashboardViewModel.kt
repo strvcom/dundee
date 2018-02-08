@@ -79,7 +79,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	}
 
 	// calculation of current total
-	private fun recalculateTotal(): Double =
+	internal fun recalculateTotal(): Double =
 		wallets.value?.data?.sumByDouble {
 			val fromCurrency = tickers[it.coin]?.value?.data?.currency
 			val toCurrency = currency.value
@@ -88,7 +88,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		} ?: 0.0
 
 	// calculation of current profit
-	private fun recalculateTotalProfit(): Double {
+	internal fun recalculateTotalProfit(): Double {
 		val totalBoughtPrice = wallets.value?.data?.sumByDouble { it.getBoughtPrice(currency.value!!, exchangeRates.value?.data) } ?: 0.0
 		return (totalValue.value ?: 0.0) - totalBoughtPrice
 	}

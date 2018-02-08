@@ -90,7 +90,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						tools:listitem="@layout/item_spinner_source_currency"
-						app:adapter="@{viewModel.currencyAdapter}"
+						app:adapter="@{view.currencyAdapter}"
 						app:selection="@={viewModel.currency}" />
 
 					<android.support.v4.widget.Space
@@ -112,7 +112,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							tools:listitem="@layout/item_spinner_source_currency"
-							app:adapter="@{viewModel.sourceAdapter}"
+							app:adapter="@{view.sourceAdapter}"
 							app:selection="@={viewModel.source}" />
 
 						<android.support.v4.widget.Space
@@ -123,7 +123,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							tools:listitem="@layout/item_spinner_source_currency"
-							app:adapter="@{viewModel.apiCurrencyAdapter}"
+							app:adapter="@{view.apiCurrencyAdapter}"
 							app:selection="@={viewModel.apiCurrency}" />
 
 					</LinearLayout>

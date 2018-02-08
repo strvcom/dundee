@@ -7,8 +7,12 @@ import com.strv.dundee.model.cache.ExchangeRatesCache
 import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.ktools.NetworkBoundResource
 import com.strv.ktools.ResourceLiveData
+import com.strv.ktools.inject
 
-class ExchangeRatesLiveData(val cache: ExchangeRatesCache, val api: ExchangeRateApi) : ResourceLiveData<ExchangeRates>() {
+class ExchangeRatesLiveData : ResourceLiveData<ExchangeRates>() {
+	private val cache by inject<ExchangeRatesCache>()
+	private val api by inject<ExchangeRateApi>()
+
 	fun refresh(source: String, target: List<String>) {
 		setupResource(object : NetworkBoundResource.Callback<ExchangeRates> {
 			override fun saveCallResult(item: ExchangeRates) {

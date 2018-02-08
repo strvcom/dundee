@@ -7,14 +7,20 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
 import com.strv.dundee.R
 import com.strv.dundee.common.isUserSignedIn
 import com.strv.dundee.databinding.ActivityMainBinding
+import com.strv.dundee.model.entity.BitcoinSource
+import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.ui.auth.SignInActivity
 import com.strv.dundee.ui.nav.MainNavigation
 import com.strv.ktools.vmb
 
 interface MainView {
+	val sourceAdapter: ArrayAdapter<String>
+	val currencyAdapter: ArrayAdapter<String>
+	val apiCurrencyAdapter: ArrayAdapter<String>
 }
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -25,6 +31,10 @@ class MainActivity : AppCompatActivity(), MainView {
 
 	private val vmb by vmb<MainViewModel, ActivityMainBinding>(R.layout.activity_main)
 
+	override lateinit var sourceAdapter: ArrayAdapter<String>
+	override lateinit var currencyAdapter: ArrayAdapter<String>
+	override lateinit var apiCurrencyAdapter: ArrayAdapter<String>
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setSupportActionBar(vmb.binding.toolbar)
@@ -33,6 +43,10 @@ class MainActivity : AppCompatActivity(), MainView {
 			startActivity(SignInActivity.newIntent(this))
 			finish()
 		}
+
+		sourceAdapter = ArrayAdapter(this, R.layout.item_spinner_source_currency, BitcoinSource.getAll())
+		currencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getAll())
+		apiCurrencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getApiCurrencies())
 
 		setupNavigation(savedInstanceState)
 	}
