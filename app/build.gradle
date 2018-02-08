@@ -39,6 +39,12 @@ android {
 	}
 
 	testOptions {
+		unitTests.all {
+			testLogging {
+				events "failed"
+				exceptionFormat "short"
+			}
+		}
 		unitTests {
 			includeAndroidResources = true
 		}
