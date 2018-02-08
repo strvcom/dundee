@@ -4,7 +4,9 @@ import com.strv.dundee.base.TestDIModule
 import com.strv.dundee.model.db.Converters
 import com.strv.dundee.model.entity.HistoryPrice
 import org.amshove.kluent.shouldEqual
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.TimeZone
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -18,7 +20,10 @@ class ConvertersTest {
 	@Test
 	fun dateFromTimestamp() {
 		val converters = Converters()
-		converters.fromTimestamp(1518018440000 ).toString() shouldEqual "Wed Feb 07 16:47:20 CET 2018"
+		val convertedDate = converters.fromTimestamp(1518018440000 )
+		val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+		dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+		dateFormat.format(convertedDate) shouldEqual "2018-02-07T15:47:20"
 	}
 
 	@Test
