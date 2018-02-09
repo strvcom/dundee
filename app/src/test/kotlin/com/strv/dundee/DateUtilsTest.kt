@@ -30,6 +30,6 @@ class DateUtilsTest {
 		val calendar = Calendar.getInstance()
 		calendar.add(Calendar.DAY_OF_YEAR, -2)
 		val date = calendar.time
-		date.isOlderThan(Calendar.HOUR, 48) shouldEqual false
+		date.isOlderThan(Calendar.HOUR, 60) shouldEqual false
 	}
 }
