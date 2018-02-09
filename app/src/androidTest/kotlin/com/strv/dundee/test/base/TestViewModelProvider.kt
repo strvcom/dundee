@@ -38,16 +38,19 @@ object TestViewModelProvider {
 		coinWalletsList.add(WalletOverview(Coin.BTC, 1.5, boughtPrices))
 		coinWalletsList.add(WalletOverview(Coin.LTC, 200.0, boughtPrices))
 		coinWalletsList.add(WalletOverview(Coin.ETH, 340.99, boughtPrices))
+		coinWalletsList.add(WalletOverview(Coin.BCH, 12.87, boughtPrices))
+		coinWalletsList.add(WalletOverview(Coin.XRP, 23.5, boughtPrices))
+		coinWallets.value = Resource(Resource.Status.SUCCESS, coinWalletsList)
 		dashboardViewModel.wallets = DiffObservableListLiveData(coinWallets, object : DiffObservableList.Callback<WalletOverview> {
 			override fun areItemsTheSame(oldItem: WalletOverview?, newItem: WalletOverview?) = true
 			override fun areContentsTheSame(oldItem: WalletOverview?, newItem: WalletOverview?) = true
 		})
 
-		dashboardViewModel.tickers[Coin.BTC] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.USD, Coin.BTC, 6000.8, 8030.8, 5467.44, 1518095973000)) }
-		dashboardViewModel.tickers[Coin.BCH] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.USD, Coin.BCH, 6000.8, 8030.8, 5467.44, 1518095973000)) }
-		dashboardViewModel.tickers[Coin.ETH] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.USD, Coin.ETH, 6000.8, 8030.8, 5467.44, 1518095973000)) }
-		dashboardViewModel.tickers[Coin.LTC] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.USD, Coin.LTC, 6000.8, 8030.8, 5467.44, 1518095973000)) }
-		dashboardViewModel.tickers[Coin.XRP] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.USD, Coin.XRP, 6000.8, 8030.8, 5467.44, 1518095973000)) }
+		dashboardViewModel.tickers[Coin.BTC] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.CZK, Coin.BTC, 200500.8, 234500.8, 180990.44, 1518095973000)) }
+		dashboardViewModel.tickers[Coin.BCH] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.EUR, Coin.BCH, 840.8, 934.8, 753.44, 1518095973000)) }
+		dashboardViewModel.tickers[Coin.ETH] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.USD, Coin.ETH, 756.8, 845.8, 654.44, 1518095973000)) }
+		dashboardViewModel.tickers[Coin.LTC] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.CZK, Coin.LTC, 3568.8, 4569.8, 3214.44, 1518095973000)) }
+		dashboardViewModel.tickers[Coin.XRP] = TickerLiveData().apply { value = Resource(Resource.Status.SUCCESS, Ticker(BitcoinSource.BITFINEX, Currency.EUR, Coin.XRP, 0.8, 1.2, 0.44, 1518095973000)) }
 		dashboardViewModel.currency.value = Currency.USD
 
 		return dashboardViewModel
