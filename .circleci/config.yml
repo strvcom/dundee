@@ -15,8 +15,8 @@ jobs:
           name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
           command: sudo chmod +x ./gradlew
       - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
+          name: Build Release APK
+          command: ./gradlew assembleFinalProductionRelease
       - save_cache:
           paths:
             - ~/.gradle
@@ -47,38 +47,38 @@ jobs:
           at: ~/code
       - run:
           name: Run Tests
-          command: ./gradlew lint test
+          command: ./gradlew testFinalProductionReleaseUnitTest
       - store_artifacts:
           path: app/build/reports
           destination: reports
       - store_test_results:
           path: app/build/test-results
 
-  ui_test:
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-27-alpha
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps:
-      - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: ~/code
-      - run:
-          name: UI tests - sudo pip install
-          command: sudo pip install -U crcmod
-      - run:
-          name: UI tests - assembleDebug
-          command: ./gradlew :app:assembleDebug -PdisablePreDex
-      - store_artifacts:
-          path: app/build/outputs/apk/debug/app-debug.apk
-          destination: apk/app-debug.apk
-      - run:
-          name: UI tests - assembleAndroidTest
-          command: ./gradlew :app:assembleAndroidTest -PdisablePreDex
-      - store_artifacts:
-          path: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-          destination: apk/app-debug-androidTest.apk
+#  ui_test:
+#    working_directory: ~/code
+#    docker:
+#      - image: circleci/android:api-27-alpha
+#    environment:
+#      JVM_OPTS: -Xmx3200m
+#    steps:
+#      - attach_workspace:
+#          # Must be absolute path or relative path from working_directory
+#          at: ~/code
+#      - run:
+#          name: UI tests - sudo pip install
+#          command: sudo pip install -U crcmod
+#      - run:
+#          name: UI tests - assembleDebug
+#          command: ./gradlew :app:assembleDebug -PdisablePreDex
+#      - store_artifacts:
+#          path: app/build/outputs/apk/debug/app-debug.apk
+#          destination: apk/app-debug.apk
+#      - run:
+#          name: UI tests - assembleAndroidTest
+#          command: ./gradlew :app:assembleAndroidTest -PdisablePreDex
+#      - store_artifacts:
+#          path: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+#          destination: apk/app-debug-androidTest.apk
 #      - run:
 #          name: UI tests - decode gcloud service key
 #          command: echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
@@ -109,6 +109,6 @@ workflows:
       - unit_test:
           requires:
             - build
-      - ui_test:
-          requires:
-            - build
+#      - ui_test:
+#          requires:
+#            - build
