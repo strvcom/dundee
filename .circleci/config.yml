@@ -46,7 +46,7 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
 #      - attach_workspace:
-           Must be absolute path or relative path from working_directory
+#           Must be absolute path or relative path from working_directory
 #          at: ~/code
       - run:
           name: Run Tests
