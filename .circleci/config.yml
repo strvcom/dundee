@@ -45,9 +45,9 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
-#      - attach_workspace:
-#           Must be absolute path or relative path from working_directory
-#          at: ~/code
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run Tests
           command: ./gradlew testFinalProductionReleaseUnitTest
@@ -109,9 +109,7 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - unit_test:
-          requires:
-            - build
+      - unit_test
 #      - ui_test:
 #          requires:
 #            - build
