@@ -53,13 +53,13 @@ internal fun <T> getRetrofitInterface(url: String, apiInterface: Class<T>, clien
 
 // -- internal --
 
-open class RetrofitMapCallLiveData<T, S>(val call: Call<T>, val mapFunction: (T?) -> S?, val cancelOnInactive: Boolean = false) : LiveData<Response<S>>() {
+open class RetrofitMapCallLiveData<T, S>(val call: Call<T>, val mapFunction: (T?) -> S?, val cancelOnInactive: Boolean = false) : LiveData<RetrofitResponse<S>>() {
 	override fun onActive() {
 		super.onActive()
 		if (call.isExecuted)
 			return
 		call.then { response, error ->
-			value = response?.map(mapFunction)
+			value = RetrofitResponse(response?.map(mapFunction), error)
 		}
 	}
 
@@ -69,5 +69,10 @@ open class RetrofitMapCallLiveData<T, S>(val call: Call<T>, val mapFunction: (T?
 			call.cancel()
 	}
 }
+
+data class RetrofitResponse<T>(
+	val response: Response<T>? = null,
+	val throwable: Throwable? = null
+)
 
 class RetrofitCallLiveData<T>(call: Call<T>, cancelOnInactive: Boolean = false) : RetrofitMapCallLiveData<T, T>(call, { it }, cancelOnInactive)
