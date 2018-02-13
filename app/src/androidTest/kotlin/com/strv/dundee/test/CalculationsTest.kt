@@ -27,7 +27,9 @@ class CalculationsTest : BaseTest() {
 		runOnMain {
 			val lifecycleOwner = MockLifecycleOwner()
 			val dashboardViewModel = TestViewModelProvider.getDashboardViewModel()
-			dashboardViewModel.wallets.observe(lifecycleOwner, Observer {dashboardViewModel.recalculateTotalProfit() shouldEqual -16201.243902439022})
+			dashboardViewModel.wallets.observe(lifecycleOwner, Observer {
+				dashboardViewModel.totalValue.value = dashboardViewModel.recalculateTotal()
+				dashboardViewModel.recalculateTotalProfit() shouldEqual 304898.20931707317})
 			lifecycleOwner.activate()
 		}
 	}
