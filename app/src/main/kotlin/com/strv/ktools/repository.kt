@@ -4,18 +4,31 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonSyntaxException
 import retrofit2.Response
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 
 /**
- * Resource wrapper adding status to its value
+ * Resource wrapper adding status and error to its value
  */
 data class Resource<T>(
 	val status: Status,
 	val data: T? = null,
-	val message: String? = null
+	val message: String? = null,
+	val statusCode: Int? = null,
+	val error: Error? = null
 ) {
-	enum class Status { SUCCESS, ERROR, LOADING }
+	enum class Status { SUCCESS, ERROR, FAILURE, LOADING }
 }
+
+/**
+ * Error entity
+ */
+data class Error(
+	val errorCode: Int
+)
 
 /**
  * BaseClass for making any resource accessible via LiveData interface with database cache support
@@ -51,12 +64,12 @@ class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
 
 		// Called to create the API call.
 		@MainThread
-		fun createCall(): LiveData<Response<T>>
+		fun createCall(): LiveData<RetrofitResponse<T>>
 
 		// Called when the fetch fails. The child class may want to reset components
 		// like rate limiter.
 		@MainThread
-		fun onFetchFailed() {
+		fun onFetchFailed(status: Resource.Status, statusCode: Int?) {
 		}
 	}
 
@@ -100,19 +113,22 @@ class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
 		savedSources.add(dbSource)
 		result.addSource(dbSource, { newData -> result.setValue(Resource(Resource.Status.LOADING, newData)) })
 		savedSources.add(apiResponse)
-		result.addSource(apiResponse, { response ->
+		result.addSource(apiResponse, { retrofitResponse ->
 			savedSources.remove(apiResponse)
 			result.removeSource(apiResponse)
 			savedSources.remove(dbSource)
 			result.removeSource(dbSource)
 
-			if (response != null && response.isSuccessful) {
-				saveResultAndReInit(response)
+			if (retrofitResponse?.response?.isSuccessful == true) {
+				saveResultAndReInit(retrofitResponse.response)
 			} else {
-				callback.onFetchFailed()
+				val status = if (retrofitResponse?.response != null) Resource.Status.ERROR else Resource.Status.FAILURE
+				val message = retrofitResponse?.response?.message()
+					?: retrofitResponse?.throwable?.message
+				callback.onFetchFailed(status, retrofitResponse?.response?.code())
 				savedSources.add(dbSource)
 				result.addSource(dbSource, { newData ->
-					result.setValue(Resource(Resource.Status.ERROR, newData, response?.message()))
+					result.setValue(Resource(status, newData, message, retrofitResponse?.response?.code(), parseError(retrofitResponse?.response)))
 				})
 			}
 		})
@@ -131,4 +147,19 @@ class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
 			}
 		}
 	}
+
+	private fun parseError(response: Response<T>?): Error? {
+		return try {
+			val converter = GsonConverterFactory.create(GsonBuilder().create()).responseBodyConverter(Error::class.java, arrayOfNulls(0), null)
+			converter?.convert(response?.errorBody()) as Error
+		} catch (e: IOException) {
+			getGenericError()
+		} catch (e: NullPointerException) {
+			getGenericError()
+		} catch (e: JsonSyntaxException) {
+			getGenericError()
+		}
+	}
+
+	private fun getGenericError() = Error(0)
 }
