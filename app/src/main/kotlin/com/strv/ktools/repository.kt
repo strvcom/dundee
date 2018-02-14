@@ -20,7 +20,7 @@ data class Resource<T>(
 	val statusCode: Int? = null,
 	val error: Error? = null
 ) {
-	enum class Status { SUCCESS, ERROR, FAILURE, LOADING }
+	enum class Status { SUCCESS, ERROR, FAILURE, NO_CONNECTION, LOADING }
 }
 
 /**
@@ -122,7 +122,7 @@ class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
 			if (retrofitResponse?.response?.isSuccessful == true) {
 				saveResultAndReInit(retrofitResponse.response)
 			} else {
-				val status = if (retrofitResponse?.response != null) Resource.Status.ERROR else Resource.Status.FAILURE
+				val status = if (retrofitResponse?.response != null) Resource.Status.ERROR else if(retrofitResponse?.throwable is NoConnectivityException) Resource.Status.NO_CONNECTION else Resource.Status.FAILURE
 				val message = retrofitResponse?.response?.message()
 					?: retrofitResponse?.throwable?.message
 				callback.onFetchFailed(status, retrofitResponse?.response?.code())

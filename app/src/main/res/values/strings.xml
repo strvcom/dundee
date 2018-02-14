@@ -18,6 +18,7 @@
 	<string name="currency">App currency</string>
 	<string name="item_removed">Item was removed</string>
 	<string name="undo">Undo</string>
+	<string name="no_internet_connection">No internet connection</string>
 
 	<string name="nav_dashboard">Dashboard</string>
 	<string name="nav_charts">Charts</string>
