@@ -102,6 +102,21 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+						android:text="@string/time_frame"
+						app:show="@{viewModel.navigationManager.currentTab == Section.CHARTS}"/>
+
+					<Spinner
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						tools:listitem="@layout/item_spinner_source_currency"
+						app:adapter="@{view.timeFrameAdapter}"
+						app:selection="@={viewModel.timeFrameEnum}"
+						app:show="@{viewModel.navigationManager.currentTab == Section.CHARTS}" />
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
 						android:text="@string/price_source"
 						app:show="@{viewModel.navigationManager.currentTab == Section.DASHBOARD}"/>
 

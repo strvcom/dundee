@@ -13,6 +13,6 @@ interface HistoryDao {
 	@Insert(onConflict = REPLACE)
 	fun putHistory(ticker: History)
 
-	@Query("SELECT * FROM history WHERE source = :source AND currency = :currency AND coin = :coin LIMIT 1")
-	fun getHistory(source: String, currency: String, coin: String): LiveData<History>
+	@Query("SELECT * FROM history WHERE coin = :coin AND timeFrame = :timeFrameKey LIMIT 1")
+	fun getHistory(coin: String, timeFrameKey: String): LiveData<History>
 }

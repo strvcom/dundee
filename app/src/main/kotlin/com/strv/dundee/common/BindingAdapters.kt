@@ -256,16 +256,16 @@ fun LineChart.setupChart(markerCurrency: String) {
 fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exchangeRates: ExchangeRates) {
 	val entries = historyPrizes.data?.prices?.map { Entry(it.timestamp.toFloat(), it.price.toFloat()) }?.sortedBy { it.x }
 	if (entries != null && !entries.isEmpty()) {
-		val btcDataSet = LineDataSet(entries, "${historyPrizes.data.currency}/${historyPrizes.data.coin}").apply {
+		val btcDataSet = LineDataSet(entries, "${Currency.USD}/${historyPrizes.data.coin}").apply {
 			setDrawCircles(false)
 			color = ContextCompat.getColor(context, R.color.accent)
 			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
 		}
 
-		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
+		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble())) }
 
 		data = LineData(btcDataSet)
-		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble()))}
+		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble()))}
 		data.setDrawValues(false)
 		invalidate()
 	}

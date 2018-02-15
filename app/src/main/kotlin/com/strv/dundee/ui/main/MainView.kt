@@ -13,6 +13,7 @@ import com.strv.dundee.common.isUserSignedIn
 import com.strv.dundee.databinding.ActivityMainBinding
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Currency
+import com.strv.dundee.model.entity.TimeFrame
 import com.strv.dundee.ui.auth.SignInActivity
 import com.strv.dundee.ui.nav.MainNavigation
 import com.strv.ktools.vmb
@@ -21,6 +22,7 @@ interface MainView {
 	val sourceAdapter: ArrayAdapter<String>
 	val currencyAdapter: ArrayAdapter<String>
 	val apiCurrencyAdapter: ArrayAdapter<String>
+	val timeFrameAdapter: ArrayAdapter<TimeFrame>
 }
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
 	private var optionMenu: MenuItem? = null
 	override lateinit var sourceAdapter: ArrayAdapter<String>
+	override lateinit var timeFrameAdapter: ArrayAdapter<TimeFrame>
 	override lateinit var currencyAdapter: ArrayAdapter<String>
 	override lateinit var apiCurrencyAdapter: ArrayAdapter<String>
 
@@ -45,6 +48,7 @@ class MainActivity : AppCompatActivity(), MainView {
 			finish()
 		}
 
+		timeFrameAdapter = ArrayAdapter(this, R.layout.item_spinner_source_currency, TimeFrame.values())
 		sourceAdapter = ArrayAdapter(this, R.layout.item_spinner_source_currency, BitcoinSource.getAllDashboard())
 		currencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getAll())
 		apiCurrencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getApiCurrencies())

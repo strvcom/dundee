@@ -3,7 +3,6 @@ package com.strv.dundee.model.api.bitfinex
 import android.app.Application
 import android.arch.lifecycle.LiveData
 import com.strv.dundee.model.api.BitcoinApi
-import com.strv.dundee.model.entity.History
 import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.RetrofitResponse
 import com.strv.ktools.getRetrofitInterface
@@ -19,9 +18,5 @@ class BitfinexApi : BitcoinApi {
 
 	override fun getTicker(coin: String, currency: String): LiveData<RetrofitResponse<Ticker>> {
 		return api.getTicker("${coin.toUpperCase()}${currency.toUpperCase()}").mapLiveData({ it?.getTicker(currency, coin) })
-	}
-
-	override fun getHistory(coin: String, currency: String): LiveData<RetrofitResponse<History>> {
-		return api.getCandles("${coin.toUpperCase()}${currency.toUpperCase()}").mapLiveData({ it?.getHistory(currency, coin) })
 	}
 }

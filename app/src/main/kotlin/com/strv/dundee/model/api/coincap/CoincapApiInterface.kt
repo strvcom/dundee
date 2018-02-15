@@ -6,9 +6,6 @@ import retrofit2.http.Path
 
 interface CoincapApiInterface {
 
-	@GET("page/{coin}")
-	fun getTicker(@Path("coin") coin: String): Call<CoincapTickerResponse>
-
 	@GET("history/{coin}")
 	fun getHistory(@Path("coin") coin: String): Call<CoincapHistoryResponse>
 }

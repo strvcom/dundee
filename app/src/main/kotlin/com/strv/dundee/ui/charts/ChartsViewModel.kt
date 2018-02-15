@@ -12,10 +12,9 @@ class ChartsViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 	val history = HashMap<String, HistoryLiveData>()
 
 	init {
-		Coin.getAll().forEach { history[it] = bitcoinRepository.getHistory(mainViewModel.source.value!!, it, mainViewModel.apiCurrency.value!!) }
+		Coin.getAll().forEach { history[it] = bitcoinRepository.getHistory(it,mainViewModel.timeFrameEnum.value!!) }
 		history.forEach { (coin, history) ->
-			history.addSource(mainViewModel.apiCurrency, { history.refresh(mainViewModel.source.value!!, coin, mainViewModel.apiCurrency.value!!) })
-			history.addSource(mainViewModel.source, { history.refresh(mainViewModel.source.value!!, coin, mainViewModel.apiCurrency.value!!) })
+			history.addSource(mainViewModel.timeFrameEnum, { history.refresh(coin, mainViewModel.timeFrameEnum.value!!) })
 		}
 	}
 }

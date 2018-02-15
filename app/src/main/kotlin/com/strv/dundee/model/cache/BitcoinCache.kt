@@ -5,6 +5,7 @@ import com.strv.dundee.model.db.HistoryDao
 import com.strv.dundee.model.db.TickerDao
 import com.strv.dundee.model.entity.History
 import com.strv.dundee.model.entity.Ticker
+import com.strv.dundee.model.entity.TimeFrame
 import com.strv.ktools.inject
 import com.strv.ktools.log
 
@@ -28,8 +29,8 @@ class BitcoinCache {
 		historyDao.putHistory(history)
 	}
 
-	fun getHistory(source: String, currency: String, coin: String): LiveData<History> {
-		val fromDb = historyDao.getHistory(source, currency, coin)
+	fun getHistory(coin: String, timeFrame: TimeFrame): LiveData<History> {
+		val fromDb = historyDao.getHistory(coin, timeFrame.key)
 		log("Reading history from db: ${fromDb.value}")
 		return fromDb
 	}

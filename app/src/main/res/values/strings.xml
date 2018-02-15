@@ -16,9 +16,17 @@
 	<string name="options">Options</string>
 	<string name="price_source">Price Source and currency</string>
 	<string name="currency">App currency</string>
+	<string name="time_frame">Time frame</string>
 	<string name="item_removed">Item was removed</string>
 	<string name="undo">Undo</string>
 	<string name="no_internet_connection">No internet connection</string>
+	<string name="time_frame_day">Day</string>
+	<string name="time_frame_week">Week</string>
+	<string name="time_frame_month">Month</string>
+	<string name="time_frame_quarter">Quarter year</string>
+	<string name="time_frame_half">Half year</string>
+	<string name="time_frame_year">Year</string>
+	<string name="time_frame_all">All time</string>
 
 	<string name="nav_dashboard">Dashboard</string>
 	<string name="nav_charts">Charts</string>
