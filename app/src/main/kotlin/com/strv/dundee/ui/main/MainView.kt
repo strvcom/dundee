@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
 	private val vmb by vmb<MainViewModel, ActivityMainBinding>(R.layout.activity_main)
 
+	private var optionMenu: MenuItem? = null
 	override lateinit var sourceAdapter: ArrayAdapter<String>
 	override lateinit var currencyAdapter: ArrayAdapter<String>
 	override lateinit var apiCurrencyAdapter: ArrayAdapter<String>
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity(), MainView {
 			finish()
 		}
 
-		sourceAdapter = ArrayAdapter(this, R.layout.item_spinner_source_currency, BitcoinSource.getAll())
+		sourceAdapter = ArrayAdapter(this, R.layout.item_spinner_source_currency, BitcoinSource.getAllDashboard())
 		currencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getAll())
 		apiCurrencyAdapter = ArrayAdapter(application, R.layout.item_spinner_source_currency, Currency.getApiCurrencies())
 
@@ -61,12 +62,14 @@ class MainActivity : AppCompatActivity(), MainView {
 		}
 		vmb.binding.bottomNavigationView.setOnNavigationItemSelectedListener {
 			vmb.viewModel.navigationManager.goTo(MainNavigation.Section.values()[it.itemId])
+			optionMenu?.isVisible = MainNavigation.Section.values()[it.itemId] != MainNavigation.Section.FINANCES
 			true
 		}
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 		menuInflater.inflate(R.menu.main, menu)
+		optionMenu = menu?.findItem(R.id.action_options)
 		return super.onCreateOptionsMenu(menu)
 	}
 

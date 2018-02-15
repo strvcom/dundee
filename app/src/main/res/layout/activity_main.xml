@@ -7,6 +7,7 @@
 		<import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
 		<import type="com.strv.dundee.model.entity.Currency" />
 		<import type="com.strv.dundee.model.entity.Coin" />
+		<import type="com.strv.dundee.ui.nav.MainNavigation.Section" />
 
 		<variable
 			name="viewModel"
@@ -101,12 +102,14 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						android:text="@string/price_source" />
+						android:text="@string/price_source"
+						app:show="@{viewModel.navigationManager.currentTab == Section.DASHBOARD}"/>
 
 					<LinearLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:orientation="horizontal">
+						android:orientation="horizontal"
+						app:show="@{viewModel.navigationManager.currentTab == Section.DASHBOARD}">
 
 						<Spinner
 							android:layout_width="wrap_content"

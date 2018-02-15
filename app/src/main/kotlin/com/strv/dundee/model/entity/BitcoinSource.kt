@@ -6,4 +6,6 @@ object BitcoinSource {
 	const val COINCAP = "COINCAP"
 
 	fun getAll() = arrayOf(BitcoinSource.BITSTAMP, BitcoinSource.BITFINEX, BitcoinSource.COINCAP)
+
+	fun getAllDashboard() = arrayOf(BitcoinSource.BITSTAMP, BitcoinSource.BITFINEX)
 }
