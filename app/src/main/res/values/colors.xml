@@ -19,6 +19,8 @@
 	<color name="currency_loss">#ff0004</color>
 	<color name="currency_none">#646464</color>
 
+	<color name="secondary">#afafaf</color>
+
 
 	<color name="ic_launcher_background">@color/primary</color>
 </resources>

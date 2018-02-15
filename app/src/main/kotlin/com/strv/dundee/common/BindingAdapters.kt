@@ -259,7 +259,7 @@ fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exc
 	if (entries != null && !entries.isEmpty()) {
 		val btcDataSet = LineDataSet(entries, "${historyPrizes.data.currency}/${historyPrizes.data.coin}").apply {
 			setDrawCircles(false)
-			color = ContextCompat.getColor(context, R.color.accent)
+			color = ContextCompat.getColor(context, R.color.primary)
 			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
 		}
 

@@ -22,9 +22,10 @@
 
 	<string name="nav_dashboard">Dashboard</string>
 	<string name="nav_charts">Charts</string>
-	<string name="nav_wallets">Finances</string>
+	<string name="nav_wallets">Investments</string>
 	<string name="dashboard_total_value">Total Value</string>
 	<string name="dashboard_total_profit_loss">Total profit/loss</string>
 	<string name="sign_in_or">or</string>
 	<string name="sign_in_sign_up"><![CDATA[If you don\'t have an account, you can <b>sign up</b>]]></string>
+	<string name="dashboard_add_investment">Add Investment</string>
 </resources>

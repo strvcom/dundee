@@ -49,6 +49,8 @@
 			<android.support.design.widget.BottomNavigationView
 				android:id="@+id/bottom_navigation_view"
 				android:layout_width="match_parent"
+				app:elevation="@dimen/spacing_8"
+				android:background="@color/white"
 				android:layout_height="@dimen/spacing_56"
 				android:layout_gravity="start" />
 

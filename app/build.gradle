@@ -147,6 +147,10 @@ dependencies {
 	// Charts
 	implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
+	// StatefulLayout
+	compile 'cz.kinst.jakub:android-stateful-layout-base:2.0.7'
+	compile 'cz.kinst.jakub:android-stateful-layout-simple:2.0.7'
+
 	// Tests
 	testImplementation 'junit:junit:4.12'
 	testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
