@@ -3,7 +3,7 @@
 	<string name="total_value">Total value:</string>
 	<string name="hint_email">E-mail</string>
 	<string name="hint_password">Password</string>
-	<string name="create_account">Create new account</string>
+	<string name="sign_up">Sign Up</string>
 	<string name="new_account">New account</string>
 	<string name="add_amount">Add amount</string>
 	<string name="edit_amount">Edit amount</string>
@@ -23,4 +23,8 @@
 	<string name="nav_dashboard">Dashboard</string>
 	<string name="nav_charts">Charts</string>
 	<string name="nav_wallets">Finances</string>
+	<string name="dashboard_total_value">Total Value</string>
+	<string name="dashboard_total_profit_loss">Total profit/loss</string>
+	<string name="sign_in_or">or</string>
+	<string name="sign_in_sign_up"><![CDATA[If you don\'t have an account, you can <b>sign up</b>]]></string>
 </resources>

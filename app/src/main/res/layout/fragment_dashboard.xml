@@ -28,7 +28,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
-			android:background="@color/accent"
 			android:theme="@style/ThemeOverlay.AppCompat.Dark"
 			android:orientation="horizontal">
 
@@ -78,35 +77,8 @@
 				app:currency="@{viewModel.currency}" />
 		</LinearLayout>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingLeft="@dimen/spacing_16"
-			android:paddingRight="@dimen/spacing_16"
-			android:paddingTop="@dimen/spacing_8"
-			android:paddingBottom="@dimen/spacing_8"
-			android:background="@color/accent"
-			android:orientation="vertical">
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:textAppearance="@style/TextAppearance.AppCompat.Title"
-				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalValue)}"
-				tools:text="$300,000.20" />
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-				android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalProfit)}"
-				app:profitState="@{viewModel.totalProfit}"
-				tools:text="$300,000.20" />
-		</LinearLayout>
-
 		<android.support.v7.widget.RecyclerView
+			android:padding="@dimen/spacing_8"
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"
@@ -117,6 +89,65 @@
 			app:liveDataItems="@{viewModel.wallets}"
 			app:liveDataAdapter="@{view.lifecycleAwareAdapter}"
 			tools:listitem="@layout/item_dashboard" />
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_marginLeft="@dimen/spacing_8"
+			android:layout_marginRight="@dimen/spacing_8"
+			android:layout_marginTop="@dimen/spacing_4"
+			android:background="@color/primary" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="@dimen/spacing_16"
+			android:paddingRight="@dimen/spacing_16"
+			android:paddingTop="@dimen/spacing_8"
+			android:paddingBottom="@dimen/spacing_8"
+			android:orientation="vertical">
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right"
+				android:orientation="horizontal">
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="@dimen/spacing_8"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+					android:text="@string/dashboard_total_value" />
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textAppearance="@style/TextAppearance.AppCompat.Title"
+					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalValue)}"
+					tools:text="$300,000.20" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right"
+				android:orientation="horizontal">
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="@dimen/spacing_8"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+					android:text="@string/dashboard_total_profit_loss" />
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center"
+
+					android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+					android:text="@{Currency.INSTANCE.formatValue(viewModel.currency, viewModel.totalProfit)}"
+					app:profitState="@{viewModel.totalProfit}"
+					tools:text="$300,000.20" />
+			</LinearLayout>
+		</LinearLayout>
 
 	</LinearLayout>
 

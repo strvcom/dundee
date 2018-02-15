@@ -26,7 +26,6 @@
 		<android.support.design.widget.AppBarLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@color/accent"
 			app:elevation="0dp">
 
 			<android.support.v7.widget.Toolbar
@@ -51,8 +50,7 @@
 				android:id="@+id/bottom_navigation_view"
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/spacing_56"
-				android:layout_gravity="start"
-				android:background="@color/accent" />
+				android:layout_gravity="start" />
 
 		</LinearLayout>
 

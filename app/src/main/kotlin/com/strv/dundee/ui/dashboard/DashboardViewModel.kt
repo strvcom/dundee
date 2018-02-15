@@ -56,8 +56,8 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		// used for transforming Wallet list to WalletOverview list
 		val coinWallets = MediatorLiveData<Resource<List<WalletOverview>>>().addValueSource(walletRepository.getWalletsForCurrentUser(), {
 			val result = hashMapOf<String, WalletOverview>()
-			Coin.getAll().forEach { result[it] = WalletOverview(it) }
 			it?.data?.fold(result, { accumulator, wallet ->
+				if (accumulator[wallet.coin]==null) accumulator[wallet.coin!!] = WalletOverview(wallet.coin!!)
 				accumulator[wallet.coin]!!.amount += wallet.amount!!
 				accumulator[wallet.coin]!!.boughtPrices.add(Pair(wallet.boughtCurrency!!, wallet.boughtPrice!!))
 				accumulator

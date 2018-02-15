@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	>
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 
@@ -18,12 +17,13 @@
 
 	<android.support.design.widget.CoordinatorLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:background="@color/primary"
+		android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 		<android.support.design.widget.AppBarLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@color/accent"
 			app:elevation="0dp">
 
 			<android.support.v7.widget.Toolbar
@@ -85,12 +85,13 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_gravity="center"
-						android:text='@{!viewModel.progress ? @string/create_account : ""}'
+						android:text='@{!viewModel.progress ? @string/sign_up : ""}'
 						android:paddingTop="@dimen/spacing_20"
 						android:paddingBottom="@dimen/spacing_20"
 						android:enabled="@{viewModel.formValid &amp;&amp; !viewModel.progress}"
 						android:onClick="@{() -> viewModel.createAccount()}"
-						tools:text="@string/create_account" />
+						style="@style/Widget.AppCompat.Button.Colored"
+						tools:text="@string/sign_up" />
 
 					<ProgressBar
 						android:layout_width="wrap_content"
