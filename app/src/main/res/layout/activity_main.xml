@@ -79,13 +79,13 @@
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="@dimen/spacing_16"
 						android:textAppearance="@style/TextAppearance.AppCompat.Title"
-						android:text="@string/options" />
+						android:text="@string/global_options" />
 
 					<TextView
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						android:text="@string/currency" />
+						android:text="@string/options_currency" />
 					<Spinner
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						android:text="@string/price_source" />
+						android:text="@string/options_price_source" />
 
 					<LinearLayout
 						android:layout_width="match_parent"

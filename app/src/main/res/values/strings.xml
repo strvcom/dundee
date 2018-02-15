@@ -1,31 +1,36 @@
 <resources>
-	<string name="price">%.2f %s/%s</string>
-	<string name="total_value">Total value:</string>
-	<string name="hint_email">E-mail</string>
-	<string name="hint_password">Password</string>
-	<string name="sign_up">Sign Up</string>
-	<string name="new_account">New account</string>
-	<string name="add_amount">Add amount</string>
-	<string name="edit_amount">Edit amount</string>
-	<string name="logout">Logout</string>
-	<string name="sign_in">Sign In</string>
-	<string name="hint_amount">Amount</string>
-	<string name="bought_for">Bought for</string>
-	<string name="save">Save</string>
-	<string name="error_unknown">Unknown error</string>
-	<string name="options">Options</string>
-	<string name="price_source">Price Source and currency</string>
-	<string name="currency">App currency</string>
-	<string name="item_removed">Item was removed</string>
-	<string name="undo">Undo</string>
-	<string name="no_internet_connection">No internet connection</string>
-
 	<string name="nav_dashboard">Dashboard</string>
 	<string name="nav_charts">Charts</string>
 	<string name="nav_wallets">Investments</string>
-	<string name="dashboard_total_value">Total Value</string>
-	<string name="dashboard_total_profit_loss">Total profit/loss</string>
-	<string name="sign_in_or">or</string>
-	<string name="sign_in_sign_up"><![CDATA[If you don\'t have an account, you can <b>sign up</b>]]></string>
+
+	<string name="global_price">%.2f %s/%s</string>
+	<string name="global_total_value">Total value:</string>
+	<string name="global_email">E-mail</string>
+	<string name="global_password">Password</string>
+	<string name="global_sign_out">Sign out</string>
+	<string name="global_save">Save</string>
+	<string name="global_options">Options</string>
+	<string name="global_item_removed">Item was removed</string>
+	<string name="global_undo">Undo</string>
+
+	<string name="onboarding_sign_up">Sign Up</string>
+	<string name="onboarding_sign_in">Sign In</string>
+	<string name="onboarding_sign_in_or">or</string>
+	<string name="onboarding_sign_in_sign_up"><![CDATA[If you don\'t have an account, you can <b>sign up</b>]]></string>
+
+	<string name="investments_add">Add investment</string>
+	<string name="investments_edit">Edit investment</string>
+	<string name="investments_amount">Amount</string>
+	<string name="investments_bought_for">Bought for</string>
+
+	<string name="options_price_source">Price Source and currency</string>
+	<string name="options_currency">App currency</string>
+
+	<string name="error_no_internet_connection">No internet connection</string>
+	<string name="error_unknown">Unknown error</string>
+
+	<string name="dashboard_total_value">Total Value:</string>
+	<string name="dashboard_total_profit_loss">Total profit/loss:</string>
 	<string name="dashboard_add_investment">Add Investment</string>
+
 </resources>

@@ -19,7 +19,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="@color/primary"
-		android:theme="@style/ThemeOverlay.AppCompat.Dark">
+		android:theme="@style/ThemeOverlay.Dundee.Dark">
 
 		<android.support.design.widget.AppBarLayout
 			android:layout_width="match_parent"
@@ -51,7 +51,7 @@
 					<android.support.design.widget.TextInputEditText
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:hint="@string/hint_email"
+						android:hint="@string/global_email"
 						android:imeOptions="actionNext|flagNoExtractUi"
 						android:inputType="textEmailAddress"
 						android:text="@={viewModel.email}" />
@@ -67,7 +67,7 @@
 					<android.support.design.widget.TextInputEditText
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:hint="@string/hint_password"
+						android:hint="@string/global_password"
 						android:fontFamily="sans-serif"
 						android:imeOptions="actionDone|flagNoExtractUi"
 						android:inputType="textPassword"
@@ -85,13 +85,13 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_gravity="center"
-						android:text='@{!viewModel.progress ? @string/sign_up : ""}'
+						android:text='@{!viewModel.progress ? @string/onboarding_sign_up : ""}'
 						android:paddingTop="@dimen/spacing_20"
 						android:paddingBottom="@dimen/spacing_20"
 						android:enabled="@{viewModel.formValid &amp;&amp; !viewModel.progress}"
 						android:onClick="@{() -> viewModel.createAccount()}"
 						style="@style/Widget.AppCompat.Button.Colored"
-						tools:text="@string/sign_up" />
+						tools:text="@string/onboarding_sign_up" />
 
 					<ProgressBar
 						android:layout_width="wrap_content"

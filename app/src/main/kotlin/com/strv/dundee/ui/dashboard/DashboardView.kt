@@ -48,7 +48,7 @@ class DashboardFragment : Fragment(), DashboardView {
 
 		vmb.viewModel.tickers.forEach {
 			it.value.observe(this, Observer {
-				if (it?.status == Resource.Status.NO_CONNECTION && !snackbarVisible) Snackbar.make(vmb.rootView, R.string.no_internet_connection, Snackbar.LENGTH_SHORT).apply {
+				if (it?.status == Resource.Status.NO_CONNECTION && !snackbarVisible) Snackbar.make(vmb.rootView, R.string.error_no_internet_connection, Snackbar.LENGTH_SHORT).apply {
 					addCallback(object : Snackbar.Callback() {
 						override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
 							super.onDismissed(transientBottomBar, event)

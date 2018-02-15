@@ -53,7 +53,12 @@ class MainActivity : AppCompatActivity(), MainView {
 
 	private fun setupNavigation(savedInstanceState: Bundle?) {
 		MainNavigation.Section.values().forEach { vmb.binding.bottomNavigationView.menu.add(Menu.NONE, it.ordinal, Menu.NONE, it.titleResId).apply { setIcon(it.iconResId) } }
-		vmb.viewModel.navigationManager.currentTab.observe(this, Observer { it?.let { showFragment(it) } })
+		vmb.viewModel.navigationManager.currentTab.observe(this, Observer {
+			it?.let {
+				setTitle(it.titleResId)
+				showFragment(it)
+			}
+		})
 
 		if (savedInstanceState == null) {
 			vmb.binding.bottomNavigationView.selectedItemId = MainNavigation.Section.DASHBOARD.ordinal
