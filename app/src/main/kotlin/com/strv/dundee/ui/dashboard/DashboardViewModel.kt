@@ -16,6 +16,8 @@ import com.strv.ktools.EventLiveData
 import com.strv.ktools.Resource
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
+import cz.kinst.jakub.view.SimpleStatefulLayout
+import cz.kinst.jakub.view.StatefulLayout
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList
 
@@ -42,13 +44,14 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val exchangeRates = mainViewModel.exchangeRates
 	val totalValue = MediatorLiveData<Double>()
 	val totalProfit = MediatorLiveData<Double>()
+	val state = MediatorLiveData<String>().apply { value = SimpleStatefulLayout.State.PROGRESS }
 
 	init {
 		// compose Ticker and exchange rates LiveData (observed by data binding automatically)
 		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!) }
 
 		// setup ticker on input changes
-		tickers.forEach{ (coin, ticker) ->
+		tickers.forEach { (coin, ticker) ->
 			ticker.addSource(apiCurrency, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
 			ticker.addSource(source, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
 		}
@@ -56,8 +59,8 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		// used for transforming Wallet list to WalletOverview list
 		val coinWallets = MediatorLiveData<Resource<List<WalletOverview>>>().addValueSource(walletRepository.getWalletsForCurrentUser(), {
 			val result = hashMapOf<String, WalletOverview>()
-			Coin.getAll().forEach { result[it] = WalletOverview(it) }
 			it?.data?.fold(result, { accumulator, wallet ->
+				if (accumulator[wallet.coin] == null) accumulator[wallet.coin!!] = WalletOverview(wallet.coin!!)
 				accumulator[wallet.coin]!!.amount += wallet.amount!!
 				accumulator[wallet.coin]!!.boughtPrices.add(Pair(wallet.boughtCurrency!!, wallet.boughtPrice!!))
 				accumulator
@@ -76,6 +79,8 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		totalValue.addValueSource(exchangeRates, { recalculateTotal() })
 		tickers.forEach { totalValue.addValueSource(it.value, { recalculateTotal() }) }
 		totalProfit.addValueSource(totalValue, { recalculateTotalProfit() })
+
+		state.addValueSource(wallets, { if (it?.data?.isNotEmpty() == true) StatefulLayout.State.CONTENT else SimpleStatefulLayout.State.EMPTY })
 	}
 
 	// calculation of current total

@@ -40,8 +40,8 @@ class WalletsFragment : Fragment(), WalletsView {
 		super.onCreate(savedInstanceState)
 
 		vmb.viewModel.walletRemovedSnackBar.observe(this, Observer { wallet ->
-			Snackbar.make(vmb.rootView, R.string.item_removed, Snackbar.LENGTH_SHORT).apply {
-				setAction(R.string.undo, { wallet?.let { vmb.viewModel.addWallet(it) } })
+			Snackbar.make(vmb.rootView, R.string.global_item_removed, Snackbar.LENGTH_SHORT).apply {
+				setAction(R.string.global_undo, { wallet?.let { vmb.viewModel.addWallet(it) } })
 				show()
 			}
 		})

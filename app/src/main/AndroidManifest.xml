@@ -11,7 +11,7 @@
 		android:label="@string/app_name"
 		android:launchMode="singleTask"
 		android:roundIcon="@mipmap/ic_launcher_round"
-		android:theme="@style/AppTheme">
+		android:theme="@style/Dundee">
 		<activity android:name=".ui.main.MainActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -22,10 +22,10 @@
 		<activity android:name=".ui.auth.SignInActivity" />
 		<activity
 			android:name=".ui.auth.SignUpActivity"
-			android:label="@string/new_account" />
+			android:label="@string/onboarding_sign_up" />
 		<activity
 			android:name=".ui.wallet.EditWalletAmountActivity"
-			android:label="@string/add_amount" />
+			android:label="@string/investments_add" />
 		<activity
 			android:name=".ui.wallet.WalletDetailActivity" />
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="primary">#fefefe</color>
-	<color name="primaryDark">#f9f9f9</color>
-	<color name="accent">#ffca28</color>
-	<color name="status_bar">#c9a022</color>
+	<color name="primary">#ffca28</color>
+	<color name="primaryDark">#c9a022</color>
+	<color name="accent">#ffffff</color>
+	<color name="background">#f9f9f9</color>
 
 	<color name="text_default">#333333</color>
 	<color name="text_inverse">#eeeeee</color>
@@ -19,6 +19,8 @@
 	<color name="currency_loss">#ff0004</color>
 	<color name="currency_none">#646464</color>
 
+	<color name="secondary">#afafaf</color>
 
-	<color name="ic_launcher_background">#8BC34A</color>
+
+	<color name="ic_launcher_background">@color/primary</color>
 </resources>

@@ -47,44 +47,52 @@
 
 		<!-- background must be set because of swipe to delete functionality -->
 		<!-- tag must be "foreground" because of swipe to delete functionality -->
-		<LinearLayout
+		<android.support.v7.widget.CardView
 			android:id="@+id/item_foreground"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			android:background="@color/primary"
-			android:padding="@dimen/spacing_16">
-
-			<TextView
-				android:layout_width="wrap_content"
+			android:layout_marginBottom="@dimen/spacing_8">
+			<LinearLayout
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginRight="@dimen/spacing_4"
-				android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-				android:textStyle="bold"
-				android:text="@{item.coin}"
-				android:textColor="@color/accent"
-				tools:text="BTC" />
+				android:orientation="horizontal"
+				android:padding="@dimen/spacing_16">
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-				android:text="@{Double.toString(item.amount)}"
-				tools:text="2.2323" />
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_marginRight="@dimen/spacing_4"
+					android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+					android:textStyle="bold"
+					android:text="@{item.coin}"
+					android:textColor="@color/primary"
+					tools:text="BTC" />
 
-			<Space
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1" />
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+					android:text="@{Double.toString(item.amount)}"
+					tools:text="2.2323" />
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-				android:text="@{DateUtils.INSTANCE.dateToString(item.created)}"
-				tools:text="@tools:sample/date/ddmmyy" />
+				<Space
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1" />
 
-		</LinearLayout>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+					android:text="@{DateUtils.INSTANCE.dateToString(item.created)}"
+					tools:text="@tools:sample/date/ddmmyy" />
+
+			</LinearLayout>
+		</android.support.v7.widget.CardView>
+
 
 	</FrameLayout>
 

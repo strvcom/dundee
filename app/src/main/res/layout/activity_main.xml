@@ -27,7 +27,6 @@
 		<android.support.design.widget.AppBarLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@color/accent"
 			app:elevation="0dp">
 
 			<android.support.v7.widget.Toolbar
@@ -51,9 +50,10 @@
 			<android.support.design.widget.BottomNavigationView
 				android:id="@+id/bottom_navigation_view"
 				android:layout_width="match_parent"
+				app:elevation="@dimen/spacing_8"
+				android:background="@color/white"
 				android:layout_height="@dimen/spacing_56"
-				android:layout_gravity="start"
-				android:background="@color/accent" />
+				android:layout_gravity="start" />
 
 		</LinearLayout>
 
@@ -80,13 +80,13 @@
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="@dimen/spacing_16"
 						android:textAppearance="@style/TextAppearance.AppCompat.Title"
-						android:text="@string/options" />
+						android:text="@string/global_options" />
 
 					<TextView
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						android:text="@string/currency" />
+						android:text="@string/options_currency" />
 					<Spinner
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						android:text="@string/price_source"
+						android:text="@string/options_price_source"
 						app:show="@{viewModel.navigationManager.currentTab == Section.DASHBOARD}"/>
 
 					<LinearLayout
