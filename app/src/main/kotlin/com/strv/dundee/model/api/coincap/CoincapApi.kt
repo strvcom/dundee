@@ -17,6 +17,7 @@ class CoincapApi {
 	val api = getRetrofitInterface(application, URL, CoincapApiInterface::class.java)
 
 	fun getHistory(coin: String, timeFrame: TimeFrame): LiveData<RetrofitResponse<History>> {
-		return api.getHistory(coin).mapLiveData({ it?.getHistory(coin, timeFrame) })
+		return if(timeFrame == TimeFrame.ALL) api.getHistory(coin).mapLiveData({ it?.getHistory(coin, timeFrame) })
+		else api.getHistory(coin, timeFrame.key).mapLiveData({ it?.getHistory(coin, timeFrame) })
 	}
 }

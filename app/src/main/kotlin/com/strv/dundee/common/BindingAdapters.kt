@@ -26,6 +26,7 @@ import com.strv.dundee.R
 import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.dundee.model.entity.History
+import com.strv.dundee.model.entity.TimeFrame
 import com.strv.dundee.ui.charts.MarkerView
 import com.strv.ktools.Resource
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
@@ -227,9 +228,8 @@ fun TextView.setProfitState(profit: Double?) {
 	}
 }
 
-@BindingAdapter("markerCurrency")
-fun LineChart.setupChart(markerCurrency: String) {
-	marker = MarkerView(context, markerCurrency)
+@BindingAdapter("init")
+fun LineChart.setupChart(boolean: Boolean) {
 	axisLeft.isEnabled = false
 	description.isEnabled = false
 
@@ -254,18 +254,22 @@ fun LineChart.setupChart(markerCurrency: String) {
 
 @BindingAdapter("historyPrizes", "currency", "exchangeRates")
 fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exchangeRates: ExchangeRates) {
-	val entries = historyPrizes.data?.prices?.map { Entry(it.timestamp.toFloat(), it.price.toFloat()) }?.sortedBy { it.x }
-	if (entries != null && !entries.isEmpty()) {
-		val btcDataSet = LineDataSet(entries, "${Currency.USD}/${historyPrizes.data.coin}").apply {
+	var entries = historyPrizes.data?.prices?.map { Entry(it.timestamp.toFloat(), it.price.toFloat()) }?.sortedBy { it.x }
+	if(historyPrizes.data?.timeFrame == TimeFrame.DAY || historyPrizes.data?.timeFrame == TimeFrame.WEEK) entries = entries?.dropLast(1)		// drop last item for day and week time frame, because of wrong API data
+
+	if (entries != null && entries.isNotEmpty() && historyPrizes.data != null) {
+		marker = MarkerView(context, historyPrizes.data.currency, currency, exchangeRates)
+
+		val btcDataSet = LineDataSet(entries, "$currency/${historyPrizes.data.coin}").apply {
 			setDrawCircles(false)
 			color = ContextCompat.getColor(context, R.color.accent)
 			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
 		}
 
-		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble())) }
+		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
 
 		data = LineData(btcDataSet)
-		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble()))}
+		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble()))}
 		data.setDrawValues(false)
 		invalidate()
 	}

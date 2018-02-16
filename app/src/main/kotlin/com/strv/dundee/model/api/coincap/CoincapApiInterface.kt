@@ -8,4 +8,7 @@ interface CoincapApiInterface {
 
 	@GET("history/{coin}")
 	fun getHistory(@Path("coin") coin: String): Call<CoincapHistoryResponse>
+
+	@GET("history/{timeFrame}/{coin}")
+	fun getHistory(@Path("coin") coin: String, @Path("timeFrame") timeFrame: String): Call<CoincapHistoryResponse>
 }

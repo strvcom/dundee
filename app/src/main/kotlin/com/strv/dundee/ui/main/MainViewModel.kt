@@ -2,6 +2,7 @@ package com.strv.dundee.ui.main
 
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Currency
@@ -28,6 +29,16 @@ class MainViewModel() : ViewModel() {
 	val optionsOpen = MutableLiveData<Boolean>().apply { value = false }
 	val navigationManager = MainNavigation()
 	val exchangeRates = exchangeRatesRepository.getExchangeRates(Currency.USD, Currency.getAll().toList())
+	private val timeFrameObserver = Observer<TimeFrame> { timeFrame = it?.key }
+
+	init {
+		timeFrameEnum.observeForever(timeFrameObserver)
+	}
+
+	override fun onCleared() {
+		super.onCleared()
+		timeFrameEnum.removeObserver(timeFrameObserver)
+	}
 
 	fun logout() {
 		userRepository.signOut()

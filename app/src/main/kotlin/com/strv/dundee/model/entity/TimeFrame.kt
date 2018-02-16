@@ -11,7 +11,7 @@ enum class TimeFrame(@StringRes private val titleResId: Int, val key: String) {
 	MONTH(R.string.time_frame_month, "30day"),
 	QUARTER(R.string.time_frame_quarter, "90day"),
 	HALF(R.string.time_frame_half, "180day"),
-	YEAR(R.string.time_frame_year, "360day"),
+	YEAR(R.string.time_frame_year, "365day"),
 	ALL(R.string.time_frame_all, "all");
 
 	val application by inject<Application>()
