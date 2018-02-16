@@ -6,7 +6,7 @@ import com.strv.dundee.model.api.coincap.CoincapApi
 import com.strv.dundee.model.cache.BitcoinCache
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.History
-import com.strv.ktools.NetworkBoundResource
+import com.strv.ktools.CachedNetworkBoundResource
 import com.strv.ktools.ResourceLiveData
 import com.strv.ktools.inject
 
@@ -23,16 +23,16 @@ class HistoryLiveData : ResourceLiveData<History>() {
 			BitcoinSource.COINCAP -> coincapApi
 			else -> bitstampApi
 		}
-		setupResource(object : NetworkBoundResource.Callback<History> {
+		setupCached(object : CachedNetworkBoundResource.Callback<History> {
 			override fun saveCallResult(item: History) {
 				cache.putHistory(item)
 			}
 
-			override fun shouldFetch(data: History?) = true
+			override fun shouldFetch(dataFromCache: History?) = true
 
 			override fun loadFromDb() = cache.getHistory(source, currency, coin)
 
-			override fun createCall() = api.getHistory(coin, currency)
+			override fun createNetworkCall() = api.getHistory(coin, currency)
 		})
 	}
 }

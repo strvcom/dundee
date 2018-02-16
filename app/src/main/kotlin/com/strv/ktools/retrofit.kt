@@ -37,7 +37,7 @@ fun <T> Call<T>.liveData(cancelOnInactive: Boolean = false) = RetrofitCallLiveDa
 // get live data from Retrofit call and map response body to another object
 fun <T, S> Call<T>.mapLiveData(mapFunction: (T?) -> S?, cancelOnInactive: Boolean = false) = RetrofitMapCallLiveData(this, mapFunction, cancelOnInactive)
 
-// get basic Retrofit setup with logger
+// get basic Retrofit setupCached with logger
 internal fun <T> getRetrofitInterface(context: Context, url: String, apiInterface: Class<T>, clientBuilderBase: OkHttpClient.Builder? = null): T {
 	val loggingInterceptor = HttpLoggingInterceptor().apply {
 		level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE

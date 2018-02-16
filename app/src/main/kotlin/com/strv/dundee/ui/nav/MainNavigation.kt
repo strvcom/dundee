@@ -27,7 +27,7 @@ class MainNavigation {
 		goTo(Section.GRAPHS)
 	}
 
-	fun gotToFinances() {
+	fun goToFinances() {
 		goTo(Section.FINANCES)
 	}
 

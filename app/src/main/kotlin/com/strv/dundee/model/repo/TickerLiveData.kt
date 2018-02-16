@@ -6,7 +6,7 @@ import com.strv.dundee.model.api.coincap.CoincapApi
 import com.strv.dundee.model.cache.BitcoinCache
 import com.strv.dundee.model.entity.BitcoinSource
 import com.strv.dundee.model.entity.Ticker
-import com.strv.ktools.NetworkBoundResource
+import com.strv.ktools.CachedNetworkBoundResource
 import com.strv.ktools.ResourceLiveData
 import com.strv.ktools.inject
 
@@ -24,16 +24,16 @@ class TickerLiveData : ResourceLiveData<Ticker>() {
 			else -> bitstampApi
 		}
 
-		setupResource(object : NetworkBoundResource.Callback<Ticker> {
+		setupCached(object : CachedNetworkBoundResource.Callback<Ticker> {
 			override fun saveCallResult(item: Ticker) {
 				cache.putTicker(item)
 			}
 
-			override fun shouldFetch(data: Ticker?) = true
+			override fun shouldFetch(dataFromCache: Ticker?) = true
 
 			override fun loadFromDb() = cache.getTicker(source, currency, coin)
 
-			override fun createCall() = api.getTicker(coin, currency)
+			override fun createNetworkCall() = api.getTicker(coin, currency)
 
 		})
 	}
