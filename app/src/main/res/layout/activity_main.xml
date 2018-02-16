@@ -102,7 +102,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						android:text="@string/time_frame"
+						android:text="@string/global_time_frame"
 						app:show="@{viewModel.navigationManager.currentTab == Section.CHARTS}"/>
 
 					<Spinner

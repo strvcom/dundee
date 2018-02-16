@@ -12,6 +12,7 @@
 	<string name="global_options">Options</string>
 	<string name="global_item_removed">Item was removed</string>
 	<string name="global_undo">Undo</string>
+	<string name="global_time_frame">Time frame</string>
 
 	<string name="onboarding_sign_up">Sign Up</string>
 	<string name="onboarding_sign_in">Sign In</string>
