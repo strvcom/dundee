@@ -82,7 +82,7 @@ class ViewModelBinding<out VM : ViewModel, out B : ViewDataBinding> constructor(
 			@OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
 			fun onCreate() {
 				binding.setLifecycleOwner(lifecycleOwner)
-				// setup binding variables
+				// setupCached binding variables
 				binding.setVariable(BR.viewModel, viewModel)
 				binding.setVariable(BR.view, fragment ?: activity)
 

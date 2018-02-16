@@ -13,16 +13,16 @@ class HistoryLiveData : ResourceLiveData<History>() {
 	val coincapApi by inject<CoincapApi>()
 
 	fun refresh(coin: String, timeFrame: TimeFrame) {
-		setupResource(object : NetworkBoundResource.Callback<History> {
+		setupCached(object : NetworkBoundResource.Callback<History> {
 			override fun saveCallResult(item: History) {
 				cache.putHistory(item)
 			}
 
-			override fun shouldFetch(data: History?) = true
+			override fun shouldFetch(dataFromCache: History?) = true
 
 			override fun loadFromDb() = cache.getHistory(coin, timeFrame)
 
-			override fun createCall() = coincapApi.getHistory(coin, timeFrame)
+			override fun createNetworkCall() = coincapApi.getHistory(coin, timeFrame)
 		})
 	}
 }

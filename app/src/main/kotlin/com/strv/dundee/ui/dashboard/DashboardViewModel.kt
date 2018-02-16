@@ -50,7 +50,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		// compose Ticker and exchange rates LiveData (observed by data binding automatically)
 		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!) }
 
-		// setup ticker on input changes
+		// setupCached ticker on input changes
 		tickers.forEach { (coin, ticker) ->
 			ticker.addSource(apiCurrency, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
 			ticker.addSource(source, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })

@@ -9,6 +9,8 @@
 .externalNativeBuild
 /.idea/caches/
 /.idea/codeStyleSettings.xml
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/assetWizardSettings.xml
 /.idea/misc.xml
 
 /node_modules

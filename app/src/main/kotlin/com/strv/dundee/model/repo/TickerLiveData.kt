@@ -21,16 +21,16 @@ class TickerLiveData : ResourceLiveData<Ticker>() {
 			else -> bitstampApi
 		}
 
-		setupResource(object : NetworkBoundResource.Callback<Ticker> {
+		setupCached(object : NetworkBoundResource.Callback<Ticker> {
 			override fun saveCallResult(item: Ticker) {
 				cache.putTicker(item)
 			}
 
-			override fun shouldFetch(data: Ticker?) = true
+			override fun shouldFetch(dataFromCache: Ticker?) = true
 
 			override fun loadFromDb() = cache.getTicker(source, currency, coin)
 
-			override fun createCall() = api.getTicker(coin, currency)
+			override fun createNetworkCall() = api.getTicker(coin, currency)
 
 		})
 	}

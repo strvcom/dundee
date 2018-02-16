@@ -14,16 +14,16 @@ class ExchangeRatesLiveData : ResourceLiveData<ExchangeRates>() {
 	private val api by inject<ExchangeRateApi>()
 
 	fun refresh(source: String, target: List<String>) {
-		setupResource(object : NetworkBoundResource.Callback<ExchangeRates> {
+		setupCached(object : NetworkBoundResource.Callback<ExchangeRates> {
 			override fun saveCallResult(item: ExchangeRates) {
 				cache.putRates(item)
 			}
 
-			override fun shouldFetch(data: ExchangeRates?) = (data?.date?.daysToNow() ?: 2) > Config.EXCHANGE_RATE_TTL_DAYS
+			override fun shouldFetch(dataFromCache: ExchangeRates?) = (dataFromCache?.date?.daysToNow() ?: 2) > Config.EXCHANGE_RATE_TTL_DAYS
 
 			override fun loadFromDb() = cache.getRates(source)
 
-			override fun createCall() = api.getExchangeRates(source, target)
+			override fun createNetworkCall() = api.getExchangeRates(source, target)
 		})
 	}
 }
