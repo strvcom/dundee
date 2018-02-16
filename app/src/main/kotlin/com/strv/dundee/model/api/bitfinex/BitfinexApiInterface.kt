@@ -8,8 +8,5 @@ interface BitfinexApiInterface {
 
 	@GET("ticker/t{currencyPair}")
 	fun getTicker(@Path("currencyPair") currencyPair: String): Call<BitfinexTickerResponse>
-
-	@GET("candles/trade:1D:t{currencyPair}/hist")
-	fun getCandles(@Path("currencyPair") currencyPair: String): Call<BitfinexCandlesResponse>
 }
 

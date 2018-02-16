@@ -4,6 +4,7 @@ import android.arch.persistence.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.strv.dundee.model.entity.HistoryPrice
+import com.strv.dundee.model.entity.TimeFrame
 import com.strv.ktools.inject
 import java.util.Date
 
@@ -39,5 +40,15 @@ class Converters {
 	@TypeConverter
 	fun stringToHistoryPriceList(json: String?): List<HistoryPrice>? {
 		return gson.fromJson(json, object : TypeToken<List<HistoryPrice>>() {}.type)
+	}
+
+	@TypeConverter
+	fun timeFrameToString(timeFrame: TimeFrame?): String? {
+		return timeFrame?.key
+	}
+
+	@TypeConverter
+	fun stringToTimeFrame(string: String?): TimeFrame? {
+		return TimeFrame.fromString(string)
 	}
 }

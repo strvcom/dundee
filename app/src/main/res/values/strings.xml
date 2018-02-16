@@ -12,6 +12,7 @@
 	<string name="global_options">Options</string>
 	<string name="global_item_removed">Item was removed</string>
 	<string name="global_undo">Undo</string>
+	<string name="global_time_frame">Time frame</string>
 
 	<string name="onboarding_sign_up">Sign Up</string>
 	<string name="onboarding_sign_in">Sign In</string>
@@ -32,5 +33,13 @@
 	<string name="dashboard_total_value">Total Value:</string>
 	<string name="dashboard_total_profit_loss">Total profit/loss:</string>
 	<string name="dashboard_add_investment">Add Investment</string>
+
+	<string name="time_frame_day">Day</string>
+	<string name="time_frame_week">Week</string>
+	<string name="time_frame_month">Month</string>
+	<string name="time_frame_quarter">Quarter year</string>
+	<string name="time_frame_half">Half year</string>
+	<string name="time_frame_year">Year</string>
+	<string name="time_frame_all">All time</string>
 
 </resources>

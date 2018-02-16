@@ -34,9 +34,9 @@ data class Error(
  * BaseClass for making any resource accessible via LiveData interface with database cache support
  */
 open class ResourceLiveData<T> : MediatorLiveData<Resource<T>>() {
-	private val resource = CachedNetworkBoundResource(this)
+	private val resource = NetworkBoundResource(this)
 
-	fun setupCached(resourceCallback: CachedNetworkBoundResource.Callback<T>) {
+	fun setupCached(resourceCallback: NetworkBoundResource.Callback<T>) {
 		resource.setupCached(resourceCallback)
 	}
 
@@ -48,10 +48,10 @@ open class ResourceLiveData<T> : MediatorLiveData<Resource<T>>() {
 // -- internal --
 
 /**
- * CachedNetworkBoundResource based on https://developer.android.com/topic/libraries/architecture/guide.html, but modified
+ * NetworkBoundResource based on https://developer.android.com/topic/libraries/architecture/guide.html, but modified
  * Note: use Call<T>.map() extension function to map Retrofit response to the entity object - therefore we don't need RequestType and ResponseType separately
  */
-class CachedNetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
+class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
 	interface Callback<T> {
 		// Called to save the result of the API response into the database
 		@WorkerThread
