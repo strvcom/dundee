@@ -13,59 +13,92 @@
 			name="view"
 			type="com.strv.dundee.ui.charts.ChartsView" />
 
-
 	</data>
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:padding="@dimen/spacing_4"
 		android:orientation="vertical">
 
-		<com.github.mikephil.charting.charts.LineChart
+		<android.support.v7.widget.CardView
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"
-			app:init="@{true}"
-			app:historyPrizes="@{viewModel.history[Coin.BTC]}"
-			app:currency="@{viewModel.mainViewModel.currency}"
-			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
+			android:layout_margin="@dimen/spacing_8">
 
-		<com.github.mikephil.charting.charts.LineChart
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1"
-			app:init="@{true}"
-			app:historyPrizes="@{viewModel.history[Coin.ETH]}"
-			app:currency="@{viewModel.mainViewModel.currency}"
-			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
+			<com.github.mikephil.charting.charts.LineChart
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:init="@{true}"
+				app:historyPrizes="@{viewModel.history[Coin.BTC]}"
+				app:currency="@{viewModel.mainViewModel.currency}"
+				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
 
-		<com.github.mikephil.charting.charts.LineChart
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1"
-			app:init="@{true}"
-			app:historyPrizes="@{viewModel.history[Coin.XRP]}"
-			app:currency="@{viewModel.mainViewModel.currency}"
-			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
+		</android.support.v7.widget.CardView>
 
-		<com.github.mikephil.charting.charts.LineChart
+		<android.support.v7.widget.CardView
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"
-			app:init="@{true}"
-			app:historyPrizes="@{viewModel.history[Coin.LTC]}"
-			app:currency="@{viewModel.mainViewModel.currency}"
-			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
+			android:layout_margin="@dimen/spacing_8">
 
-		<com.github.mikephil.charting.charts.LineChart
+			<com.github.mikephil.charting.charts.LineChart
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:init="@{true}"
+				app:historyPrizes="@{viewModel.history[Coin.ETH]}"
+				app:currency="@{viewModel.mainViewModel.currency}"
+				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
+
+		</android.support.v7.widget.CardView>
+
+		<android.support.v7.widget.CardView
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"
-			app:init="@{true}"
-			app:historyPrizes="@{viewModel.history[Coin.BCH]}"
-			app:currency="@{viewModel.mainViewModel.currency}"
-			app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
+			android:layout_margin="@dimen/spacing_8">
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:init="@{true}"
+				app:historyPrizes="@{viewModel.history[Coin.XRP]}"
+				app:currency="@{viewModel.mainViewModel.currency}"
+				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
+
+		</android.support.v7.widget.CardView>
+
+		<android.support.v7.widget.CardView
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:layout_margin="@dimen/spacing_8">
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:init="@{true}"
+				app:historyPrizes="@{viewModel.history[Coin.LTC]}"
+				app:currency="@{viewModel.mainViewModel.currency}"
+				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
+
+		</android.support.v7.widget.CardView>
+
+		<android.support.v7.widget.CardView
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:layout_margin="@dimen/spacing_8">
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				app:init="@{true}"
+				app:historyPrizes="@{viewModel.history[Coin.BCH]}"
+				app:currency="@{viewModel.mainViewModel.currency}"
+				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
+
+		</android.support.v7.widget.CardView>
 
 	</LinearLayout>
 

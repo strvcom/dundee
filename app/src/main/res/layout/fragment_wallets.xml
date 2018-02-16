@@ -26,7 +26,8 @@
 		<android.support.v7.widget.RecyclerView
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:padding="@dimen/spacing_8"
+			android:paddingTop="@dimen/spacing_8"
+			android:paddingBottom="@dimen/spacing_8"
 			android:clipToPadding="false"
 			app:layoutManager="@{LayoutManagers.linear()}"
 			app:liveDataItemBinding="@{viewModel.itemBinding}"
