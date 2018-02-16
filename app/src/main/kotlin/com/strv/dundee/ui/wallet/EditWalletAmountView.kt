@@ -31,7 +31,7 @@ class EditWalletAmountActivity : BaseActivity(), EditWalletAmountView {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setupToolbar(vmb.binding.toolbar)
-		if (intent.getParcelableExtra<Wallet>(EXTRA_WALLET) != null) setToolbarTitle(R.string.edit_amount)
+		if (intent.getParcelableExtra<Wallet>(EXTRA_WALLET) != null) setToolbarTitle(R.string.investments_edit)
 
 		vmb.viewModel.finish.observe(this, Observer {
 			setResult(Activity.RESULT_OK)

@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -262,18 +263,22 @@ fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exc
 
 		val btcDataSet = LineDataSet(entries, "$currency/${historyPrizes.data.coin}").apply {
 			setDrawCircles(false)
-			color = ContextCompat.getColor(context, R.color.accent)
+			color = ContextCompat.getColor(context, R.color.primary)
 			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
 		}
 
 		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
 
 		data = LineData(btcDataSet)
-		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble()))}
+		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
 		data.setDrawValues(false)
 		invalidate()
-	}
-	else {
+	} else {
 		clear()
 	}
+}
+
+@BindingAdapter("app:htmlText")
+fun TextView.setHtmlText(html: String) {
+	setText(Html.fromHtml(html))
 }

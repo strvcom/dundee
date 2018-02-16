@@ -61,28 +61,28 @@ android {
 		finalProduction {
 			dimension "default"
 			applicationId "com.strv.dundee"
-			resValue "string", "app_name", "Project Dundee"
+			resValue "string", "app_name", "dundee"
 			buildConfigField "boolean", "LOGS", "false"
 		}
 
 		demoProduction {
 			dimension "default"
 			applicationId "com.strv.dundee.demo"
-			resValue "string", "app_name", "Project Dundee Demo"
+			resValue "string", "app_name", "dundee demo"
 			buildConfigField "boolean", "LOGS", "false"
 		}
 
 		develop {
 			dimension "default"
 			applicationId "com.strv.dundee.develop"
-			resValue "string", "app_name", "Project Dundee Develop"
+			resValue "string", "app_name", "dundee develop"
 			buildConfigField "boolean", "LOGS", "true"
 		}
 
 		mock {
 			dimension "default"
 			applicationId "com.strv.dundee.mock"
-			resValue "string", "app_name", "Project Dundee Mock"
+			resValue "string", "app_name", "dundee mock"
 			buildConfigField "boolean", "LOGS", "true"
 		}
 	}
@@ -146,6 +146,10 @@ dependencies {
 
 	// Charts
 	implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+	// StatefulLayout
+	implementation 'cz.kinst.jakub:android-stateful-layout-base:2.0.7'
+	implementation 'cz.kinst.jakub:android-stateful-layout-simple:2.0.7'
 
 	// Tests
 	testImplementation 'junit:junit:4.12'

@@ -4,12 +4,12 @@
 	<item
 		android:id="@+id/action_options"
 		android:icon="@drawable/ic_options"
-		android:title="@string/options"
+		android:title="@string/global_options"
 		app:showAsAction="ifRoom" />
 	<item
 		android:id="@+id/action_logout"
 		android:icon="@null"
-		android:title="@string/logout"
+		android:title="@string/global_sign_out"
 		app:showAsAction="never">
 	</item>
 </menu>
