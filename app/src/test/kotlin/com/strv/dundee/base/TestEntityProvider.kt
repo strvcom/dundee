@@ -27,7 +27,7 @@ object TestEntityProvider {
 		boughtPrices.add(Pair(Currency.CZK, 50000.5))
 		boughtPrices.add(Pair(Currency.USD, 300.2))
 		boughtPrices.add(Pair(Currency.EUR, 400.8))
-		return WalletOverview(Coin.BTC, 10.5, boughtPrices)
+		return WalletOverview(Coin.BTC, 10.5, Date(), boughtPrices)
 	}
 
 }

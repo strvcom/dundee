@@ -35,11 +35,11 @@ object TestViewModelProvider {
 		boughtPrices.add(Pair(Currency.CZK, 50000.5))
 		boughtPrices.add(Pair(Currency.USD, 300.2))
 		boughtPrices.add(Pair(Currency.EUR, 400.8))
-		coinWalletsList.add(WalletOverview(Coin.BTC, 1.5, boughtPrices))
-		coinWalletsList.add(WalletOverview(Coin.LTC, 200.0, boughtPrices))
-		coinWalletsList.add(WalletOverview(Coin.ETH, 340.99, boughtPrices))
-		coinWalletsList.add(WalletOverview(Coin.BCH, 12.87, boughtPrices))
-		coinWalletsList.add(WalletOverview(Coin.XRP, 23.5, boughtPrices))
+		coinWalletsList.add(WalletOverview(Coin.BTC, 1.5, Date(), boughtPrices))
+		coinWalletsList.add(WalletOverview(Coin.LTC, 200.0, Date(), boughtPrices))
+		coinWalletsList.add(WalletOverview(Coin.ETH, 340.99, Date(), boughtPrices))
+		coinWalletsList.add(WalletOverview(Coin.BCH, 12.87, Date(), boughtPrices))
+		coinWalletsList.add(WalletOverview(Coin.XRP, 23.5, Date(), boughtPrices))
 		coinWallets.value = Resource(Resource.Status.SUCCESS, coinWalletsList)
 		dashboardViewModel.wallets = DiffObservableListLiveData(coinWallets, object : DiffObservableList.Callback<WalletOverview> {
 			override fun areItemsTheSame(oldItem: WalletOverview?, newItem: WalletOverview?) = true
