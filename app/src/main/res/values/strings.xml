@@ -34,6 +34,8 @@
 	<string name="dashboard_total_profit_loss">Total profit/loss:</string>
 	<string name="dashboard_add_investment">Add Investment</string>
 
+	<string name="wallet_detail_profit_loss">Profit/loss</string>
+
 	<string name="time_frame_day">Day</string>
 	<string name="time_frame_week">Week</string>
 	<string name="time_frame_month">Month</string>

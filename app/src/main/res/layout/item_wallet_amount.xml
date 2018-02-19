@@ -45,7 +45,6 @@
 		</FrameLayout>
 
 		<!-- background must be set because of swipe to delete functionality -->
-		<!-- tag must be "foreground" because of swipe to delete functionality -->
 		<android.support.v7.widget.CardView
 			android:id="@+id/item_foreground"
 			android:layout_width="match_parent"

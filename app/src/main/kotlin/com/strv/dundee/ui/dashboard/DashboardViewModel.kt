@@ -21,7 +21,7 @@ import cz.kinst.jakub.view.StatefulLayout
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList
 
-class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
+class DashboardViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 
 	private val bitcoinRepository by inject<BitcoinRepository>()
 	private val walletRepository by inject<WalletRepository>()
@@ -61,6 +61,7 @@ class DashboardViewModel(mainViewModel: MainViewModel) : ViewModel() {
 			val result = hashMapOf<String, WalletOverview>()
 			it?.data?.fold(result, { accumulator, wallet ->
 				if (accumulator[wallet.coin] == null) accumulator[wallet.coin!!] = WalletOverview(wallet.coin!!)
+				accumulator[wallet.coin]!!.updateFirstWalletCreateDate(wallet.created)
 				accumulator[wallet.coin]!!.amount += wallet.amount!!
 				accumulator[wallet.coin]!!.boughtPrices.add(Pair(wallet.boughtCurrency!!, wallet.boughtPrice!!))
 				accumulator

@@ -108,7 +108,7 @@
 
 		<View
 			android:layout_width="match_parent"
-			android:layout_height="2dp"
+			android:layout_height="@dimen/spacing_2"
 			android:layout_marginLeft="@dimen/spacing_8"
 			android:layout_marginRight="@dimen/spacing_8"
 			android:layout_marginTop="@dimen/spacing_4"

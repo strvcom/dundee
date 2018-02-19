@@ -26,7 +26,6 @@
 		<android.support.design.widget.AppBarLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@color/accent"
 			app:elevation="0dp">
 
 			<android.support.v7.widget.Toolbar
@@ -43,21 +42,32 @@
 
 			<FrameLayout
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/wallet_detail_graph_height">
+				android:layout_height="@dimen/wallet_detail_graph_height"
+				android:paddingTop="@dimen/spacing_8">
 
-				<!--TODO graph -->
+				<com.github.mikephil.charting.charts.LineChart
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					app:init="@{true}"
+					app:historicalProfit="@{viewModel.historicalProfit}"
+					app:currency="@{viewModel.currency}"
+					app:exchangeRates="@{viewModel.exchangeRates}" />
 
 			</FrameLayout>
 
 			<View
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/spacing_1"
-				android:background="@color/text_default" />
+				android:layout_height="@dimen/spacing_2"
+				android:layout_marginLeft="@dimen/spacing_8"
+				android:layout_marginRight="@dimen/spacing_8"
+				android:layout_marginTop="@dimen/spacing_4"
+				android:background="@color/secondary" />
 
 			<android.support.v7.widget.RecyclerView
 				android:layout_width="match_parent"
 				android:layout_height="0dp"
 				android:layout_weight="1"
+				android:padding="@dimen/spacing_8"
 				android:clipToPadding="false"
 				app:layoutManager="@{LayoutManagers.linear()}"
 				app:liveDataItemBinding="@{viewModel.itemBinding}"

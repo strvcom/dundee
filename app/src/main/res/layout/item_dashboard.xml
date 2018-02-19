@@ -29,8 +29,6 @@
 		android:foreground="?attr/selectableItemBackground"
 		android:onClick="@{() -> listener.onItemClick(item)}">
 
-		<!-- background must be set because of swipe to delete functionality -->
-		<!-- tag must be "foreground" because of swipe to delete functionality -->
 		<LinearLayout
 			android:id="@+id/item_foreground"
 			android:layout_width="match_parent"

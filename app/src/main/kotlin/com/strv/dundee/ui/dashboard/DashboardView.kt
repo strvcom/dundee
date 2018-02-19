@@ -43,7 +43,8 @@ class DashboardFragment : Fragment(), DashboardView {
 		super.onCreate(savedInstanceState)
 
 		vmb.viewModel.walletOpened.observe(this, Observer { wallet ->
-			context?.let { ctx -> wallet?.let { startActivity(WalletDetailActivity.newIntent(ctx, it)) } }
+			if(context != null && wallet != null && vmb.viewModel.mainViewModel.exchangeRates.value?.data != null)
+				startActivity(WalletDetailActivity.newIntent(context!!, wallet, vmb.viewModel.mainViewModel.exchangeRates.value?.data!!, vmb.viewModel.mainViewModel.currency.value!!))
 		})
 
 		vmb.viewModel.tickers.forEach {

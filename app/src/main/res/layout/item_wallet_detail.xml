@@ -21,42 +21,18 @@
 
 	</data>
 
-	<FrameLayout
+	<android.support.v7.widget.CardView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/spacing_8"
 		android:foreground="?attr/selectableItemBackground"
 		android:onClick="@{() -> listener.onItemClick(item)}">
 
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent">
-
-			<ImageView
-				android:id="@+id/ic_left"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center_vertical"
-				android:layout_marginLeft="@dimen/spacing_16"
-				android:src="@drawable/ic_delete" />
-
-			<ImageView
-				android:id="@+id/ic_right"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center_vertical|right"
-				android:layout_marginRight="@dimen/spacing_16"
-				android:src="@drawable/ic_delete" />
-
-		</FrameLayout>
-
-		<!-- background must be set because of swipe to delete functionality -->
-		<!-- tag must be "foreground" because of swipe to delete functionality -->
 		<LinearLayout
 			android:id="@+id/item_foreground"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
-			android:background="@color/background"
 			android:padding="@dimen/spacing_16">
 
 			<TextView
@@ -67,7 +43,7 @@
 
 		</LinearLayout>
 
-	</FrameLayout>
+	</android.support.v7.widget.CardView>
 
 </layout>
 
