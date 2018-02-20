@@ -7,7 +7,7 @@ import com.strv.dundee.model.entity.TimeFrame
 import com.strv.ktools.Resource
 import com.strv.ktools.getRetrofitInterface
 import com.strv.ktools.inject
-import com.strv.ktools.mapLiveData
+import com.strv.ktools.mapResource
 
 class CoincapApi {
 	val application by inject<Application>()
@@ -17,7 +17,7 @@ class CoincapApi {
 	val api = getRetrofitInterface(application, URL, CoincapApiInterface::class.java)
 
 	fun getHistory(coin: String, timeFrame: TimeFrame): LiveData<Resource<History>> {
-		return if(timeFrame == TimeFrame.ALL) api.getHistory(coin).mapLiveData({ it?.getHistory(coin, timeFrame) })
-		else api.getHistory(coin, timeFrame.key).mapLiveData({ it?.getHistory(coin, timeFrame) })
+		return if (timeFrame == TimeFrame.ALL) api.getHistory(coin).mapResource({ it?.getHistory(coin, timeFrame) })
+		else api.getHistory(coin, timeFrame.key).mapResource({ it?.getHistory(coin, timeFrame) })
 	}
 }

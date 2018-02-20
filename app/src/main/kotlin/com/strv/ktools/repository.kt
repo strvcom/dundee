@@ -31,6 +31,8 @@ data class Resource<T> constructor(
 		fun <T> success(data: T?, message: String? = null) = Resource(Status.SUCCESS, data, message, null, null)
 		fun <T> error(throwable: Throwable?, message: String? = throwable?.message) = Resource(Status.ERROR, null, message, null, throwable)
 	}
+
+	fun <S> map(mapFunction: (T?) -> S?) = Resource(status, mapFunction(data), message, rawResponse?.map(mapFunction), throwable)
 }
 
 /**

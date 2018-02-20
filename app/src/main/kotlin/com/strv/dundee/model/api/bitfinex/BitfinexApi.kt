@@ -7,7 +7,7 @@ import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.Resource
 import com.strv.ktools.getRetrofitInterface
 import com.strv.ktools.inject
-import com.strv.ktools.mapLiveData
+import com.strv.ktools.mapResource
 
 class BitfinexApi : BitcoinApi {
 	val application by inject<Application>()
@@ -17,6 +17,6 @@ class BitfinexApi : BitcoinApi {
 	val api = getRetrofitInterface(application, URL, BitfinexApiInterface::class.java)
 
 	override fun getTicker(coin: String, currency: String): LiveData<Resource<Ticker>> {
-		return api.getTicker("${coin.toUpperCase()}${currency.toUpperCase()}").mapLiveData({ it?.getTicker(currency, coin) })
+		return api.getTicker("${coin.toUpperCase()}${currency.toUpperCase()}").mapResource({ it?.getTicker(currency, coin) })
 	}
 }
