@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.net.ConnectivityManager
 import com.google.gson.GsonBuilder
-import com.strv.dundee.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -55,9 +54,9 @@ class LiveDataCallAdapterFactory : CallAdapter.Factory() {
 }
 
 // get basic Retrofit setupCached with logger
-internal fun <T> getRetrofitInterface(context: Context, url: String, apiInterface: Class<T>, clientBuilderBase: OkHttpClient.Builder? = null): T {
+internal fun <T> getRetrofitInterface(context: Context, url: String, apiInterface: Class<T>, logLevel: HttpLoggingInterceptor.Level, clientBuilderBase: OkHttpClient.Builder? = null): T {
 	val loggingInterceptor = HttpLoggingInterceptor().apply {
-		level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
+		level = logLevel
 	}
 
 	val client = (clientBuilderBase ?: OkHttpClient.Builder()).addInterceptor(loggingInterceptor).addInterceptor(ConnectivityInterceptor(context)).build()
