@@ -1,11 +1,12 @@
 package com.strv.dundee.model.api.bitstamp
 
-import retrofit2.Call
+import android.arch.lifecycle.LiveData
+import com.strv.ktools.Resource
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface BitstampApiInterface {
 
 	@GET("ticker/{currencyPair}")
-	fun getTicker(@Path("currencyPair") currencyPair: String): Call<BitstampTickerResponse>
+	fun getTicker(@Path("currencyPair") currencyPair: String): LiveData<Resource<BitstampTickerResponse>>
 }

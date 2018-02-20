@@ -1,14 +1,15 @@
 package com.strv.dundee.model.api.coincap
 
-import retrofit2.Call
+import android.arch.lifecycle.LiveData
+import com.strv.ktools.Resource
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface CoincapApiInterface {
 
 	@GET("history/{coin}")
-	fun getHistory(@Path("coin") coin: String): Call<CoincapHistoryResponse>
+	fun getHistory(@Path("coin") coin: String): LiveData<Resource<CoincapHistoryResponse>>
 
 	@GET("history/{timeFrame}/{coin}")
-	fun getHistory(@Path("coin") coin: String, @Path("timeFrame") timeFrame: String): Call<CoincapHistoryResponse>
+	fun getHistory(@Path("coin") coin: String, @Path("timeFrame") timeFrame: String): LiveData<Resource<CoincapHistoryResponse>>
 }

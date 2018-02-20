@@ -4,23 +4,35 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonSyntaxException
 import retrofit2.Response
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 
 /**
  * Resource wrapper adding status and error to its value
  */
-data class Resource<T>(
+data class Resource<T> constructor(
 	val status: Status,
 	val data: T? = null,
 	val message: String? = null,
-	val statusCode: Int? = null,
-	val error: Error? = null
+	val rawResponse: Response<T>? = null,
+	val throwable: Throwable? = null
 ) {
 	enum class Status { SUCCESS, ERROR, FAILURE, NO_CONNECTION, LOADING }
+	companion object {
+		fun <T> fromResponse(response: Response<T>?, error: Throwable?): Resource<T> {
+			val message = response?.message() ?: error?.message
+			var status = Resource.Status.SUCCESS
+			if (response == null || response.isSuccessful.not()) {
+				status = if (response != null) Resource.Status.ERROR else if (error is NoConnectivityException) Resource.Status.NO_CONNECTION else Resource.Status.FAILURE
+			}
+			return Resource(status, response?.body(), message, response, error)
+		}
+
+		fun <T> loading(data: T? = null, message: String? = null) = Resource(Status.LOADING, data, message, null, null)
+		fun <T> success(data: T?, message: String? = null) = Resource(Status.SUCCESS, data, message, null, null)
+		fun <T> error(throwable: Throwable?, message: String? = throwable?.message) = Resource(Status.ERROR, null, message, null, throwable)
+	}
+
+	fun <S> map(mapFunction: (T?) -> S?) = Resource(status, mapFunction(data), message, rawResponse?.map(mapFunction), throwable)
 }
 
 /**
@@ -40,7 +52,7 @@ open class ResourceLiveData<T> : MediatorLiveData<Resource<T>>() {
 		resource.setupCached(resourceCallback)
 	}
 
-	fun setup(networkCallLiveData: LiveData<RetrofitResponse<T>>) {
+	fun setup(networkCallLiveData: LiveData<Resource<T>>) {
 		resource.setup(networkCallLiveData)
 	}
 }
@@ -68,36 +80,27 @@ class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
 
 		// Called to create the API call.
 		@MainThread
-		fun createNetworkCall(): LiveData<RetrofitResponse<T>>
-
-		// Called when the fetch fails. The child class may want to reset components
-		// like rate limiter.
-		@MainThread
-		fun onFetchFailed(status: Resource.Status, statusCode: Int?) {
-		}
+		fun createNetworkCall(): LiveData<Resource<T>>
 	}
 
 	private var callback: Callback<T>? = null
 	private val savedSources = mutableSetOf<LiveData<*>>()
 
 	init {
-		result.value = Resource(Resource.Status.LOADING, null)
+		result.value = Resource.loading()
 	}
 
-	fun setup(networkCallLiveData: LiveData<RetrofitResponse<T>>) {
+	fun setup(networkCallLiveData: LiveData<Resource<T>>) {
 		callback = null
 
 		// clear saved sources from previous setup
 		savedSources.forEach { result.removeSource(it) }
 		savedSources.clear()
 
-		result.value = Resource(result.value?.status
-			?: Resource.Status.LOADING, result.value?.data, result.value?.message)
+		result.value = result.value?.copy(status = result.value?.status ?: Resource.Status.LOADING) ?: Resource.loading()
 
-		result.addSource(networkCallLiveData, { retrofitResponse ->
-			val status = if (retrofitResponse?.response != null) Resource.Status.ERROR else if (retrofitResponse?.throwable is NoConnectivityException) Resource.Status.NO_CONNECTION else Resource.Status.FAILURE
-			val message = retrofitResponse?.response?.message() ?: retrofitResponse?.throwable?.message
-			result.setValue(Resource(status, retrofitResponse?.response?.body(), message, retrofitResponse?.response?.code(), parseError(retrofitResponse?.response)))
+		result.addSource(networkCallLiveData, { networkResource ->
+			result.setValue(networkResource)
 		})
 	}
 
@@ -108,8 +111,7 @@ class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
 		savedSources.forEach { result.removeSource(it) }
 		savedSources.clear()
 
-		result.value = Resource(result.value?.status
-			?: Resource.Status.LOADING, result.value?.data, result.value?.message)
+		result.value = result.value?.copy(status = result.value?.status ?: Resource.Status.LOADING) ?: Resource.loading()
 
 		val dbSource = callback!!.loadFromDb()
 		savedSources.add(dbSource)
@@ -121,7 +123,7 @@ class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
 			} else {
 				savedSources.add(dbSource)
 				result.addSource(dbSource, { newData ->
-					result.setValue(Resource(Resource.Status.SUCCESS, newData))
+					result.setValue(Resource.success(newData))
 				})
 			}
 		})
@@ -132,56 +134,38 @@ class NetworkBoundResource<T>(private val result: ResourceLiveData<T>) {
 		// we re-attach dbSource as a new source,
 		// it will dispatch its latest value quickly
 		savedSources.add(dbSource)
-		result.addSource(dbSource, { newData -> result.setValue(Resource(Resource.Status.LOADING, newData)) })
+		result.addSource(dbSource, { newData -> result.setValue(Resource.loading(newData)) })
 		savedSources.add(apiResponse)
-		result.addSource(apiResponse, { retrofitResponse ->
+		result.addSource(apiResponse, { networkResource ->
 			savedSources.remove(apiResponse)
 			result.removeSource(apiResponse)
 			savedSources.remove(dbSource)
 			result.removeSource(dbSource)
 
-			if (retrofitResponse?.response?.isSuccessful == true) {
-				saveResultAndReInit(retrofitResponse.response)
+			if (networkResource?.status == Resource.Status.SUCCESS) {
+				saveResultAndReInit(networkResource)
 			} else {
-				val status = if (retrofitResponse?.response != null) Resource.Status.ERROR else if (retrofitResponse?.throwable is NoConnectivityException) Resource.Status.NO_CONNECTION else Resource.Status.FAILURE
-				val message = retrofitResponse?.response?.message() ?: retrofitResponse?.throwable?.message
-				callback?.onFetchFailed(status, retrofitResponse?.response?.code())
 				savedSources.add(dbSource)
 				result.addSource(dbSource, { newData ->
-					result.setValue(Resource(status, newData, message, retrofitResponse?.response?.code(), parseError(retrofitResponse?.response)))
+					result.setValue(networkResource?.copy(data = newData))
 				})
 			}
 		})
 	}
 
 	@MainThread
-	private fun saveResultAndReInit(response: Response<T>) {
+	private fun saveResultAndReInit(resource: Resource<T>) {
 		doAsync {
 			callback?.let {
-				callback!!.saveCallResult(response.body()!!)
+				resource.data?.let { callback!!.saveCallResult(it) }
 				uiThread {
 					val dbSource = callback!!.loadFromDb()
 					savedSources.add(dbSource)
 					result.addSource(dbSource, { newData ->
-						result.setValue(Resource(Resource.Status.SUCCESS, newData))
+						result.setValue(resource.copy(data = newData))
 					})
 				}
 			}
 		}
 	}
-
-	private fun parseError(response: Response<T>?): Error? {
-		return try {
-			val converter = GsonConverterFactory.create(GsonBuilder().create()).responseBodyConverter(Error::class.java, arrayOfNulls(0), null)
-			converter?.convert(response?.errorBody()) as Error
-		} catch (e: IOException) {
-			getGenericError()
-		} catch (e: NullPointerException) {
-			getGenericError()
-		} catch (e: JsonSyntaxException) {
-			getGenericError()
-		}
-	}
-
-	private fun getGenericError() = Error(0)
 }
