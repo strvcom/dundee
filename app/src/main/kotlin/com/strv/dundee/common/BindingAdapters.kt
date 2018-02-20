@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter
 import android.databinding.InverseBindingAdapter
 import android.databinding.InverseBindingListener
 import android.graphics.Canvas
+import android.graphics.Color
 import android.support.annotation.IdRes
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.content.ContextCompat
@@ -287,9 +288,11 @@ fun LineChart.setHistoricalProfit(historicalProfit: List<Entry>, currency: Strin
 			setDrawCircles(false)
 			color = ContextCompat.getColor(context, R.color.primary)
 			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
+			colors = historicalProfit.map { if (it.y > 0) Color.GREEN else Color.RED }
 		}
 
 		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble())) }
+		legend.isEnabled = false
 
 		data = LineData(btcDataSet)
 		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble())) }

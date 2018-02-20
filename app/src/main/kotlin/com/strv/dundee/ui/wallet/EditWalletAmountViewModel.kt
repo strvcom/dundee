@@ -14,7 +14,9 @@ import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
 import com.strv.ktools.logD
 import com.strv.ktools.logMeD
+import com.strv.ktools.mutableLiveDataOf
 import com.strv.ktools.publish
+import java.util.Date
 
 class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel() {
 
@@ -25,6 +27,7 @@ class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel() {
 
 	val amount = MutableLiveData<String>()
 	val boughtFor = MutableLiveData<String>()
+	val boughtOn = mutableLiveDataOf(Date())
 	private val validateFunction = {
 		amount.value != null && amount.value!!.isNotEmpty() && amount.value!!.isNotBlank() &&
 			boughtFor.value != null && boughtFor.value!!.isNotEmpty() && boughtFor.value!!.isNotBlank()
@@ -45,6 +48,7 @@ class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel() {
 			coin.value = it.coin
 			boughtFor.value = it.boughtPrice.toString()
 			currency.value = it.boughtCurrency
+			boughtOn.value = it.boughtDate
 			this.wallet = it
 		}
 	}
@@ -58,7 +62,7 @@ class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel() {
 		logD("Adding ${amount.value} $coin")
 		progress.value = true
 
-		val data = Wallet(coin = coin.value, amount = amount.value?.toDouble(), boughtPrice = boughtFor.value?.toDouble(), boughtCurrency = currency.value)
+		val data = Wallet(coin = coin.value, amount = amount.value?.toDouble(), boughtPrice = boughtFor.value?.toDouble(), boughtCurrency = currency.value, boughtDate = boughtOn.value)
 		walletRepository.addWalletToCurrentUser(data)
 			.addOnSuccessListener {
 				logD("Added ${amount.value} $coin")
@@ -78,6 +82,7 @@ class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel() {
 		wallet?.boughtCurrency = currency.value
 		wallet?.amount = amount.value?.toDouble()
 		wallet?.coin = coin.value
+		wallet?.boughtDate = boughtOn.value
 		walletRepository.updateWallet(wallet!!)
 			.addOnSuccessListener {
 				logD("Updated to ${amount.value} $coin")

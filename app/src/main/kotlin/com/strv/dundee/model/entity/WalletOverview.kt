@@ -10,7 +10,7 @@ import java.util.Date
 data class WalletOverview(
 	var coin: String,
 	var amount: Double = 0.0,
-	var firstWalletCreateDate: Date? = null,
+	var firstWalletBoughtDate: Date? = null,
 	val boughtPrices: MutableList<Pair<String, Double>> = mutableListOf()
 ) : KParcelable {
 
@@ -27,14 +27,14 @@ data class WalletOverview(
 	private constructor(parcel: Parcel) : this(
 		coin = parcel.readString(),
 		amount = (parcel.readValue(Double::class.java.classLoader) as? Double)!!,
-		firstWalletCreateDate = parcel.readDate()) {
+		firstWalletBoughtDate = parcel.readDate()) {
 		parcel.readList(boughtPrices, null)
 	}
 
 	override fun writeToParcel(parcel: Parcel, flags: Int) {
 		parcel.writeString(coin)
 		parcel.writeValue(amount)
-		parcel.writeDate(firstWalletCreateDate)
+		parcel.writeDate(firstWalletBoughtDate)
 		parcel.writeList(boughtPrices)
 	}
 
@@ -43,11 +43,11 @@ data class WalletOverview(
 		val CREATOR = parcelableCreator(::WalletOverview)
 	}
 
-	fun updateFirstWalletCreateDate(created: Date?) {
-		if (created != null && firstWalletCreateDate != null && created.time < firstWalletCreateDate!!.time) {
-			firstWalletCreateDate = created
-		} else if (created != null) {
-			firstWalletCreateDate = created
+	fun updateFirstWalletBoughtDate(boughtDate: Date?) {
+		if (boughtDate != null && firstWalletBoughtDate != null && boughtDate.time < firstWalletBoughtDate!!.time) {
+			firstWalletBoughtDate = boughtDate
+		} else if (boughtDate != null) {
+			firstWalletBoughtDate = boughtDate
 		}
 	}
 }

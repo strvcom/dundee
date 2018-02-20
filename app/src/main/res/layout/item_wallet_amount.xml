@@ -88,7 +88,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center"
 					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-					android:text="@{DateUtils.INSTANCE.dateToString(item.created)}"
+					android:text="@{DateUtils.INSTANCE.dateToDayString(item.boughtDate)}"
 					tools:text="@tools:sample/date/ddmmyy" />
 
 			</LinearLayout>

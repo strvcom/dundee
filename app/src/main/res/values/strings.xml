@@ -23,6 +23,7 @@
 	<string name="investments_edit">Edit investment</string>
 	<string name="investments_amount">Amount</string>
 	<string name="investments_bought_for">Bought for</string>
+	<string name="investments_bought_on">Bought on</string>
 
 	<string name="options_price_source">Price Source and currency</string>
 	<string name="options_currency">App currency</string>

@@ -51,13 +51,13 @@ class WalletDetailViewModel(val walletOverview: WalletOverview, val exchangeRate
 		val result = mutableListOf<Entry>()
 		val boughtPrice = walletOverview.getBoughtPrice(Currency.USD, exchangeRates)
 		history.value?.data?.prices?.forEach {
-			if (walletOverview.firstWalletCreateDate != null && it.timestamp > walletOverview.firstWalletCreateDate!!.time)
+			if (walletOverview.firstWalletBoughtDate != null && it.timestamp > walletOverview.firstWalletBoughtDate!!.time)
 				result.add(Entry(it.timestamp.toFloat(), (it.price * walletOverview.amount - boughtPrice).toFloat()))
 		}
 		return result
 	}
 
-	private fun getTimeFrame() = walletOverview.firstWalletCreateDate?.let {
+	private fun getTimeFrame() = walletOverview.firstWalletBoughtDate?.let {
 		when {
 			it.daysToNow() < 2 -> TimeFrame.DAY
 			it.daysToNow() < 8 -> TimeFrame.WEEK

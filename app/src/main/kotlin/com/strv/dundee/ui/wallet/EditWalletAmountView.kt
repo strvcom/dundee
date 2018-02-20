@@ -10,8 +10,10 @@ import com.strv.dundee.databinding.ActivityEditWalletAmountBinding
 import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.ui.base.BaseActivity
 import com.strv.ktools.vmb
+import java.util.Date
 
 interface EditWalletAmountView {
+	fun pickBoughtDate()
 }
 
 class EditWalletAmountActivity : BaseActivity(), EditWalletAmountView {
@@ -37,5 +39,17 @@ class EditWalletAmountActivity : BaseActivity(), EditWalletAmountView {
 			setResult(Activity.RESULT_OK)
 			finish()
 		})
+	}
+
+	override fun pickBoughtDate() {
+		supportFragmentManager?.let {
+			val dialog = DatePickerDialogFragment.newInstance(vmb.viewModel.boughtOn.value!!)
+			dialog.listener = object : DatePickerDialogFragment.DatePickerListener {
+				override fun onDateSelected(date: Date) {
+					vmb.viewModel.boughtOn.value = date
+				}
+			}
+			dialog.show(it, dialog.javaClass.name)
+		}
 	}
 }

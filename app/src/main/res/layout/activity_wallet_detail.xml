@@ -48,10 +48,19 @@
 				<com.github.mikephil.charting.charts.LineChart
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
+					android:layout_marginBottom="@dimen/spacing_2"
 					app:init="@{true}"
 					app:historicalProfit="@{viewModel.historicalProfit}"
 					app:currency="@{viewModel.currency}"
 					app:exchangeRates="@{viewModel.exchangeRates}" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/wallet_detail_profit_loss"
+					android:layout_gravity="bottom"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+					android:layout_marginLeft="@dimen/spacing_16"/>
 
 			</FrameLayout>
 
