@@ -105,10 +105,7 @@ class ConnectivityInterceptor(val context: Context) : Interceptor {
 	}
 }
 
-class NoConnectivityException() : IOException() {
-	override val message: String?
-		get() = "No connectivity exception"
-}
+class NoConnectivityException() : IOException("No connectivity exception")
 
 fun isOnline(context: Context): Boolean {
 	val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
