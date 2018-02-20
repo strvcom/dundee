@@ -265,7 +265,7 @@ fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exc
 		val btcDataSet = LineDataSet(entries, "$currency/${historyPrizes.data.coin}").apply {
 			setDrawCircles(false)
 			color = ContextCompat.getColor(context, R.color.primary)
-			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
+			lineWidth = 1.5f
 		}
 
 		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
@@ -287,7 +287,7 @@ fun LineChart.setHistoricalProfit(historicalProfit: List<Entry>, currency: Strin
 		val btcDataSet = LineDataSet(historicalProfit, "${resources.getString(R.string.wallet_detail_profit_loss)}/$currency").apply {
 			setDrawCircles(false)
 			color = ContextCompat.getColor(context, R.color.primary)
-			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
+			lineWidth = 1.5f
 			colors = historicalProfit.map { if (it.y > 0) Color.GREEN else Color.RED }
 		}
 
