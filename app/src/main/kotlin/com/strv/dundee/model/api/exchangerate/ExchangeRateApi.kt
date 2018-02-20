@@ -3,7 +3,7 @@ package com.strv.dundee.model.api.exchangerate
 import android.app.Application
 import android.arch.lifecycle.LiveData
 import com.strv.dundee.model.entity.ExchangeRates
-import com.strv.ktools.RetrofitResponse
+import com.strv.ktools.Resource
 import com.strv.ktools.getRetrofitInterface
 import com.strv.ktools.inject
 import com.strv.ktools.mapLiveData
@@ -20,7 +20,7 @@ class ExchangeRateApi {
 		return api.getExchangeRate(source.toUpperCase(), target.toUpperCase())
 	}
 
-	fun getExchangeRates(source: String, target: List<String>): LiveData<RetrofitResponse<ExchangeRates>> {
+	fun getExchangeRates(source: String, target: List<String>): LiveData<Resource<ExchangeRates>> {
 		var targetString = ""
 		target.forEach { targetString += "$it," }
 		return api.getExchangeRate(source.toUpperCase(), targetString.substring(0, targetString.length - 1)).mapLiveData({ it?.getExchangeRates(source) })

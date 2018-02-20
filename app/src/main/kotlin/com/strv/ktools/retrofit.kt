@@ -57,13 +57,14 @@ internal fun <T> getRetrofitInterface(context: Context, url: String, apiInterfac
 
 // -- internal --
 
-open class RetrofitMapCallLiveData<T, S>(val call: Call<T>, val mapFunction: (T?) -> S?, val cancelOnInactive: Boolean = false) : LiveData<RetrofitResponse<S>>() {
+open class RetrofitMapCallLiveData<T, S>(val call: Call<T>, val mapFunction: (T?) -> S?, val cancelOnInactive: Boolean = false) : LiveData<Resource<S>>() {
 	override fun onActive() {
 		super.onActive()
 		if (call.isExecuted)
 			return
 		call.then { response, error ->
-			value = RetrofitResponse(response?.map(mapFunction), error)
+			val mappedResponse = response?.map(mapFunction)
+			value = Resource.fromResponse(mappedResponse, error)
 		}
 	}
 
@@ -74,16 +75,11 @@ open class RetrofitMapCallLiveData<T, S>(val call: Call<T>, val mapFunction: (T?
 	}
 }
 
-data class RetrofitResponse<T>(
-	val response: Response<T>? = null,
-	val throwable: Throwable? = null
-)
-
 class RetrofitCallLiveData<T>(call: Call<T>, cancelOnInactive: Boolean = false) : RetrofitMapCallLiveData<T, T>(call, { it }, cancelOnInactive)
 
 class ConnectivityInterceptor(val context: Context) : Interceptor {
 	override fun intercept(chain: Interceptor.Chain?): okhttp3.Response {
-		if(!isOnline(context)) throw NoConnectivityException()
+		if (!isOnline(context)) throw NoConnectivityException()
 		val builder = chain!!.request().newBuilder()
 		return chain.proceed(builder.build())
 	}
