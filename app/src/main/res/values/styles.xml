@@ -11,4 +11,12 @@
 	<style name="ThemeOverlay.Dundee.Dark" parent="ThemeOverlay.AppCompat.Dark">
 		<item name="colorAccent">@color/white</item>
 	</style>
+
+
+
+	<style name="Theme.Dundee.Picker" parent="@style/Theme.AppCompat.Light">
+		<item name="android:textColorPrimary">@color/text_default</item>
+		<item name="android:textSize">@dimen/date_picker_text</item>
+		<item name="colorControlNormal">@android:color/transparent</item>
+	</style>
 </resources>

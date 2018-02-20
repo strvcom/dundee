@@ -21,7 +21,8 @@ data class Wallet(
 	var amount: Double? = null,
 	@ServerTimestamp var created: Date? = null,
 	var boughtPrice: Double? = null,
-	var boughtCurrency: String? = null
+	var boughtCurrency: String? = null,
+	var boughtDate: Date? = null
 ) : Document(), KParcelable {
 
 	private constructor(parcel: Parcel) : this(
@@ -30,7 +31,8 @@ data class Wallet(
 		amount = parcel.readValue(Double::class.java.classLoader) as? Double,
 		created = parcel.readDate(),
 		boughtPrice = parcel.readValue(Double::class.java.classLoader) as? Double,
-		boughtCurrency = parcel.readString()) {
+		boughtCurrency = parcel.readString(),
+		boughtDate = parcel.readDate()) {
 		docId = parcel.readString()
 	}
 
@@ -41,13 +43,14 @@ data class Wallet(
 		parcel.writeDate(created)
 		parcel.writeValue(boughtPrice)
 		parcel.writeString(boughtCurrency)
+		parcel.writeDate(boughtDate)
 		parcel.writeString(docId)
 	}
 
 	companion object {
 		const val COLLECTION = "wallets"
 		const val ATTR_COIN = "coin"
-		const val ATTR_CREATED = "created"
+		const val ATTR_BOUGHT_DATE = "boughtDate"
 		@JvmField
 		val CREATOR = parcelableCreator(::Wallet)
 	}

@@ -61,7 +61,7 @@ class DashboardViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 			val result = hashMapOf<String, WalletOverview>()
 			it?.data?.fold(result, { accumulator, wallet ->
 				if (accumulator[wallet.coin] == null) accumulator[wallet.coin!!] = WalletOverview(wallet.coin!!)
-				accumulator[wallet.coin]!!.updateFirstWalletCreateDate(wallet.created)
+				accumulator[wallet.coin]!!.updateFirstWalletBoughtDate(wallet.boughtDate)
 				accumulator[wallet.coin]!!.amount += wallet.amount!!
 				accumulator[wallet.coin]!!.boughtPrices.add(Pair(wallet.boughtCurrency!!, wallet.boughtPrice!!))
 				accumulator
