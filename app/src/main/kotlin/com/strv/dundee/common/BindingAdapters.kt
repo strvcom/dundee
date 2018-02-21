@@ -288,7 +288,8 @@ fun LineChart.setHistoricalProfit(historicalProfit: List<Entry>, currency: Strin
 			setDrawCircles(false)
 			color = ContextCompat.getColor(context, R.color.primary)
 			lineWidth = 1.5f
-			colors = historicalProfit.mapIndexed { index, entry -> if (index < historicalProfit.size-1 && entry.y >= 0 && historicalProfit[index + 1].y >= 0) Color.GREEN else Color.RED }
+			colors = historicalProfit.mapIndexed { index, entry ->
+				if (index < historicalProfit.size-1 && entry.y >= 0 && historicalProfit[index + 1].y >= 0) Color.GREEN else if(index >= historicalProfit.size-1 && entry.y >= 0) Color.RED else Color.RED }
 		}
 
 		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble())) }
