@@ -54,6 +54,16 @@ class WalletDetailViewModel(val walletOverview: WalletOverview, val exchangeRate
 			if (walletOverview.firstWalletBoughtDate != null && it.timestamp > walletOverview.firstWalletBoughtDate!!.time)
 				result.add(Entry(it.timestamp.toFloat(), (it.price * walletOverview.amount - boughtPrice).toFloat()))
 		}
+
+		var i = 0
+		while (i < result.size-1) {
+			if ((result[i].y < 0 && result[i + 1].y > 0) || result[i].y > 0 && result[i + 1].y < 0) {
+				val x = result[i].x + ((0 - result[i].y) * (result[i+1].x - result[i].x)) / (result[i+1].y - result[i].y)
+				result.add(i+1, Entry(x, 0f))
+			}
+			i++
+		}
+
 		return result
 	}
 
@@ -67,6 +77,7 @@ class WalletDetailViewModel(val walletOverview: WalletOverview, val exchangeRate
 			it.daysToNow() < 366 -> TimeFrame.YEAR
 			else -> TimeFrame.ALL
 		}
-	} ?: TimeFrame.ALL
+	}
+		?: TimeFrame.ALL
 
 }

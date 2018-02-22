@@ -265,7 +265,7 @@ fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exc
 		val btcDataSet = LineDataSet(entries, "$currency/${historyPrizes.data.coin}").apply {
 			setDrawCircles(false)
 			color = ContextCompat.getColor(context, R.color.primary)
-			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
+			lineWidth = 1.5f
 		}
 
 		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
@@ -284,17 +284,18 @@ fun LineChart.setHistoricalProfit(historicalProfit: List<Entry>, currency: Strin
 	if (historicalProfit.isNotEmpty()) {
 		marker = MarkerView(context, Currency.USD, currency, exchangeRates)
 
-		val btcDataSet = LineDataSet(historicalProfit, "${resources.getString(R.string.wallet_detail_profit_loss)}/$currency").apply {
+		val dataSet = LineDataSet(historicalProfit, "${resources.getString(R.string.wallet_detail_profit_loss)}/$currency").apply {
 			setDrawCircles(false)
 			color = ContextCompat.getColor(context, R.color.primary)
-			lineWidth = resources.getDimensionPixelSize(R.dimen.spacing_1).toFloat() // 1dp
-			colors = historicalProfit.map { if (it.y > 0) Color.GREEN else Color.RED }
+			lineWidth = 1.5f
+			colors = historicalProfit.mapIndexed { index, entry ->
+				if (index < historicalProfit.size-1 && entry.y >= 0 && historicalProfit[index + 1].y >= 0) Color.GREEN else if(index >= historicalProfit.size-1 && entry.y >= 0) Color.RED else Color.RED }
 		}
 
 		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble())) }
 		legend.isEnabled = false
 
-		data = LineData(btcDataSet)
+		data = LineData(dataSet)
 		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble())) }
 		data.setDrawValues(false)
 		invalidate()
