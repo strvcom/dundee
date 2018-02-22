@@ -36,13 +36,6 @@ data class Resource<T> constructor(
 }
 
 /**
- * Error entity
- */
-data class Error(
-	val errorCode: Int
-)
-
-/**
  * BaseClass for making any resource accessible via LiveData interface with database cache support
  */
 open class ResourceLiveData<T> : MediatorLiveData<Resource<T>>() {

@@ -2,20 +2,22 @@ package com.strv.dundee.model.api.exchangerate
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import com.google.gson.Gson
 import com.strv.dundee.app.Config
 import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.ktools.Resource
-import com.strv.ktools.getRetrofitInterface
+import com.strv.ktools.getRetrofit
 import com.strv.ktools.inject
 import com.strv.ktools.mapResource
 
 class ExchangeRateApi {
 	val application by inject<Application>()
 	val config by inject<Config>()
+	val gson by inject<Gson>()
 
 	val URL = "https://api.fixer.io/"
 
-	val api = getRetrofitInterface(application, URL, ExchangeRateApiInterface::class.java, config.HTTP_LOGGING_LEVEL)
+	val api = getRetrofit(application, URL, config.HTTP_LOGGING_LEVEL, gson = gson).create(ExchangeRateApiInterface::class.java)
 
 	fun getExchangeRates(source: String, target: List<String>): LiveData<Resource<ExchangeRates>> {
 		var targetString = ""

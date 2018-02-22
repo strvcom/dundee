@@ -3,6 +3,7 @@ package com.strv.ktools
 import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.net.ConnectivityManager
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -54,14 +55,13 @@ class LiveDataCallAdapterFactory : CallAdapter.Factory() {
 }
 
 // get basic Retrofit setupCached with logger
-internal fun <T> getRetrofitInterface(context: Context, url: String, apiInterface: Class<T>, logLevel: HttpLoggingInterceptor.Level, clientBuilderBase: OkHttpClient.Builder? = null): T {
+internal fun getRetrofit(context: Context, url: String, logLevel: HttpLoggingInterceptor.Level, clientBuilderBase: OkHttpClient.Builder? = null, gson: Gson = GsonBuilder().create()): Retrofit {
 	val loggingInterceptor = HttpLoggingInterceptor().apply {
 		level = logLevel
 	}
 
 	val client = (clientBuilderBase ?: OkHttpClient.Builder()).addInterceptor(loggingInterceptor).addInterceptor(ConnectivityInterceptor(context)).build()
 
-	val gson = GsonBuilder().create()
 
 	return Retrofit.Builder()
 		.client(client)
@@ -69,9 +69,7 @@ internal fun <T> getRetrofitInterface(context: Context, url: String, apiInterfac
 		.addCallAdapterFactory(LiveDataCallAdapterFactory())
 		.addConverterFactory(GsonConverterFactory.create(gson))
 		.build()
-		.create(apiInterface)
 }
-
 // -- internal --
 
 private class LiveDataBodyCallAdapter<R> internal constructor(private val responseType: Type) : CallAdapter<R, LiveData<Resource<R>>> {
