@@ -69,14 +69,15 @@ Other Tools
 -----------
 TODO
 
-Authors
--------
-
-Jakub Kinst (jakub.kinst@strv.com)
-Leos Dostal (leos.dostal@strv.com)
+Author
+------
 
 <p align="center">
 	<img src="https://github.com/strvcom/dundee/raw/master/extras/strv-logo.png" width="320"/>
 	<br/>
-	[strv.com](http://www.strv.com)
+	<a href="http://www.strv.com">strv.com</a>
+	<br/>
+	<b>Jakub Kinst</b> (jakub.kinst@strv.com)
+	<br/>
+	<b>Leos Dostal</b> (leos.dostal@strv.com)
 </p>
