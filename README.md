@@ -1,6 +1,8 @@
 dundee by STRV
 ==============
-<img src="https://github.com/strvcom/dundee/raw/master/extras/device-2018-02-26-134516.png" width="480"/>
+<p align="center">
+	<img src="https://github.com/strvcom/dundee/raw/master/extras/device-2018-02-26-134516.png" width="320"/>
+</p
 
 
 Dundee is a showcase app written to demonstrate modern Android app architecture approaches. It displays current value of various cryptocurrencies fetched from different sources, 
@@ -72,5 +74,7 @@ Authors
 Jakub Kinst (jakub.kinst@strv.com)
 Leos Dostal (leos.dostal@strv.com)
 
-![STRV](extras/strv-logo.png)
-[strv.com](http://www.strv.com)
+<p align="center">
+	<img src="https://github.com/strvcom/dundee/raw/master/extras/strv-logo.png" width="320"/>
+	[strv.com](http://www.strv.com)
+</p>
