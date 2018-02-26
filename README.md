@@ -1,7 +1,7 @@
 dundee by STRV
 ==============
+<img src="https://github.com/strvcom/dundee/raw/master/extras/device-2018-02-26-134516.png" width="480"/>
 
-![screen](extras/device-2018-02-26-134516.png)
 
 Dundee is a showcase app written to demonstrate modern Android app architecture approaches. It displays current value of various cryptocurrencies fetched from different sources, 
 stores your portfolio in the cloud within Firebase Firestore database and provides you with a detailed info about profit/loss for each of the currencies.
