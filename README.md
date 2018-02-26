@@ -22,7 +22,7 @@ ViewModelBinding (vmb) connects Architecture ViewModels with the View (Activity/
 ```kotlin
 private val vmb by vmb<MainViewModel, ActivityMainBinding>(R.layout.activity_main)
 //...
-// then in onCreate:
+// then in onCreate():
 vmb.viewModel.doSomething()
 vmb.binding.myView.doSomethingElse()
 ```
@@ -63,11 +63,43 @@ To be able to receive data from REST API within a LiveData there is a custom Ret
 
 Shared Preferences Delegate
 ---------------------------
-TODO
+Shared Preferences Delegates massively simplifies work with Android SharedPreferences. Just declare a property using the delegate and read/set its value. It will be automatically stored within SharedPreferences of your choice.
+Example:
+
+```kotlin
+var accessToken by sharedPrefs().string() // property name will be used as the key
+var userEmail by sharedPrefs().string(key = "email")
+var hasReadConditions by sharedPrefs().boolean(false)
+//...
+// then
+accessToken = "asd328y0823hdkajshd238"
+if (!hasReadConditions){
+	//...
+	hasReadConditions = true
+}
+```
+
+If you rather work with LiveData, there are delegates for that as well. When active, the LiveData listens to SharedPreferences changes for the given key and gets updated automatically. It supports setting value as well so
+you can connect it to the layout directly:
+
+```kotlin
+// in ViewModel
+var userName by sharedPrefs().stringLiveData()
+```
+
+```xml
+<!-- in layout -->
+<EditText android:text="@={viewModel.userName}"/>
+```
 
 Other Tools
 -----------
-TODO
+**Logs** - multiple logging functions - see `log.kt`
+
+**LiveData** - `LiveData.map()`, `LiveData.switchMap()` extension shorthands, `EventLiveData` for delivering one-time events to View, `mutableLiveDataOf()` shorthand, etc. - see `livedata.kt`
+
+**Async** - `doAsync {}` and `uiThread {}` functions to simplify background operations
+	
 
 Author
 ------
