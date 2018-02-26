@@ -1,5 +1,7 @@
 dundee
 ==============
+[![CircleCI](https://circleci.com/gh/strvcom/dundee.svg?style=svg)](https://circleci.com/gh/strvcom/dundee)
+
 <p align="center">
 	<img src="https://github.com/strvcom/dundee/raw/master/extras/device-2018-02-26-134516.png" width="320"/>
 	<img src="https://github.com/strvcom/dundee/raw/master/extras/device-2018-02-26-135801.png" width="320"/>
