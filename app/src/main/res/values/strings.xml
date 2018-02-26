@@ -34,6 +34,7 @@
 	<string name="dashboard_total_value">Total Value:</string>
 	<string name="dashboard_total_profit_loss">Total profit/loss:</string>
 	<string name="dashboard_add_investment">Add Investment</string>
+	<string name="dashboard_coin_value">%.5f</string>
 
 	<string name="wallet_detail_profit_loss">Profit/loss</string>
 

@@ -6,8 +6,10 @@ import com.strv.dundee.BR
 import com.strv.dundee.R
 import com.strv.dundee.common.OnItemClickListener
 import com.strv.dundee.model.entity.Coin
+import com.strv.dundee.model.entity.TimeFrame
 import com.strv.dundee.model.entity.WalletOverview
 import com.strv.dundee.model.repo.BitcoinRepository
+import com.strv.dundee.model.repo.HistoryLiveData
 import com.strv.dundee.model.repo.TickerLiveData
 import com.strv.dundee.model.repo.WalletRepository
 import com.strv.dundee.ui.main.MainViewModel
@@ -38,6 +40,7 @@ class DashboardViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 		.bindExtra(BR.listener, itemClickCallback)!!
 	var wallets: DiffObservableListLiveData<WalletOverview>
 	val tickers = HashMap<String, TickerLiveData>()
+	val history = HashMap<String, HistoryLiveData>()
 	val source = mainViewModel.source
 	val currency = mainViewModel.currency
 	val apiCurrency = mainViewModel.apiCurrency
@@ -47,13 +50,16 @@ class DashboardViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 	val state = MediatorLiveData<String>().apply { value = SimpleStatefulLayout.State.PROGRESS }
 
 	init {
-		// compose Ticker and exchange rates LiveData (observed by data binding automatically)
-		Coin.getAll().forEach { tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!) }
+		// compose Ticker and History LiveData (observed by data binding automatically)
+		Coin.getAll().forEach {
+			tickers[it] = bitcoinRepository.getTicker(source.value!!, it, apiCurrency.value!!)
+			history[it] = bitcoinRepository.getHistory(it, TimeFrame.WEEK)
+		}
 
 		// setupCached ticker on input changes
 		tickers.forEach { (coin, ticker) ->
-			ticker.addSource(apiCurrency, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
-			ticker.addSource(source, { ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
+			ticker.addSource(apiCurrency, { if(ticker.value?.data?.currency != apiCurrency.value) ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
+			ticker.addSource(source, { if(ticker.value?.data?.source != source.value) ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
 		}
 
 		// used for transforming Wallet list to WalletOverview list
@@ -66,7 +72,8 @@ class DashboardViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 				accumulator[wallet.coin]!!.boughtPrices.add(Pair(wallet.boughtCurrency!!, wallet.boughtPrice!!))
 				accumulator
 			})
-			Resource(it?.status ?: Resource.Status.SUCCESS, result.values.toList().sortedByDescending { it.amount })
+			Resource(it?.status
+				?: Resource.Status.SUCCESS, result.values.toList().sortedByDescending { it.amount })
 		})
 
 		wallets = DiffObservableListLiveData(coinWallets, object : DiffObservableList.Callback<WalletOverview> {
@@ -90,12 +97,16 @@ class DashboardViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 			val fromCurrency = tickers[it.coin]?.value?.data?.currency
 			val toCurrency = currency.value
 			val amount = tickers[it.coin]?.value?.data?.getValue(it.amount)
-			exchangeRates.value?.data?.calculate(fromCurrency, toCurrency, amount) ?: 0.0
-		} ?: 0.0
+			exchangeRates.value?.data?.calculate(fromCurrency, toCurrency, amount)
+				?: 0.0
+		}
+			?: 0.0
 
 	// calculation of current profit
 	internal fun recalculateTotalProfit(): Double {
-		val totalBoughtPrice = wallets.value?.data?.sumByDouble { it.getBoughtPrice(currency.value!!, exchangeRates.value?.data) } ?: 0.0
-		return (totalValue.value ?: 0.0) - totalBoughtPrice
+		val totalBoughtPrice = wallets.value?.data?.sumByDouble { it.getBoughtPrice(currency.value!!, exchangeRates.value?.data) }
+			?: 0.0
+		return (totalValue.value
+			?: 0.0) - totalBoughtPrice
 	}
 }

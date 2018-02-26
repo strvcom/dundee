@@ -43,6 +43,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					app:ticker="@{viewModel.tickers[Coin.BTC]}"
+					app:history="@{viewModel.history[Coin.BTC]}"
 					app:exchangeRates="@{viewModel.exchangeRates}"
 					app:coin="@{Coin.BTC}"
 					app:currency="@{viewModel.currency}" />
@@ -52,6 +53,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					app:ticker="@{viewModel.tickers[Coin.ETH]}"
+					app:history="@{viewModel.history[Coin.ETH]}"
 					app:exchangeRates="@{viewModel.exchangeRates}"
 					app:coin="@{Coin.ETH}"
 					app:currency="@{viewModel.currency}" />
@@ -61,6 +63,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					app:ticker="@{viewModel.tickers[Coin.XRP]}"
+					app:history="@{viewModel.history[Coin.XRP]}"
 					app:exchangeRates="@{viewModel.exchangeRates}"
 					app:coin="@{Coin.XRP}"
 					app:currency="@{viewModel.currency}" />
@@ -70,6 +73,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					app:ticker="@{viewModel.tickers[Coin.LTC]}"
+					app:history="@{viewModel.history[Coin.LTC]}"
 					app:exchangeRates="@{viewModel.exchangeRates}"
 					app:coin="@{Coin.LTC}"
 					app:currency="@{viewModel.currency}" />
@@ -79,6 +83,7 @@
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
 					app:ticker="@{viewModel.tickers[Coin.BCH]}"
+					app:history="@{viewModel.history[Coin.BCH]}"
 					app:exchangeRates="@{viewModel.exchangeRates}"
 					app:coin="@{Coin.BCH}"
 					app:currency="@{viewModel.currency}" />

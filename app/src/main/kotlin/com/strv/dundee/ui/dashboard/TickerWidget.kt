@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.strv.dundee.databinding.ItemTickerBinding
 import com.strv.dundee.model.entity.ExchangeRates
+import com.strv.dundee.model.entity.History
 import com.strv.dundee.model.entity.Ticker
 import com.strv.ktools.Resource
 
@@ -25,6 +26,11 @@ class TickerWidget : FrameLayout {
 	var exchangeRates:  Resource<ExchangeRates>? = null
 		set(value) {
 			rootBinding.exchangeRates = value?.data
+		}
+
+	var history:  Resource<History>? = null
+		set(value) {
+			rootBinding.history = value?.data
 		}
 
 	var currency: String? = null

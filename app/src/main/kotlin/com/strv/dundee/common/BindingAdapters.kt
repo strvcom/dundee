@@ -4,7 +4,6 @@ import android.databinding.BindingAdapter
 import android.databinding.InverseBindingAdapter
 import android.databinding.InverseBindingListener
 import android.graphics.Canvas
-import android.graphics.Color
 import android.support.annotation.IdRes
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.content.ContextCompat
@@ -30,7 +29,6 @@ import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.dundee.model.entity.History
 import com.strv.dundee.model.entity.TimeFrame
 import com.strv.dundee.ui.charts.MarkerView
-import com.strv.ktools.Resource
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
 import java.text.DateFormat
 import java.util.Date
@@ -254,24 +252,39 @@ fun LineChart.setupChart(boolean: Boolean) {
 	invalidate()
 }
 
+@BindingAdapter("initDashboard")
+fun LineChart.setupDashboardChart(boolean: Boolean) {
+	axisLeft.isEnabled = false
+	axisRight.isEnabled = false
+	description.isEnabled = false
+	xAxis.isEnabled = false
+	isScaleYEnabled = false
+	isScaleXEnabled = false
+	legend.isEnabled = false
+	isDoubleTapToZoomEnabled = false
+	isHighlightPerTapEnabled = false
+	isHighlightPerDragEnabled = false
+	invalidate()
+}
+
 @BindingAdapter("historyPrizes", "currency", "exchangeRates")
-fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exchangeRates: ExchangeRates) {
-	var entries = historyPrizes.data?.prices?.map { Entry(it.timestamp.toFloat(), it.price.toFloat()) }?.sortedBy { it.x }
-	if (historyPrizes.data?.timeFrame == TimeFrame.DAY || historyPrizes.data?.timeFrame == TimeFrame.WEEK) entries = entries?.dropLast(1)        // drop last item for day and week time frame, because of wrong API data
+fun LineChart.setHistory(historyPrizes: History?, currency: String?, exchangeRates: ExchangeRates?) {
+	var entries = historyPrizes?.prices?.map { Entry(it.timestamp.toFloat(), it.price.toFloat()) }?.sortedBy { it.x }
+	if (historyPrizes?.timeFrame == TimeFrame.DAY || historyPrizes?.timeFrame == TimeFrame.WEEK) entries = entries?.dropLast(1)        // drop last item for day and week time frame, because of wrong API data
 
-	if (entries != null && entries.isNotEmpty() && historyPrizes.data != null) {
-		marker = MarkerView(context, historyPrizes.data.currency, currency, exchangeRates)
+	if (entries != null && entries.isNotEmpty() && historyPrizes != null) {
+		marker = MarkerView(context, historyPrizes.currency, currency, exchangeRates)
 
-		val btcDataSet = LineDataSet(entries, "$currency/${historyPrizes.data.coin}").apply {
+		val btcDataSet = LineDataSet(entries, "$currency/${historyPrizes.coin}").apply {
 			setDrawCircles(false)
 			color = ContextCompat.getColor(context, R.color.primary)
 			lineWidth = 1.5f
 		}
 
-		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
+		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates?.calculate(historyPrizes.currency, currency, value.toDouble())) }
 
 		data = LineData(btcDataSet)
-		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(historyPrizes.data.currency, currency, value.toDouble())) }
+		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates?.calculate(historyPrizes.currency, currency, value.toDouble())) }
 		data.setDrawValues(false)
 		invalidate()
 	} else {
@@ -280,8 +293,8 @@ fun LineChart.setCandles(historyPrizes: Resource<History>, currency: String, exc
 }
 
 @BindingAdapter("historicalProfit", "currency", "exchangeRates")
-fun LineChart.setHistoricalProfit(historicalProfit: List<Entry>, currency: String, exchangeRates: ExchangeRates) {
-	if (historicalProfit.isNotEmpty()) {
+fun LineChart.setHistoricalProfit(historicalProfit: List<Entry>?, currency: String?, exchangeRates: ExchangeRates?) {
+	if (historicalProfit != null && historicalProfit.isNotEmpty()) {
 		marker = MarkerView(context, Currency.USD, currency, exchangeRates)
 
 		val dataSet = LineDataSet(historicalProfit, "${resources.getString(R.string.wallet_detail_profit_loss)}/$currency").apply {
@@ -289,14 +302,17 @@ fun LineChart.setHistoricalProfit(historicalProfit: List<Entry>, currency: Strin
 			color = ContextCompat.getColor(context, R.color.primary)
 			lineWidth = 1.5f
 			colors = historicalProfit.mapIndexed { index, entry ->
-				if (index < historicalProfit.size-1 && entry.y >= 0 && historicalProfit[index + 1].y >= 0) Color.GREEN else if(index >= historicalProfit.size-1 && entry.y >= 0) Color.RED else Color.RED }
+				if (index < historicalProfit.size - 1 && entry.y >= 0 && historicalProfit[index + 1].y >= 0) ContextCompat.getColor(context, R.color.currency_profit)
+				else if (index >= historicalProfit.size - 1 && entry.y >= 0) ContextCompat.getColor(context, R.color.currency_loss)
+				else ContextCompat.getColor(context, R.color.currency_loss)
+			}
 		}
 
-		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble())) }
+		axisRight.setValueFormatter { value, axis -> Currency.formatValue(currency, exchangeRates?.calculate(Currency.USD, currency, value.toDouble())) }
 		legend.isEnabled = false
 
 		data = LineData(dataSet)
-		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates.calculate(Currency.USD, currency, value.toDouble())) }
+		data.setValueFormatter { value, entry, dataSetIndex, viewPortHandler -> Currency.formatValue(currency, exchangeRates?.calculate(Currency.USD, currency, value.toDouble())) }
 		data.setDrawValues(false)
 		invalidate()
 	} else {

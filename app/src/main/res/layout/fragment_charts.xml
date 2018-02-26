@@ -30,7 +30,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				app:init="@{true}"
-				app:historyPrizes="@{viewModel.history[Coin.BTC]}"
+				app:historyPrizes="@{viewModel.history[Coin.BTC].data}"
 				app:currency="@{viewModel.mainViewModel.currency}"
 				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
 
@@ -46,7 +46,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				app:init="@{true}"
-				app:historyPrizes="@{viewModel.history[Coin.ETH]}"
+				app:historyPrizes="@{viewModel.history[Coin.ETH].data}"
 				app:currency="@{viewModel.mainViewModel.currency}"
 				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
 
@@ -62,7 +62,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				app:init="@{true}"
-				app:historyPrizes="@{viewModel.history[Coin.XRP]}"
+				app:historyPrizes="@{viewModel.history[Coin.XRP].data}"
 				app:currency="@{viewModel.mainViewModel.currency}"
 				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
 
@@ -78,7 +78,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				app:init="@{true}"
-				app:historyPrizes="@{viewModel.history[Coin.LTC]}"
+				app:historyPrizes="@{viewModel.history[Coin.LTC].data}"
 				app:currency="@{viewModel.mainViewModel.currency}"
 				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
 
@@ -94,7 +94,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				app:init="@{true}"
-				app:historyPrizes="@{viewModel.history[Coin.BCH]}"
+				app:historyPrizes="@{viewModel.history[Coin.BCH].data}"
 				app:currency="@{viewModel.mainViewModel.currency}"
 				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
 

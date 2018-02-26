@@ -7,7 +7,6 @@ import com.strv.dundee.BR
 import com.strv.dundee.R
 import com.strv.dundee.common.OnItemClickListener
 import com.strv.dundee.common.daysToNow
-import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.dundee.model.entity.TimeFrame
 import com.strv.dundee.model.entity.Wallet
@@ -43,28 +42,7 @@ class WalletDetailViewModel(val walletOverview: WalletOverview, val exchangeRate
 			override fun areContentsTheSame(oldItem: Wallet?, newItem: Wallet?) = oldItem == newItem
 			override fun areItemsTheSame(oldItem: Wallet?, newItem: Wallet?) = oldItem == newItem
 		})
-
-		historicalProfit.addValueSource(history, { getHistoricalProfit() })
-	}
-
-	private fun getHistoricalProfit(): List<Entry> {
-		val result = mutableListOf<Entry>()
-		val boughtPrice = walletOverview.getBoughtPrice(Currency.USD, exchangeRates)
-		history.value?.data?.prices?.forEach {
-			if (walletOverview.firstWalletBoughtDate != null && it.timestamp > walletOverview.firstWalletBoughtDate!!.time)
-				result.add(Entry(it.timestamp.toFloat(), (it.price * walletOverview.amount - boughtPrice).toFloat()))
-		}
-
-		var i = 0
-		while (i < result.size-1) {
-			if ((result[i].y < 0 && result[i + 1].y > 0) || result[i].y > 0 && result[i + 1].y < 0) {
-				val x = result[i].x + ((0 - result[i].y) * (result[i+1].x - result[i].x)) / (result[i+1].y - result[i].y)
-				result.add(i+1, Entry(x, 0f))
-			}
-			i++
-		}
-
-		return result
+		historicalProfit.addValueSource(history, { it?.data?.getHistoricalProfit(walletOverview, exchangeRates) ?: mutableListOf()})
 	}
 
 	private fun getTimeFrame() = walletOverview.firstWalletBoughtDate?.let {
@@ -77,7 +55,6 @@ class WalletDetailViewModel(val walletOverview: WalletOverview, val exchangeRate
 			it.daysToNow() < 366 -> TimeFrame.YEAR
 			else -> TimeFrame.ALL
 		}
-	}
-		?: TimeFrame.ALL
+	} ?: TimeFrame.ALL
 
 }

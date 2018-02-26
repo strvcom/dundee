@@ -5,7 +5,7 @@
 
 	<data>
 
-		<import type="com.strv.dundee.common.DateUtils" />
+		<import type="com.strv.dundee.common.NumberUtils" />
 		<import type="com.strv.dundee.model.entity.Currency" />
 
 		<variable
@@ -50,13 +50,23 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-				android:text="@{Double.toString(item.amount)}"
+				android:text="@{NumberUtils.INSTANCE.formatDecimal(item.amount, 5)}"
 				tools:text="2.2323" />
 
 			<Space
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_weight="1" />
+				android:layout_weight="1"/>
+
+			<com.github.mikephil.charting.charts.LineChart
+				android:layout_width="@dimen/spacing_64"
+				android:layout_height="match_parent"
+				android:layout_marginLeft="@dimen/spacing_16"
+				android:layout_marginRight="@dimen/spacing_8"
+				app:initDashboard="@{true}"
+				app:historicalProfit="@{viewModel.history[item.coin].data.getHistoricalProfit(item, viewModel.mainViewModel.exchangeRates.data)}"
+				app:currency="@{viewModel.mainViewModel.currency}"
+				app:exchangeRates="@{viewModel.mainViewModel.exchangeRates.data}" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
