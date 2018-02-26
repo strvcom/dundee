@@ -1,4 +1,4 @@
-dundee by STRV
+dundee
 ==============
 <p align="center">
 	<img src="https://github.com/strvcom/dundee/raw/master/extras/device-2018-02-26-134516.png" width="320"/>
@@ -75,8 +75,6 @@ Author
 <p align="center">
 	<a href="http://www.strv.com">
 		<img src="https://github.com/strvcom/dundee/raw/master/extras/strv-logo.png" width="320"/>
-		<br/>
-		strv.com
 	</a>
 	<br/>
 	<b>Jakub Kinst</b> (jakub.kinst@strv.com)
