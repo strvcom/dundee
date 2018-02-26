@@ -264,6 +264,7 @@ fun LineChart.setupDashboardChart(boolean: Boolean) {
 	isDoubleTapToZoomEnabled = false
 	isHighlightPerTapEnabled = false
 	isHighlightPerDragEnabled = false
+	setNoDataText("")
 	invalidate()
 }
 
