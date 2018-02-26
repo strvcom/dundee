@@ -77,5 +77,6 @@ Leos Dostal (leos.dostal@strv.com)
 
 <p align="center">
 	<img src="https://github.com/strvcom/dundee/raw/master/extras/strv-logo.png" width="320"/>
+	<br/>
 	[strv.com](http://www.strv.com)
 </p>
