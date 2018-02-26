@@ -2,6 +2,7 @@ dundee by STRV
 ==============
 <p align="center">
 	<img src="https://github.com/strvcom/dundee/raw/master/extras/device-2018-02-26-134516.png" width="320"/>
+	<img src="https://github.com/strvcom/dundee/raw/master/extras/device-2018-02-26-134516.png" width="320"/>
 </p
 
 
