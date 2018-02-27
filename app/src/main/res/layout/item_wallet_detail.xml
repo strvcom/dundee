@@ -29,17 +29,62 @@
 		android:onClick="@{() -> listener.onItemClick(item)}">
 
 		<LinearLayout
-			android:id="@+id/item_foreground"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="horizontal"
+			android:orientation="vertical"
 			android:padding="@dimen/spacing_16">
 
-			<TextView
-				android:layout_width="wrap_content"
+			<LinearLayout
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@{Double.toString(item.amount)}"
-				tools:text="3.4" />
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@{Double.toString(item.amount)}"
+					android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+					tools:text="3.4" />
+
+				<Space
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+					android:text="@{DateUtils.INSTANCE.dateToDayString(item.boughtDate)}"
+					tools:text="@tools:sample/date/ddmmyy" />
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Bought for:"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+				<Space
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_weight="1" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@{Currency.INSTANCE.formatValue(item.boughtCurrency, item.boughtPrice)}"
+					android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+					tools:text="3.4" />
+
+			</LinearLayout>
 
 		</LinearLayout>
 

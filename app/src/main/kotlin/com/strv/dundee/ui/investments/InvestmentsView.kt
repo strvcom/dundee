@@ -1,4 +1,4 @@
-package com.strv.dundee.ui.wallet
+package com.strv.dundee.ui.investments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -10,23 +10,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.strv.dundee.R
-import com.strv.dundee.databinding.FragmentWalletsBinding
+import com.strv.dundee.databinding.FragmentInvestmentsBinding
 import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.ui.main.MainViewModel
+import com.strv.dundee.ui.wallet.EditWalletAmountActivity
 import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.ktools.vmb
 
-interface WalletsView {
+interface InvestmentsView {
 	fun addAmount()
 	val lifecycleAwareAdapter: LifecycleAwareBindingRecyclerViewAdapter<Wallet> // TODO: Temp fix for tatarka - remove when tatarka adds support for lifecycle
 }
 
-class WalletsFragment : Fragment(), WalletsView {
+class InvestmentsFragment : Fragment(), InvestmentsView {
 
 	companion object {
 		private const val ACTION_ADD_AMOUNT = 1
 
-		fun newInstance() = WalletsFragment().apply {
+		fun newInstance() = InvestmentsFragment().apply {
 			val bundle = Bundle()
 			arguments = bundle
 		}
@@ -34,7 +35,7 @@ class WalletsFragment : Fragment(), WalletsView {
 
 	override val lifecycleAwareAdapter = LifecycleAwareBindingRecyclerViewAdapter<Wallet>(this)
 
-	private val vmb by vmb<WalletsViewModel, FragmentWalletsBinding>(R.layout.fragment_wallets) { WalletsViewModel(ViewModelProviders.of(activity as FragmentActivity).get(MainViewModel::class.java)) }
+	private val vmb by vmb<InvestmentsViewModel, FragmentInvestmentsBinding>(R.layout.fragment_investments) { InvestmentsViewModel(ViewModelProviders.of(activity as FragmentActivity).get(MainViewModel::class.java)) }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
