@@ -10,7 +10,7 @@ buildscript {
 		gitTagCount = 'git tag --list'.execute([], project.rootDir).text.split("\n").size()
 
 		// signing config
-		signingKeyStoreFile = '../extras/release.jks'
+		signingKeyStoreFile = '../extras/test_release.jks'
 		signingKeyAlias = 'dundee'
 		signingKeyPassword = 'Z5GHgCtRL2qS'
 
