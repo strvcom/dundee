@@ -27,7 +27,6 @@ import com.strv.dundee.R
 import com.strv.dundee.model.entity.Currency
 import com.strv.dundee.model.entity.ExchangeRates
 import com.strv.dundee.model.entity.History
-import com.strv.dundee.model.entity.TimeFrame
 import com.strv.dundee.ui.charts.MarkerView
 import me.tatarka.bindingcollectionadapter2.BindingRecyclerViewAdapter
 import java.text.DateFormat
@@ -264,16 +263,15 @@ fun LineChart.setupDashboardChart(boolean: Boolean) {
 	isDoubleTapToZoomEnabled = false
 	isHighlightPerTapEnabled = false
 	isHighlightPerDragEnabled = false
+	setTouchEnabled(false)
 	setNoDataText("")
 	invalidate()
 }
 
 @BindingAdapter("historyPrizes", "currency", "exchangeRates")
 fun LineChart.setHistory(historyPrizes: History?, currency: String?, exchangeRates: ExchangeRates?) {
-	var entries = historyPrizes?.prices?.map { Entry(it.timestamp.toFloat(), it.price.toFloat()) }?.sortedBy { it.x }
-	if (historyPrizes?.timeFrame == TimeFrame.DAY || historyPrizes?.timeFrame == TimeFrame.WEEK) entries = entries?.dropLast(1)        // drop last item for day and week time frame, because of wrong API data
-
-	if (entries != null && entries.isNotEmpty() && historyPrizes != null) {
+	val entries = historyPrizes?.prices?.map { Entry(it.timestamp.toFloat(), it.price.toFloat()) }?.sortedBy { it.x }
+	if (entries != null && entries.isNotEmpty()) {
 		marker = MarkerView(context, historyPrizes.currency, currency, exchangeRates)
 
 		val btcDataSet = LineDataSet(entries, "$currency/${historyPrizes.coin}").apply {

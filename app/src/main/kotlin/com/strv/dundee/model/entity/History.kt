@@ -11,12 +11,17 @@ data class History(
 	var prices: List<HistoryPrice> = listOf()
 ) {
 
-	fun getHistoricalProfit(walletOverview: WalletOverview, exchangeRates: ExchangeRates): List<Entry> {
+	init {
+		if (timeFrame == TimeFrame.DAY || timeFrame == TimeFrame.WEEK || timeFrame == TimeFrame.MONTH) prices = prices.dropLast(1)        // drop last item for day and week time frame, because of wrong API data
+	}
+
+	fun getHistoricalProfit(walletOverview: WalletOverview?, exchangeRates: ExchangeRates?): List<Entry> {
 		val result = mutableListOf<Entry>()
-		val boughtPrice = walletOverview.getBoughtPrice(Currency.USD, exchangeRates)
+		val boughtPrice = walletOverview?.getBoughtPrice(Currency.USD, exchangeRates)
 		prices.forEach {
-			if (walletOverview.firstWalletBoughtDate != null && it.timestamp > walletOverview.firstWalletBoughtDate!!.time)
-				result.add(Entry(it.timestamp.toFloat(), (it.price * walletOverview.amount - boughtPrice).toFloat()))
+			if (walletOverview?.firstWalletBoughtDate != null && it.timestamp > walletOverview.firstWalletBoughtDate!!.time)
+				result.add(Entry(it.timestamp.toFloat(), (it.price * walletOverview.amount - (boughtPrice
+					?: 0.0)).toFloat()))
 		}
 
 		var i = 0

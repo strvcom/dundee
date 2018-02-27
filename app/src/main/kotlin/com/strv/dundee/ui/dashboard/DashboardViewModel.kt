@@ -2,6 +2,7 @@ package com.strv.dundee.ui.dashboard
 
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.ViewModel
+import com.github.mikephil.charting.data.Entry
 import com.strv.dundee.BR
 import com.strv.dundee.R
 import com.strv.dundee.common.OnItemClickListener
@@ -47,6 +48,7 @@ class DashboardViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 	val exchangeRates = mainViewModel.exchangeRates
 	val totalValue = MediatorLiveData<Double>()
 	val totalProfit = MediatorLiveData<Double>()
+	val historicalProfit = MediatorLiveData<List<Entry>>()
 	val state = MediatorLiveData<String>().apply { value = SimpleStatefulLayout.State.PROGRESS }
 
 	init {
@@ -58,9 +60,12 @@ class DashboardViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 
 		// setupCached ticker on input changes
 		tickers.forEach { (coin, ticker) ->
-			ticker.addSource(apiCurrency, { if(ticker.value?.data?.currency != apiCurrency.value) ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
-			ticker.addSource(source, { if(ticker.value?.data?.source != source.value) ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
+			ticker.addSource(apiCurrency, { if (ticker.value?.data?.currency != apiCurrency.value) ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
+			ticker.addSource(source, { if (ticker.value?.data?.source != source.value) ticker.refresh(source.value!!, coin, apiCurrency.value!!) })
 		}
+
+		// setup calculation for total profit chart
+		history.forEach { historicalProfit.addValueSource(it.value, { calculateHistoricalProfit() }) }
 
 		// used for transforming Wallet list to WalletOverview list
 		val coinWallets = MediatorLiveData<Resource<List<WalletOverview>>>().addValueSource(walletRepository.getWalletsForCurrentUser(), {
@@ -108,5 +113,17 @@ class DashboardViewModel(val mainViewModel: MainViewModel) : ViewModel() {
 			?: 0.0
 		return (totalValue.value
 			?: 0.0) - totalBoughtPrice
+	}
+
+	private fun calculateHistoricalProfit(): List<Entry> {
+		val result = mutableListOf<Entry>()
+		history.forEach { (coin, history) ->
+			history.value?.data?.getHistoricalProfit(wallets.diffList.find { it.coin == coin }, exchangeRates.value?.data)?.forEachIndexed { index, historyPrice ->
+				if (result.size <= index && coin == Coin.BTC) result.add(Entry(historyPrice.x, historyPrice.y))
+				else if (result.size > index) result[index].y += historyPrice.y
+			}
+				?: Unit
+		}
+		return result
 	}
 }
