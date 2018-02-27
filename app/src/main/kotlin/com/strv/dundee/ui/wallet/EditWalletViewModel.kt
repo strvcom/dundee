@@ -18,7 +18,7 @@ import com.strv.ktools.mutableLiveDataOf
 import com.strv.ktools.publish
 import java.util.Date
 
-class EditWalletAmountViewModel(wallet: Wallet? = null) : ViewModel() {
+class EditWalletViewModel(wallet: Wallet? = null) : ViewModel() {
 
 	private val application by inject<Application>()
 	private val walletRepository by inject<WalletRepository>()

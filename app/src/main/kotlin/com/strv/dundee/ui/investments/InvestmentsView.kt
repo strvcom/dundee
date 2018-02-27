@@ -13,7 +13,7 @@ import com.strv.dundee.R
 import com.strv.dundee.databinding.FragmentInvestmentsBinding
 import com.strv.dundee.model.entity.Wallet
 import com.strv.dundee.ui.main.MainViewModel
-import com.strv.dundee.ui.wallet.EditWalletAmountActivity
+import com.strv.dundee.ui.wallet.EditWalletActivity
 import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.ktools.vmb
 
@@ -46,7 +46,7 @@ class InvestmentsFragment : Fragment(), InvestmentsView {
 				show()
 			}
 		})
-		vmb.viewModel.walletOpened.observe(this, Observer { it?.let { wallet -> activity?.let { startActivity(EditWalletAmountActivity.newIntent(it, wallet)) } } })
+		vmb.viewModel.walletOpened.observe(this, Observer { it?.let { wallet -> activity?.let { startActivity(EditWalletActivity.newIntent(it, wallet)) } } })
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -54,6 +54,6 @@ class InvestmentsFragment : Fragment(), InvestmentsView {
 	}
 
 	override fun addAmount() {
-		context?.let { startActivityForResult(EditWalletAmountActivity.newIntent(it), ACTION_ADD_AMOUNT) }
+		context?.let { startActivityForResult(EditWalletActivity.newIntent(it), ACTION_ADD_AMOUNT) }
 	}
 }
