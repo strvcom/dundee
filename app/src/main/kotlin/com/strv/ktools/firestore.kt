@@ -17,7 +17,7 @@ import com.strv.dundee.model.entity.Document
 
 
 /**
- * Variant for one document with document reference as a parameter.
+ * Document variant with document reference as a parameter.
  */
 class FirestoreDocumentLiveData<T>(private val documentRef: DocumentReference, private val clazz: Class<T>) : LiveData<Resource<T>>() {
 
@@ -47,7 +47,7 @@ class FirestoreDocumentLiveData<T>(private val documentRef: DocumentReference, p
 }
 
 /**
- * Variant for one document with Query as a parameter. Query will be limited only for one document.
+ * Document variant with Query as a parameter. Query will be limited only for one document.
  */
 class FirestoreDocumentQueryLiveData<T>(private val query: Query, private val clazz: Class<T>) : LiveData<Resource<T>>() {
 
@@ -81,7 +81,7 @@ class FirestoreDocumentQueryLiveData<T>(private val query: Query, private val cl
 }
 
 /**
- * Variant for List of documents.
+ * List of documents variant.
  */
 class FirestoreDocumentListLiveData<T>(private val query: Query, private val clazz: Class<T>) : LiveData<Resource<List<T>>>() {
 
