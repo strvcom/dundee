@@ -68,20 +68,20 @@ private fun getCodeLocation(depth: Int = 3): CodeLocation {
 }
 
 private class CodeLocation(stackTrace: Array<StackTraceElement?>) {
-	private val mThread: String
-	private val mFileName: String
-	private val mClassName: String
-	private val mMethod: String
-	private val mLineNumber: Int
+	private val thread: String
+	private val fileName: String
+	private val className: String
+	private val method: String
+	private val lineNumber: Int
 
 	init {
 		val root = stackTrace[0]
-		mThread = Thread.currentThread().name
-		mFileName = root!!.fileName
+		thread = Thread.currentThread().name
+		fileName = root!!.fileName
 		val className = root.className
-		mClassName = className.substring(className.lastIndexOf('.') + 1)
-		mMethod = root.methodName
-		mLineNumber = root.lineNumber
+		this.className = className.substring(className.lastIndexOf('.') + 1)
+		method = root.methodName
+		lineNumber = root.lineNumber
 	}
 
 	override fun toString(): String {
@@ -89,17 +89,17 @@ private class CodeLocation(stackTrace: Array<StackTraceElement?>) {
 		if (showCodeLocation) {
 			builder.append('[')
 			if (showCodeLocationThread) {
-				builder.append(mThread)
+				builder.append(thread)
 				builder.append('.')
 			}
-			builder.append(mClassName)
+			builder.append(className)
 			builder.append('.')
-			builder.append(mMethod)
+			builder.append(method)
 			if (showCodeLocationLine) {
 				builder.append('(')
-				builder.append(mFileName)
+				builder.append(fileName)
 				builder.append(':')
-				builder.append(mLineNumber)
+				builder.append(lineNumber)
 				builder.append(')')
 			}
 			builder.append("] ")

@@ -22,7 +22,7 @@ MVVM Architecture via ViewModelBinding
 ViewModelBinding (vmb) connects Architecture ViewModels with the View (Activity/Fragment) via Data Binding automatically. All you have to do is to initialize it in your View via Kotlin delegate:
 
 ```kotlin
-private val vmb by vmb<MainViewModel, ActivityMainBinding>(R.layout.activity_main)
+private val vmb by vmb<MainViewModel, ActivityMainBinding>(R.layout.activity_main) 
 //...
 // then in onCreate():
 vmb.viewModel.doSomething()
