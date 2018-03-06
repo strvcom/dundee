@@ -1,7 +1,7 @@
 <resources>
 	<string name="nav_dashboard">Dashboard</string>
 	<string name="nav_charts">Charts</string>
-	<string name="nav_wallets">Investments</string>
+	<string name="nav_investments">Investments</string>
 
 	<string name="global_price">%.2f %s/%s</string>
 	<string name="global_total_value">Total value:</string>

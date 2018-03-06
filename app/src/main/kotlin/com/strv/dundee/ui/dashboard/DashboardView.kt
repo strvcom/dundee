@@ -14,7 +14,7 @@ import com.strv.dundee.databinding.FragmentDashboardBinding
 import com.strv.dundee.databinding.FragmentDashboardEmptyBinding
 import com.strv.dundee.model.entity.WalletOverview
 import com.strv.dundee.ui.main.MainViewModel
-import com.strv.dundee.ui.wallet.EditWalletAmountActivity
+import com.strv.dundee.ui.wallet.EditWalletActivity
 import com.strv.dundee.ui.wallet.WalletDetailActivity
 import com.strv.ktools.LifecycleAwareBindingRecyclerViewAdapter
 import com.strv.ktools.Resource
@@ -75,6 +75,6 @@ class DashboardFragment : Fragment(), DashboardView {
 	}
 
 	fun addAmount() {
-		context?.let { startActivity(EditWalletAmountActivity.newIntent(it)) }
+		context?.let { startActivity(EditWalletActivity.newIntent(it)) }
 	}
 }

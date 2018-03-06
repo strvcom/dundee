@@ -9,6 +9,16 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.strv.dundee.model.entity.Document
 
+/**
+ * LiveData wrapper for Firestore database.
+ * EventListener is automatically attached to the Firestore database when LiveData becomes active. Listener is removed when LiveData becomes inactive.
+ * Data are parsed to the model, which has to be provided in the constructor.
+ */
+
+
+/**
+ * Document variant with document reference as a parameter.
+ */
 class FirestoreDocumentLiveData<T>(private val documentRef: DocumentReference, private val clazz: Class<T>) : LiveData<Resource<T>>() {
 
 	// if cached data are up to date with server DB, listener won't get called again with isFromCache=false
@@ -36,6 +46,9 @@ class FirestoreDocumentLiveData<T>(private val documentRef: DocumentReference, p
 	}
 }
 
+/**
+ * Document variant with Query as a parameter. Query will be limited only for one document.
+ */
 class FirestoreDocumentQueryLiveData<T>(private val query: Query, private val clazz: Class<T>) : LiveData<Resource<T>>() {
 
 	// if cached data are up to date with server DB, listener won't get called again with isFromCache=false
@@ -67,6 +80,9 @@ class FirestoreDocumentQueryLiveData<T>(private val query: Query, private val cl
 	}
 }
 
+/**
+ * List of documents variant.
+ */
 class FirestoreDocumentListLiveData<T>(private val query: Query, private val clazz: Class<T>) : LiveData<Resource<List<T>>>() {
 
 	// if cached data are up to date with server DB, listener won't get called again with isFromCache=false

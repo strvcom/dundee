@@ -7,14 +7,14 @@ import android.support.v4.app.Fragment
 import com.strv.dundee.R
 import com.strv.dundee.ui.charts.ChartsFragment
 import com.strv.dundee.ui.dashboard.DashboardFragment
-import com.strv.dundee.ui.wallet.WalletsFragment
+import com.strv.dundee.ui.investments.InvestmentsFragment
 
 class MainNavigation {
 
 	enum class Section(@StringRes val titleResId: Int, @DrawableRes val iconResId: Int, val tag: String, val fragmentConstructor: () -> Fragment) {
 		DASHBOARD(R.string.nav_dashboard, R.drawable.ic_dashboard, DashboardFragment::class.java.simpleName, DashboardFragment.Companion::newInstance),
 		CHARTS(R.string.nav_charts, R.drawable.ic_graph, ChartsFragment::class.java.simpleName, ChartsFragment.Companion::newInstance),
-		FINANCES(R.string.nav_wallets, R.drawable.ic_finances, WalletsFragment::class.java.simpleName, WalletsFragment.Companion::newInstance);
+		INVESTMENTS(R.string.nav_investments, R.drawable.ic_investments, InvestmentsFragment::class.java.simpleName, InvestmentsFragment.Companion::newInstance);
 	}
 
 	val currentTab = MutableLiveData<Section>()
@@ -27,8 +27,8 @@ class MainNavigation {
 		goTo(Section.CHARTS)
 	}
 
-	fun goToFinances() {
-		goTo(Section.FINANCES)
+	fun goToInvestments() {
+		goTo(Section.INVESTMENTS)
 	}
 
 	fun goTo(tab: Section) {

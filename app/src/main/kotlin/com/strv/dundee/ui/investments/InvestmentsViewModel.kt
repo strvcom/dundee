@@ -1,4 +1,4 @@
-package com.strv.dundee.ui.wallet
+package com.strv.dundee.ui.investments
 
 import android.arch.lifecycle.ViewModel
 import com.strv.dundee.BR
@@ -14,7 +14,7 @@ import com.strv.ktools.inject
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 import me.tatarka.bindingcollectionadapter2.collections.DiffObservableList
 
-class WalletsViewModel(mainViewModel: MainViewModel) : ViewModel() {
+class InvestmentsViewModel(mainViewModel: MainViewModel) : ViewModel() {
 	val walletRemovedSnackBar = EventLiveData<Wallet>()
 	val walletOpened = EventLiveData<Wallet>()
 
@@ -33,7 +33,7 @@ class WalletsViewModel(mainViewModel: MainViewModel) : ViewModel() {
 		}
 	}
 
-	val itemBinding = ItemBinding.of<Wallet>(BR.item, R.layout.item_wallet_amount).bindExtra(BR.viewModel, this).bindExtra(BR.listener, itemClickCallback)!!
+	val itemBinding = ItemBinding.of<Wallet>(BR.item, R.layout.item_investments).bindExtra(BR.viewModel, this).bindExtra(BR.listener, itemClickCallback)!!
 	var wallets: DiffObservableListLiveData<Wallet>
 
 	init {

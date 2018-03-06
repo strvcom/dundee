@@ -10,11 +10,11 @@
 
 		<variable
 			name="viewModel"
-			type="com.strv.dundee.ui.wallet.EditWalletAmountViewModel" />
+			type="com.strv.dundee.ui.wallet.EditWalletViewModel" />
 
 		<variable
 			name="view"
-			type="com.strv.dundee.ui.wallet.EditWalletAmountView" />
+			type="com.strv.dundee.ui.wallet.EditWalletView" />
 
 
 	</data>

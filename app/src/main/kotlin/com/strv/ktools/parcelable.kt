@@ -4,7 +4,15 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.Date
 
-// Source: @link:https://medium.com/@BladeCoder/reducing-parcelable-boilerplate-code-using-kotlin-741c3124a49a
+/*
+ * Helper class and methods for Parcelable.
+ * Source: @link:https://medium.com/@BladeCoder/reducing-parcelable-boilerplate-code-using-kotlin-741c3124a49a
+ *
+ * The easiest way how to use Parcelable is using @Parcelize, see @link:https://github.com/Kotlin/KEEP/blob/master/proposals/extensions/android-parcelable.md
+ * Using @Parcelize is not working in some cases. For example when you are using inheritance.
+ *
+ */
+//
 
 interface KParcelable : Parcelable {
 	override fun describeContents() = 0

@@ -24,7 +24,7 @@
 			android:name=".ui.auth.SignUpActivity"
 			android:label="@string/onboarding_sign_up" />
 		<activity
-			android:name=".ui.wallet.EditWalletAmountActivity"
+			android:name=".ui.wallet.EditWalletActivity"
 			android:label="@string/investments_add" />
 		<activity
 			android:name=".ui.wallet.WalletDetailActivity" />

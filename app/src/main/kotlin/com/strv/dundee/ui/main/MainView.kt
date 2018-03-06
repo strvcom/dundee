@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), MainView {
 		}
 		vmb.binding.bottomNavigationView.setOnNavigationItemSelectedListener {
 			vmb.viewModel.navigationManager.goTo(MainNavigation.Section.values()[it.itemId])
-			optionMenu?.isVisible = MainNavigation.Section.values()[it.itemId] != MainNavigation.Section.FINANCES
+			optionMenu?.isVisible = MainNavigation.Section.values()[it.itemId] != MainNavigation.Section.INVESTMENTS
 			true
 		}
 	}
