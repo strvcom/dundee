@@ -1,7 +1,6 @@
 package com.strv.dundee.ui.auth
 
 import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.strv.dundee.app.Config
 import com.strv.dundee.model.repo.UserRepository
@@ -11,6 +10,7 @@ import com.strv.ktools.EventLiveData
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
 import com.strv.ktools.logD
+import com.strv.ktools.mutableLiveDataOf
 
 class SignUpViewModel(val defaultEmail: String? = null, val defaultPassword: String? = null) : ViewModel() {
 
@@ -21,12 +21,12 @@ class SignUpViewModel(val defaultEmail: String? = null, val defaultPassword: Str
 
 	val result = EventLiveData<SignUpResult>()
 
-	val email = MutableLiveData<String>().apply { value = defaultEmail }
-	val password = MutableLiveData<String>().apply { value = defaultPassword }
+	val email = mutableLiveDataOf(defaultEmail)
+	val password = mutableLiveDataOf(defaultPassword)
 	val formValid = MediatorLiveData<Boolean>()
 		.addValueSource(email, { validateForm() })
 		.addValueSource(password, { validateForm() })
-	val progress = MutableLiveData<Boolean>().apply { value = false }
+	val progress = mutableLiveDataOf(false)
 
 	private fun validateForm() = validateEmail(email.value) && validatePassword(password.value, config.MIN_PASSWORD_LENGTH)
 

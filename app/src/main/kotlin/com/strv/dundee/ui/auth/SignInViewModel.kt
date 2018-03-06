@@ -16,6 +16,7 @@ import com.strv.ktools.EventLiveData
 import com.strv.ktools.addValueSource
 import com.strv.ktools.inject
 import com.strv.ktools.logD
+import com.strv.ktools.mutableLiveDataOf
 
 class SignInViewModel() : ViewModel() {
 
@@ -33,7 +34,7 @@ class SignInViewModel() : ViewModel() {
 	val formValid = MediatorLiveData<Boolean>()
 		.addValueSource(email, { validateForm() })
 		.addValueSource(password, { validateForm() })
-	val progress = MutableLiveData<Boolean>().apply { value = false }
+	val progress = mutableLiveDataOf(false)
 
 	private fun validateForm() = validateEmail(email.value) && validatePassword(password.value, config.MIN_PASSWORD_LENGTH)
 
