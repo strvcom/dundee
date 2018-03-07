@@ -81,8 +81,11 @@ class ViewModelBinding<out VM : ViewModel, out B : ViewDataBinding> constructor(
 		lifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
 			@OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
 			fun onCreate() {
+				// Note: This line will not work for Android Gradle plugin older than 3.1.0-alpha06 - comment it out if using those
 				binding.setLifecycleOwner(lifecycleOwner)
 				// setupCached binding variables
+				// Note: BR.viewModel, BR.view will be auto-generated if you have those variables somewhere in your layout files
+				// If you're not using both of them you will have to comment out one of the lines
 				binding.setVariable(BR.viewModel, viewModel)
 				binding.setVariable(BR.view, fragment ?: activity)
 
