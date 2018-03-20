@@ -1,16 +1,18 @@
 package com.strv.dundee.model.entity
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import android.os.Parcel
+import com.strv.ktools.KParcelable
+import com.strv.ktools.parcelableCreator
+import com.strv.ktools.readDate
+import com.strv.ktools.writeDate
 import java.util.Date
 
-@Parcelize
 data class WalletOverview(
 	var coin: String,
 	var amount: Double = 0.0,
 	var firstWalletBoughtDate: Date? = null,
 	val boughtPrices: MutableList<Pair<String, Double>> = mutableListOf()
-) : Parcelable {
+) : KParcelable {
 
 	fun getBoughtPrice(currency: String, exchangeRates: ExchangeRates?): Double =
 		boughtPrices.sumByDouble {
@@ -28,5 +30,24 @@ data class WalletOverview(
 		} else if (boughtDate != null) {
 			firstWalletBoughtDate = boughtDate
 		}
+	}
+
+	private constructor(parcel: Parcel) : this(
+		coin = parcel.readString(),
+		amount = (parcel.readValue(Double::class.java.classLoader) as? Double)!!,
+		firstWalletBoughtDate = parcel.readDate()) {
+		parcel.readList(boughtPrices, null)
+	}
+
+	override fun writeToParcel(parcel: Parcel, flags: Int) {
+		parcel.writeString(coin)
+		parcel.writeValue(amount)
+		parcel.writeDate(firstWalletBoughtDate)
+		parcel.writeList(boughtPrices)
+	}
+
+	companion object {
+		@JvmField
+		val CREATOR = parcelableCreator(::WalletOverview)
 	}
 }

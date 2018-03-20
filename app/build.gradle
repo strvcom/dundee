@@ -50,10 +50,6 @@ android {
 		}
 	}
 
-	androidExtensions {
-		experimental = true
-	}
-
 	flavorDimensions "default"
 
 	productFlavors {
